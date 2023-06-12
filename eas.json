@@ -1,0 +1,61 @@
+{
+  "submit": {
+    "production": {
+      "ios": {
+        "appName": "Champion",
+        "bundleIdentifier": "com.dbe.dashboardearth"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./google-services.json",
+        "track": "internal"
+      }
+    }
+  },
+  "build": {
+    "development": {
+      "channel": "production-1",
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_ENV": "production"
+       
+      },
+      "ios": {
+        "scheme": "Champion",
+        "simulator": false
+      },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "production": {
+      "env": {
+        "APP_ENV": "production"
+         
+      },
+      "channel": "production-1",
+      "ios": {
+        "image": "macos-monterey-12.4-xcode-13.4",
+        "simulator": false
+      },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+  
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    }
+  },
+
+  "cli": {
+    "version": ">=0.50.0"
+  }
+}
