@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Navigation from "./Navigation";
-import Home from "../src/Screens/Home";
+import Home from "../src/Screens/Home/Index";
 import AppAutoUpdateScreen from "../src/Screens/AppAutoUpdateScreen";
 import Detail from "../src/Screens/Detail";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AppState } from "react-native";
+import StartScreen from "../src/Screens/SplashScreen/SplashScreen";
 
 const StackNavigator = ({ navigation }) => {
   const Stack = createNativeStackNavigator();
@@ -29,7 +30,14 @@ const StackNavigator = ({ navigation }) => {
     });
   });
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="StartScreen">
+    <Stack.Screen
+        name="StartScreen"
+        component={StartScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="Home"
         component={Home}

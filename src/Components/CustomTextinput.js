@@ -68,7 +68,7 @@ const CustomTextinput = ({
                 }}
               >
                 <Image
-                  source={require("../../assets/eye.png")}
+                  source={require("../Assets/Image/eye.png")}
                   style={{ height: 25, width: 25, resizeMode: "contain" }}
                 />
               </TouchableOpacity>

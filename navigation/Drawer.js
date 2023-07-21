@@ -8,7 +8,7 @@ const Drawer = () => {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="SplashScreen"
       screenOptions={{
         headerShown: false,
         drawerStyle: {

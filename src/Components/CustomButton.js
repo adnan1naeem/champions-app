@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Colors } from "../Utils/Colors";
 import { Badge } from "react-native-elements";
+import LinearGradient from "react-native-linear-gradient";
 
 const CustomButton = ({
   title,
@@ -23,7 +24,14 @@ const CustomButton = ({
           containerStyle={styles.badgeContainer}
         />
       )}
-      <Text style={textStyle ? textStyle : styles.title}>{title}</Text>
+      <LinearGradient
+        colors={['#17b8f5', '#619dea',]}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }} // Start from the left side
+        end={{ x: 1, y: 0 }} // End at the right side
+      >
+        <Text style={textStyle ? textStyle : styles.title}>{title}</Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
@@ -37,6 +45,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.borderColor,
     paddingVertical: 20,
     width: 280,
+    borderRadius: 15,
+  },
+  gradient:{
+    height:50,
+    width:"100%",
+    justifyContent: "center",
+    alignItems:'center',
     borderRadius: 15,
   },
   badgeStyle: {

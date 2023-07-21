@@ -6,8 +6,22 @@ import * as Updates from "expo-updates";
 import { AppState } from "react-native";
 import Detail from "../src/Screens/Detail";
 import Home from "../src/Screens/Home/Index";
-import Signin from "../src/Screens/Authentication/Signin";
-import PinCodeScreen from "../src/Screens/Authentication/PinCodeScreen";
+import Signin from "../src/Screens/Authentication/SignIn/Signin";
+import PinCodeScreen from "../src/Screens/Authentication/SignIn/PinCodeScreen";
+import StartScreen from "../src/Screens/SplashScreen/SplashScreen";
+import SplashScreen from "../src/Screens/SplashScreen/SplashScreen";
+import SignUp from "../src/Screens/Authentication/SignUp/SignUp";
+import Scan from "../src/Screens/SCAN/Scan";
+import DrawerScreen from "../src/Screens/Drawer/Drawer";
+import AccountSetting from "../src/Screens/Drawer/AccountSetting/AccountSetting";
+import PaidCategory from "../src/Screens/Home/TotalPaid/PaidCategory";
+import Approved from "../src/Screens/Approved/Approved";
+import HelpFAQ from "../src/Screens/Drawer/HelpFAQ/HelpFaq";
+import SearchCate from "../src/Screens/Search/SearchCate";
+import ForgetPassword from "../src/Screens/Authentication/ForgetPassword/ForgetPassword";
+import ChangePassword from "../src/Screens/Authentication/ChangePassword/ChangePassword";
+import ConfirmPassword from "../src/Screens/Authentication/ChangePassword/ConfirmPassword";
+import Congratulation from "../src/Screens/Authentication/ChangePassword/Congratulations";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +33,7 @@ const RootNavigator = ({ navigation }) => {
         if (isAvailable) {
           navigation.navigate("AppAutoUpdateScreen");
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
   useEffect(() => {
@@ -31,10 +45,32 @@ const RootNavigator = ({ navigation }) => {
     });
   });
   return (
-    <Stack.Navigator initialRouteName="PinCodeScreen">
+    <Stack.Navigator initialRouteName="SplashScreen">
+
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Scan"
+        component={Scan}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
         options={{
           headerShown: false,
         }}
@@ -53,9 +89,16 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-        <Stack.Screen
-        name="Signin"
+      <Stack.Screen
+        name="SignIn"
         component={Signin}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ForgetPassword"
+        component={ForgetPassword}
         options={{
           headerShown: false,
         }}
@@ -67,7 +110,70 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-        
+       <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ConfirmPassword"
+        component={ConfirmPassword}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Congratulation"
+        component={Congratulation}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AccountSetting"
+        component={AccountSetting}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DrawerScreen"
+        component={DrawerScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PaidCategory"
+        component={PaidCategory}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Approved"
+        component={Approved}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="HelpFAQ"
+        component={HelpFAQ}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="SearchCate"
+        component={SearchCate}
+        options={{
+          headerShown: false,
+        }}
+      />
+
     </Stack.Navigator>
   );
 };

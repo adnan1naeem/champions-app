@@ -3,132 +3,112 @@
 // import typography from "native-base/lib/typescript/theme/base/typography";
 import { Dimensions, StyleSheet } from "react-native";
 import { Colors } from "../../Utils/Colors";
+import { colors } from "react-native-elements";
 let deviceWidth = Dimensions.get("window").width;
 
-
-
 export const styles = StyleSheet.create({
-
-  MainContainer: {
-    backgroundColor: Colors.theme,
+  container: {
     flex: 1,
-    paddingHorizontal: 15,
+    width: '100%',
+    height: '100%',
   },
-  headerView: {
-    paddingHorizontal: 10,
-    paddingTop: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  searchIconHeader: {
-    fontSize: 15,
-    alignItems: "center",
-    paddingHorizontal: 5,
-    color: Colors.white,
-    paddingTop: 2,
-  },
-  ArrowDown: {
-    fontSize: 15,
-    alignItems: "center",
-    paddingHorizontal: 5,
-    color: Colors.white,
-    paddingTop: 2,
-  },
-  boxstyleDropdown: {
-    borderRadius: 10,
-    width: 140,
-    height: 50,
-    borderColor: Colors.borderColor,
-    borderWidth: 2,
-  },
-  grediant: {
-    top: 30,
-    height: 70,
-    width: 70,
-    justifyContent: "center",
-    alignSelf: "center",
-  },
-  grediantRoundView: {
-    height: 220,
-    width: 220,
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 110,
-    marginTop: 100,
-  },
-  buttonContainer: {
+  center: {
     flex: 1,
-    alignSelf: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.theme,
-    width: "95%",
-    margin: 2.5,
-    paddingHorizontal: 10,
+    alignItems: 'center',
   },
-  buttonText: {
-    textAlign: "center",
-    color: "#4C64FF",
-    alignSelf: "center",
+  topRight: {
+    flexDirection: 'column',
   },
-  DrawerButton: {
-    backgroundColor: "#28262f",
-    borderRadius: 25,
-    height: 50,
+  image: {
+    height: 40,
     width: 50,
-    alignItems: "center",
-    paddingTop: 8,
   },
-  HeaderContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingHorizontal: 20,
-    marginTop: 20,
-  },
-  timeContainer: {
-    width: 140,
-    borderRadius: 9,
-    borderWidth: 2,
-    alignItems: "center",
-    paddingTop: 10,
-    borderColor: Colors.borderColor,
+  main_logo: {
+    width: '90%',
     height: 50,
   },
-  AvailableBalance: {
-    backgroundColor: Colors.theme,
-    height: 206,
-    width: 206,
-    borderRadius: 113,
-    alignSelf: "center",
+  back_icon_view: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginVertical: "5%",
   },
-  hiddenBalance: {
-    justifyContent: "center",
-    alignSelf: "center",
-    alignItems: "center",
-    height: "100%",
+  filter_view: {
+    marginHorizontal: '10%',
+    marginVertical: "5%",
+    flexDirection: 'row',
+    flex: 1,
   },
-  hiddenBalnceValue: {
-    paddingHorizontal: 30,
-    textAlign: "center",
-    color: Colors.white,
+  text: {
+    color: 'white',
+    fontSize: 16,
+  },
+  performance: {
+    color: 'white',
     fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: '600',
   },
-  userIcon: {
-    fontSize: 30,
-    textAlign: "center",
-    color: Colors.white,
-    marginTop: 80,
+  part: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '400',
   },
-  chart_Container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
-    alignSelf: "center",
-    marginTop: 20,
+  item: {
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 4,
+    padding: 12,
+    marginBottom: 8,
+  },
+  itemText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  flatList_container: {
+    width: '90%',
+    height: 45,
+    borderWidth: 2,
+    borderColor: '#98B1DD',
+    borderRadius: 20,
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  flatList_text: {
+    marginLeft: 20,
+    color: Colors.flatlist_color,
+    fontSize: 20,
+  },
+  scan_button: {
+    alignItems: 'center',
+    borderWidth: 2,
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderColor:Colors.flatlist_color,
+    borderRadius:20,
+    marginBottom:20,
+  },
+  scan_text:{
+    color:Colors.flatlist_color,
+    fontSize:17,
+
+  },
+  modalContainer: {
+    // flex: 1,
+    // justifyContent: "flex-start",
+    position:"absolute",
+    start:"10%",
+    top:'17%' ,// Align the modal content to the bottom of the screen
+    backgroundColor: '#1B4679',
+    width: "33%",
+    borderRadius: 8,
+  },
+  modalContent: { 
+    alignSelf: 'center', 
+    padding: 16,
+    marginBottom: 20,
+    alignItems: 'center',
   },
 });
 
 
- 
