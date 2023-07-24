@@ -18,11 +18,10 @@ import NavigateIcon from "react-native-vector-icons/MaterialIcons";
 import { styles } from "./styles";
 import Header from "../../Components/Header/Header";
 import { useNavigation } from "@react-navigation/native";
+import DropDownPicker from 'react-native-dropdown-picker';
+// import { Ionicons } from '@expo/vector-icons'; 
 const Home = () => {
   const navigation = useNavigation();
-  const [selected, setSelected] = React.useState("");
-  const [payment, setpayment] = useState(false);
-  const [scanData, setScanData] = useState([]);
   const [isVisible, setisVisible] = useState(false)
   const newScanData = [
     { id: 1, RS: "123,123", value: "Total Outstanding", number: 50, screen: 'verified' },
@@ -84,13 +83,7 @@ const Home = () => {
       name: 'LED',
     },
   ];
-  const handleScanButton = () => {
-    // Simulating scan button functionality by adding new data to the scanData state
-    setScanData(newScanData);
-  };
-  const handleNavigation = (item) => {
-    // navigation.navigate('PaidCategory')
-  }
+
   const data = [
     {
       rows: [
@@ -102,41 +95,65 @@ const Home = () => {
       ]
     }
   ];
-
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {
+      label: 'Air Conditioner',
+      value: 'Air Conditioner',
+    },
+    {
+      label: 'Refrigerator',
+      value: 'Refrigerator',
+    },
+    {
+      label: 'Water Dispenser',
+      value: 'Water Dispenser',
+    },
+    {
+      label: 'Microwave Oven',
+      value: 'Microwave Oven',
+    },
+    {
+      label: 'Washing Machine',
+      value: 'Washing Machine',
+    },
+    {
+      label: 'LED',
+      value: 'LED',
+    },
+  ]);
   const handleModalClose = () => {
     setisVisible(false);
   }
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <ImageBackground
         source={require('../../Assets/Image/background_image.png')}
         style={styles.container}
         resizeMode="cover"
       >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Header title={true} value={true} />
         <View style={styles.back_icon_view}>
           <View style={styles.filter_view}>
-            {isVisible ?
-              <View style={[{ backgroundColor: isVisible ? "#1B4679" : "transparent", paddingLeft: isVisible ? "3%" : "6%" }, { marginRight: "30%", color: 'white', fontSize: 16, fontWeight: '500', width: "41.5%", }]}
-                onPress={() => { setisVisible(!isVisible) }}>
-                <Modal visible={isVisible} transparent animationType="fade" style={{ marginTop: "15%" }}>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
-                  <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                      {products.map((product) => (
-                        <View key={product.id}>
-                          <Text style={{ color: 'white', fontWeight: 500, fontSize: 11, paddingVertical: 3 }}>{product.name}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                </Modal>
-              </View> :
-              <Text style={[{ backgroundColor: isVisible ? "#1B4679" : "transparent", paddingLeft: isVisible ? "3%" : "6%" }, { marginRight: "30%", color: 'white', fontSize: 16, fontWeight: '500', width: "41.5%", }]}
-                onPress={() => { setisVisible(!isVisible) }}>
-                All
-                <Entypo name="chevron-small-down" size={20} />
-              </Text>}
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              placeholder="All"
+              autoScroll={true}
+              textStyle={{ color: 'white',fontSize:12 }}
+              style={[{color: 'white',borderColor:'transparent'},{ backgroundColor:open ?"#1A4578":'transparent'}]}
+              containerStyle={{ width: 120, color: 'white' }}
+              dropDownContainerStyle={{
+                backgroundColor: '#1A4578',
+                borderColor:'transparent', 
+              }}
+            />
             <Text style={{ color: 'white', fontSize: 16, fontWeight: '500', }} onPress={() => { }}>Date
               <Entypo name="chevron-small-down" size={16} />
             </Text>
@@ -152,7 +169,7 @@ const Home = () => {
               <View style={{ display: "flex", flexDirection: 'row', justifyContent: 'space-around' }}>
                 {item?.row2?.map((value, valueIndex) => {
                   return (
-                    <View style={{ alignItems: 'center' }} key={valueIndex}>
+                    <View style={{ alignItems: 'center',zindex:-1 }} key={valueIndex}>
                       <Text style={styles.performance}>RS.{value?.RS}</Text>
                       <Text style={styles.part}>{value?.value}</Text>
                     </View>
@@ -162,11 +179,9 @@ const Home = () => {
             </React.Fragment>
           );
         })}
-        <TouchableOpacity style={{ marginTop: 10, alignItems: 'center', height: 180 }} onPress={() => {
-          navigation.navigate('SearchCate')
-        }} >
+        <View style={{ marginTop: 10, alignItems: 'center', height: 180 }}>
           <Image style={{ height: '100%', width: "48%", }} resizeMode="contain" source={require('../../Assets/Image/Orient_icon.png')} />
-        </TouchableOpacity>
+        </View>
         <View>
           <FlatList
             data={newScanData}
@@ -181,8 +196,8 @@ const Home = () => {
           <Ionicons name="add" color={"white"} size={16} fontWeight={400} />
           <Text style={styles.scan_text}>SCAN</Text>
         </TouchableOpacity>
-      </ImageBackground>
-      <Modal visible={isVisible} transparent animationType="fade" style={{ marginTop: "15%" }}>
+     
+      <Modal visible={isVisible} transparent animationType="fade">
         <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -195,6 +210,7 @@ const Home = () => {
         </View>
       </Modal>
     </ScrollView>
+    </ImageBackground>
   );
 };
 

@@ -30,6 +30,20 @@ export const styles = StyleSheet.create({
     width: '90%',
     height: 50,
   },
+  modalContainer: {
+    paddingVertical:35,
+    position:"absolute",
+    end:"2%",
+    top:'3%' ,// Align the modal content to the bottom of the screen
+    backgroundColor: '#1B4679',
+    width: "33%",
+    borderRadius: 8,
+  },
+  modalContent: { 
+    alignSelf: 'center', 
+    padding: 16,
+    alignItems: 'center',
+  },
 
 });
 

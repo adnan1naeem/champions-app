@@ -31,12 +31,14 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginVertical: "5%",
+    zIndex:999,
   },
   filter_view: {
-    marginHorizontal: '10%',
-    marginVertical: "5%",
+    marginHorizontal: '20%',
+    marginVertical: "3%",
     flexDirection: 'row',
     flex: 1,
+    justifyContent:'space-between',
   },
   text: {
     color: 'white',

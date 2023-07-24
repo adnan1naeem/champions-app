@@ -38,29 +38,35 @@ const HelpFAQ = () => {
                 <Text style={styles.header}>How we can Help?</Text>
             </View>
             <View style={styles.cate_container}>
-                <View style={styles.card_container1}>
+                <TouchableOpacity style={styles.card_container1} onPress={()=>{
+                        navigation.navigate("AboutUs")
+                    }}>
                     <Entypo name='dots-three-vertical' color={'#7645EA'} style={{alignSelf:'flex-end',margin:10}}/>
-                    <View style={styles.Text_container}>
+                    <View style={styles.Text_container} >
                         <Text style={styles.cate_heading}>About</Text>
                         <Text style={styles.user_detail}>Orient Champion</Text>
                     </View>
-                </View>
-                <View style={styles.card_container2}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.card_container2} onPress={()=>{
+                        navigation.navigate("FAQ")
+                    }}>
                     <Entypo name='dots-three-vertical' color={'#E6716F'} style={{alignSelf:'flex-end',margin:10}}/>
                     <View style={styles.Text_container}>
                         <Text style={styles.cate_heading}>FAQ</Text>
                         <Text style={styles.user_detail}>Questions/Ans</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.cate_container}>
-                <View style={styles.card_container3}>
+                <TouchableOpacity style={styles.card_container3} onPress={()=>{
+                    navigation.navigate("ContactUs")
+                }}>
                     <Entypo name='dots-three-vertical' color={'#D8A422'} style={{alignSelf:'flex-end',margin:10}}/>
                     <View style={styles.Text_container}>
                         <Text style={styles.cate_heading}>Contact Us</Text>
                         <Text style={styles.user_detail}>Customer Center</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.card_container4}>
                     <Entypo name='dots-three-vertical' color={'#409EE5'} style={{alignSelf:'flex-end',margin:10}}/>
                     <View style={styles.Text_container}>
@@ -69,19 +75,23 @@ const HelpFAQ = () => {
                 </View>
             </View>
             <View style={styles.cate_container}>
-                <View style={styles.card_container5}>
+                <TouchableOpacity style={styles.card_container5}
+                onPress={()=>{
+                    navigation.navigate("Gallery")
+                }}>
                     <Entypo name='dots-three-vertical' color={'#3CC16B'} style={{alignSelf:'flex-end',margin:10}}/>
                     <View style={styles.Text_container}>
                         <Text style={styles.cate_heading}>Gallery</Text>
                         <Text style={styles.user_detail}>Product Catelogue</Text>
                     </View>
-                </View>
-                <View style={styles.card_container6}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.card_container6} onPress={()=>{
+                navigation.navigate("TermsAndCondition")}}>
                     <Entypo name='dots-three-vertical' color={'#35A7B6'} style={{alignSelf:'flex-end',margin:10}}/>
                     <View style={styles.Text_container}>
                         <Text style={styles.cate_heading}>Terms & Conditions</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             </View>
             </ScrollView>
         </ImageBackground>
@@ -91,3 +101,4 @@ const HelpFAQ = () => {
 
 
 export default HelpFAQ;
+

@@ -22,6 +22,12 @@ import ForgetPassword from "../src/Screens/Authentication/ForgetPassword/ForgetP
 import ChangePassword from "../src/Screens/Authentication/ChangePassword/ChangePassword";
 import ConfirmPassword from "../src/Screens/Authentication/ChangePassword/ConfirmPassword";
 import Congratulation from "../src/Screens/Authentication/ChangePassword/Congratulations";
+import AboutUs from "../src/Screens/Drawer/HelpFAQ/AboutUs/AboutUs";
+import TermsAndCondition from "../src/Screens/Drawer/HelpFAQ/TermsConditions/TermsConditions";
+
+import ContactUs from "../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs";
+import Gallery from "../src/Screens/Drawer/HelpFAQ/Gallery/Gallery";
+import FAQ from "../src/Screens/Drawer/HelpFAQ/FAQ/FAQ";
 
 const Stack = createNativeStackNavigator();
 
@@ -104,13 +110,48 @@ const RootNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen
+        name="AboutUs"
+        component={AboutUs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="TermsAndCondition"
+        component={TermsAndCondition}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Gallery"
+        component={Gallery}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="FAQ"
+        component={FAQ}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="PinCodeScreen"
         component={PinCodeScreen}
         options={{
           headerShown: false,
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
         options={{
