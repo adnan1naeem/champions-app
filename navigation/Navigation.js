@@ -24,10 +24,11 @@ import ConfirmPassword from "../src/Screens/Authentication/ChangePassword/Confir
 import Congratulation from "../src/Screens/Authentication/ChangePassword/Congratulations";
 import AboutUs from "../src/Screens/Drawer/HelpFAQ/AboutUs/AboutUs";
 import TermsAndCondition from "../src/Screens/Drawer/HelpFAQ/TermsConditions/TermsConditions";
-
 import ContactUs from "../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs";
 import Gallery from "../src/Screens/Drawer/HelpFAQ/Gallery/Gallery";
 import FAQ from "../src/Screens/Drawer/HelpFAQ/FAQ/FAQ";
+import EditProfile from "../src/Screens/EditProfile/EditProfile";
+import Testing from "../src/Testing";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,7 +53,6 @@ const RootNavigator = ({ navigation }) => {
   });
   return (
     <Stack.Navigator initialRouteName="SplashScreen">
-
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -159,6 +159,13 @@ const RootNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="ConfirmPassword"
         component={ConfirmPassword}
         options={{
@@ -210,6 +217,13 @@ const RootNavigator = ({ navigation }) => {
       <Stack.Screen
         name="SearchCate"
         component={SearchCate}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Testing"
+        component={Testing}
         options={{
           headerShown: false,
         }}

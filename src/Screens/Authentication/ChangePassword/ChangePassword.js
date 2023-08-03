@@ -1,108 +1,119 @@
 import {
   Image,
-  StyleSheet,
   Text,
-  AppState,
-  TouchableOpacity,
   View,
   TextInput,
   ImageBackground,
   ScrollView,
 } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from "react";
 import { Colors } from "../../../Utils/Colors";
-import CustomTextinput from "../../../Components/CustomTextinput";
 import CustomButton from "../../../Components/CustomButton";
-import orient_icon from '../../../Assets/Image/OrientNewLogo.png';
 import { styles } from "./style";
 import link from "../../../../services/config";
-import { CheckBox, Input } from "react-native-elements";
-import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
-import data from "../../Home/Data";
-// import axios from "axios";
+import { postUserData } from "../../../../Component/Post";
+import ConfirmPassword from "./ConfirmPassword";
 const ChangePassword = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [cnicError, setcnicError] = useState(false);
-  const [mobileNo, setmobileNo] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [Name, setName] = useState("");
   const [cnic, setCnic] = useState("");
-  const [mobile, setmobile] = useState("");
-  const [dealerCode, setDealerCode] = useState("");
-  const [Address, setAddress] = useState("");
-  const [password, setPassword] = useState("")
-
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [incorrectPassword, setIncorrectPassword] = useState(false);
+  const [emptyField, setEmptyField] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const [nameError, setNameError] = useState(false);
+  const handleSignUp = async () => {
+    setLoading(true)
+    setEmptyField(false);
+    if (cnic === "" || password === "" || confirmPassword === "") {
+      alert("1")
+      setLoading(false)
+      setEmptyField(true)
+    }
+    else {
+      if (password !== confirmPassword) {
+        setLoading(false)
+        setIncorrectPassword(true)
+        return;
+      }
+      else {
+        setIncorrectPassword(false);
+        try {
+          let data =
+            JSON.stringify({
+              cnic: cnic,
+              newPassword: password,
+              reEnterPassword: confirmPassword
+            })
+          const config = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: data,
+          };
+
+          const response = await fetch("http://16.24.45.175:8000/resetPassword", config);
+          if (!response.ok) {
+            setLoading(false);
+            alert("Invalid Password", "Please check your password and try again.");
+            // throw new Error("Network response was not ok");
+            return;
+          }
+          const responsedata = await response.json();
+          if(response?.status===200){
+            setLoading(false)
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'ConfirmPassword' }],
+            });        
+          }
+          else if(response?.status!==200){
+            setLoading(false)
+            alert(responsedata?.message)
+          }
+        }
+        catch (error) {
+          setLoading(fasle)
+          console.error("Error posting data:" + error?.message);
+        }
+      }
+    }
+  }
+
+  const formatCnic = (input) => {
+    // Remove all non-numeric characters from the input
+    const numericInput = input.replace(/[^\d]/g, "");
+
+    // Split the CNIC into three parts with dashes
+    let formattedCnic = "";
+    for (let i = 0; i < numericInput.length; i++) {
+      if (i === 5 || i === 12) {
+        formattedCnic += "-";
+      }
+      formattedCnic += numericInput[i];
+    }
+
+    // Return the formatted CNIC
+    return formattedCnic;
+  };
   const handleInputChange = (field, value) => {
-    if (field === "name") {
-      const alphabeticRegex = /^[a-zA-Z\s]*$/;
-      if (alphabeticRegex.test(value) || value === "") {
-        setName(value)
-        setNameError(false);
-      } else {
-        setNameError(true);
-      }
+    if (field === "cnic") {
+      const formattedCnic = formatCnic(value);
+      setCnic(formattedCnic);
+    } else if (field === "password") {
+      setPassword(value);
+    } else if (field === "confirmPassword") {
+      setConfirmPassword(value);
     }
-    else if (field === "cnic") {
-      const numericRegex = /^[0-9]*$/;
-      if (numericRegex.test(value)) {
-        setCnic(value)
-        setcnicError(false);
-      }
-      else {
-        setcnicError(true);
-      }
-    }
-    else if (field === "mobileNo") {
-      const numericRegex = /^[0-9]*$/;
-      if (numericRegex.test(value)) {
-        setmobile(value)
-        setmobileNo(false);
-      }
-      else {
-        setmobileNo(true);
-      }
-    }
-    else if (field === "password") {
-      setPassword(value)
-      const specialCharRegex = /[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
-      const minLength = 8;
-      const hasSpecialChar = specialCharRegex.test(value);
-      const isValidLength = value.length >= minLength;
-      setPasswordError(!(hasSpecialChar && isValidLength));
-      if (hasSpecialChar && isValidLength) {
-
-      }
-    }
-
-    // Update the userData state with the new input value
-    // setUserData((prevUserData) => ({
-    //   ...prevUserData,
-    //   [field]: value,
-    // }));
-  };
-  const handleCheckboxChange = () => {
-    // Toggle the value of agreedTerms when the checkbox is clicked
-    setIsChecked(!isChecked)
-    // setUserData((prevUserData) => ({
-    //   ...prevUserData,
-    //   agreedTerms: !prevUserData.agreedTerms,
-    // }));
   };
 
-  const handleSignUp = () => {
-    navigation.navigate("ConfirmPassword")
-  };
+
   return (
-
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1 }}
-
     >
       <ScrollView>
         <View style={styles.Login_main_view}>
@@ -110,7 +121,7 @@ const ChangePassword = () => {
         </View>
         <View style={styles.Login_view}>
 
-          <View style={{ width: "70%", alignSelf: "center"}}>
+          <View style={{ width: "70%", alignSelf: "center" }}>
 
             <View style={styles.container}>
               <TextInput
@@ -122,7 +133,7 @@ const ChangePassword = () => {
                 keyboardType={"numeric"}
               />
             </View>
-            <View style={ styles.container}>
+            <View style={styles.container}>
               <TextInput
                 style={styles.input}
                 placeholderTextColor="white"
@@ -137,30 +148,37 @@ const ChangePassword = () => {
               <TextInput
                 style={styles.input}
                 placeholderTextColor="white"
-                placeholder="Password"
-                value={password}
-                onChangeText={(text) => handleInputChange("password", text)}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChangeText={(text) => setConfirmPassword(text)}
                 keyboardType="default"
                 secureTextEntry
               />
             </View>
+            {incorrectPassword ? <Text style={{ color: 'red' }}>
+              Password is Incorrect
+            </Text> : null}
+            {emptyField ? <Text style={{ color: 'red' }}>
+              Field should not be Empty
+            </Text> : null}
           </View>
           <CustomButton
             onPress={() => handleSignUp()}
+            disabled={loading}
             ContainerStyle={{
-              marginTop:50,
+              marginTop: 50,
               justifyContent: "center",
               alignSelf: "center",
               width: "80%",
-              borderRadius: 15
+              borderRadius: 15,
+              opacity: loading ? 0.7 : 1,
             }}
             textStyle={{ color: Colors.White, textAlign: "center", fontSize: 18, fontFamily: '200' }}
-            title="Procced"
+            title={loading ? "Loading..." : "Proceed"}
           />
         </View>
       </ScrollView>
     </ImageBackground>
-
   );
 };
 

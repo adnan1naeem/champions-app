@@ -17,49 +17,69 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import User_Icon from 'react-native-vector-icons/Zocial';
 import Password from 'react-native-vector-icons/Fontisto'
 import { useNavigation } from "@react-navigation/native";
-import config from "../../../../services/config";
-// import AsyncStorage from "@react-native-async-storage/async-storage";a
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(true);
   const [mobile, setMobile] = useState(""); // Separate state for name
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
   const navigation = useNavigation();
   const handleSignIn = async () => {
-    navigation.replace("Home");
-    // try {
-    //   const data = {
-    //     mobile: mobile,
-    //     password: password,
-    //   };
+    setLoading(true);
+    // navigation.replace("Home")
+    try {
+      const data = {
+        mobile: mobile,
+        password: password,
+      };
 
-    //   const config = {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   };
+      const config = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
 
-    //   const response = await fetch("http://157.175.146.120:8000/login", config);
-
-    //   if (!response.ok) {
-    //     throw new Error("Network response was not ok");
-    //   }
-
-    //   const responseData = await response.json();
-    //   console.log("Response data:", responseData);
-    //   if(responseData){
-    //     alert("1")
-    //     // await AsyncStorage.setItem("TOKEN",responseData?.token)
-    //     // await AsyncStorage.setItem("USERID",responseData?.userId)
-    //     navigation.replace("Home");
-    //   }
-    // } catch (error) {
-    //   console.error("Error posting data:", error);
-    // }
+      const response = await fetch("http://16.24.45.175:8000/login", config);
+      if (!response.ok) {
+        setLoading(false);
+        alert("Invalid Password", "Please check your password and try again.");
+        // throw new Error("Network response was not ok");
+        return;
+      }
+      const responseData = await response.json();
+      console.log("Login Response: ", responseData);
+      if(responseData){
+        const Token=responseData?.token
+        const userId=responseData?.userId
+        const user_name=responseData?.name
+        const cnic=responseData?.cnic
+        const mobile_no=responseData?.mobile
+        const dealerCode=responseData?.dealerCode
+        // const email=responseData?.email
+        // await AsyncStorage.setItem("EMAIL",responseData?.email)
+        await AsyncStorage.setItem("DELEAR",dealerCode)
+        await AsyncStorage.setItem("TOKEN",Token)
+        await AsyncStorage.setItem("USERID",userId)
+        await AsyncStorage.setItem("USERNAME",user_name)
+        await AsyncStorage.setItem("CNIC",cnic)
+        await AsyncStorage.setItem("MOBILE",mobile_no)
+        
+      // await AsyncStorage.setItem("DELEARCODE",response?.dealerCode)
+        setLoading(false)
+        navigation.replace("Home");
+      }else{
+        setLoading(false);  
+        Alert.alert("Invalid Password", "Please check your password and try again.");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("Error posting data:", error.message);
+    }
   };
   return (
 
@@ -143,6 +163,7 @@ const Signin = () => {
           </View>
           <CustomButton
             onPress={() => handleSignIn()}
+            disabled={loading}
             ContainerStyle={{
               paddingVertical: 15,
               marginTop: 10,
@@ -150,10 +171,11 @@ const Signin = () => {
               alignSelf: "center",
               height: 50,
               width: "80%",
-              borderRadius: 15
+              borderRadius: 15,
+              opacity: loading ? 0.7 : 1,
             }}
             textStyle={{ color: Colors.White, textAlign: "center", fontSize: 16, fontFamily: '200' }}
-            title="Login"
+            title={loading ? "Loading..." : "Login"}
           />
           <CustomButton
             onPress={() => navigation.navigate('SignUp')}

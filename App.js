@@ -1,4 +1,4 @@
-import "react-native-gesture-handler";
+// import "react-native-gesture-handler";
 import React, { useRef, useState, useEffect } from "react";
 import Navigation from "./navigation/Navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -39,3 +39,4 @@ const App = () => {
 };
 
 export default App;
+

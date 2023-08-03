@@ -42,9 +42,8 @@ export const styles = StyleSheet.create({
 
   },
   scanner_view: {
-    display: "flex",
     flexDirection: 'row',
-    justifyContent: "center",
+    justifyContent: 'space-between',
     backgroundColor: '#4279BC',
     width: '80%',
     height: 180,
@@ -55,25 +54,9 @@ export const styles = StyleSheet.create({
     borderLeftColor: '#3DB2DE',
     borderRightColor: '#5C91D3',
     borderTopColor: '#4CACE1',
-    borderBottomColor: '#4493C9', // Add the borderColor property
-
-  },
-  scanner_sub_view: {
-    display: "flex",
-    flexDirection: 'row',
-    justifyContent: "center",
-    backgroundColor: '#4279BC',
-    width: '98%',
-    height: 170,
-    borderRadius: 10,
-    alignSelf: "center",
-    alignItems: "center",
-    borderWidth: 1.5,
-    gap:20,
-    borderLeftColor: '#3DB2DE',
-    borderRightColor: '#5C91D3',
-    borderTopColor: '#4CACE1',
-    borderBottomColor: '#4493C9', // Add the borderColor property
+    borderBottomColor: '#4493C9',
+    alignItems:'center',
+    paddingHorizontal:'5%'
 
   },
   Unlock_Icon: {
@@ -100,7 +83,28 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontSize:15,
     fontWeight:'400'
-  }
+  },
+  
+  scannerContainer: {
+    flex: 1,
+  },
+  scanner: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  scanner_sub_view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  closeButtonContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
 
 
 

@@ -25,16 +25,29 @@ const DrawerScreen = () => {
             style={styles.container}
             resizeMode="cover"
         >
-            <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-                <LinearGradient
-                    colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
-                    style={styles.backIcon_style}
-                    start={{ x: 0, y: 0 }} // Start from the left side
-                    end={{ x: 1, y: 0 }} // End at the right side
-                >
-                    <Ionicons name="chevron-back" size={25} color="white" style={styles.Icon} />
-                </LinearGradient>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
+                    <LinearGradient
+                        colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
+                        style={styles.backIcon_style}
+                        start={{ x: 0, y: 0 }} // Start from the left side
+                        end={{ x: 1, y: 0 }} // End at the right side
+                    >
+                        <Ionicons name="chevron-back" size={25} color="white" style={styles.Icon} />
+                    </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                    navigation.replace("EditProfile")
+                }} style={{
+                    flex: 1, marginTop: 40,
+                    marginBottom: 5,
+                    marginLeft: 5,
+                    justifyContent:'center',
+                    alignItems:"flex-end",
+                }}>
+                    <Text style={{color:'white'}}>Edit Profile</Text>
+                </TouchableOpacity>
+            </View>
             <View style={{ marginLeft: 20 }}>
                 <Text style={{ fontSize: 16, fontWeight: '500', color: 'white', }}>ACCOUNT SETTINGS</Text>
                 <Text style={{ fontSize: 12, fontWeight: '400', color: 'white', }}>Account,Setting,More</Text>
