@@ -38,7 +38,10 @@ const Datepicker = () => {
             oneWeekLater.setDate(today.getDate() - 7);
             setStartDate(today);
             setEndDate(oneWeekLater);
-            // setModalVisible(false);
+            setModalVisible(false);
+            setDateContainer(true)
+            return
+
 
         } else if (value === '2 week') {
             const today = new Date();
@@ -46,24 +49,35 @@ const Datepicker = () => {
             twoWeeksLater.setDate(today.getDate() - 14);
             setStartDate(today);
             setEndDate(twoWeeksLater);
-            // setModalVisible(false);
+            setModalVisible(false);
+            setDateContainer(true)
+            return
+
 
         } else if (value === '1 month') {
             const today = new Date();
             const oneMonthAgo = moment(today).subtract(1, 'months').toDate();
             setStartDate(today);
             setEndDate(oneMonthAgo);
-            // setModalVisible(false);
+            setModalVisible(false);
+            setDateContainer(true)
+            return
+
 
         } else if (value === '1 year') {
             const today = new Date();
             const oneYearAgo = moment(today).subtract(1, 'years').toDate();
             setStartDate(today);
             setEndDate(oneYearAgo);
-            // setModalVisible(false);
+            setModalVisible(false);
+            setDateContainer(true)
+            return
 
         } else if (value === 'custom') {
             setShowEndPicker(true);
+            setDateContainer(true)
+            setModalVisible(false);
+            return
         }
     };
 
@@ -81,11 +95,21 @@ const Datepicker = () => {
         setShowEndPicker(true);
     };
 
+    const handleDatePicker = () => {
+        if (isModalVisible) {
+            setModalVisible(false)
+            setDateContainer(false)
+        }
+        else {
+            setModalVisible(true)
+            setDateContainer(false)
+        }
+    }
 
     return (
         <View>
             <TouchableOpacity
-                onPress={() => setModalVisible(!isModalVisible)}
+                onPress={() => handleDatePicker()}
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -139,7 +163,7 @@ const Datepicker = () => {
                     </View>
                 </Modal>
             </View>
-            {isModalVisible && (
+            {dateContainer && (
 
                 <View
                     style={{
@@ -150,6 +174,7 @@ const Datepicker = () => {
                         marginBottom: 15,
                     }}>
                     <TouchableOpacity
+                        onPress={() => showEndDatePicker()}
                         style={{
                             backgroundColor: Colors.White,
                             paddingHorizontal: 17,
@@ -158,7 +183,7 @@ const Datepicker = () => {
                             marginHorizontal: 5,
                         }}>
                         <Text>
-                            {startDate ? moment(startDate).format('YYYY-MM-DD') : 'From'}
+                            {endDate ? moment(endDate).format('YYYY-MM-DD') : 'From'}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -169,20 +194,12 @@ const Datepicker = () => {
                             borderRadius: 15,
                         }}
                         onPress={() => showEndDatePicker()}>
-                        <Text>{endDate ? moment(endDate).format('YYYY-MM-DD') : 'To'}</Text>
+                        <Text>{startDate ? moment(startDate).format('YYYY-MM-DD') : 'To'}</Text>
                     </TouchableOpacity>
                 </View>
             )}
 
-            {showStartPicker && (
-                <DateTimePicker
-                    testID="startDateTimePicker"
-                    value={startDate}
-                    mode="date"
-                    display="default"
-                    onChange={onStartDateChange}
-                />
-            )}
+
 
             {showEndPicker && (
                 <DateTimePicker
@@ -191,6 +208,15 @@ const Datepicker = () => {
                     mode="date"
                     display="default"
                     onChange={onEndDateChange}
+                />
+            )}
+            {showStartPicker && (
+                <DateTimePicker
+                    testID="startDateTimePicker"
+                    value={startDate}
+                    mode="date"
+                    display="default"
+                    onChange={onStartDateChange}
                 />
             )}
         </View>
