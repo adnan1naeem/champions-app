@@ -79,7 +79,6 @@ const AboutUs = ({ route }) => {
                     </View>
                 ) : (
                     <View style={styles.Login_view}>
-
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                             <View style={styles.container}>
