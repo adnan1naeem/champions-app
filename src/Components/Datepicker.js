@@ -6,6 +6,7 @@ import {
     Platform,
     FlatList,
     StyleSheet,
+    Alert,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Colors } from '../Utils/Colors';
@@ -81,11 +82,7 @@ const Datepicker = () => {
         }
     };
 
-    const onStartDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || startDate;
-        setShowStartPicker(Platform.OS === 'ios');
-        startDate(currentDate);
-    };
+
     const onEndDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || endDate;
         setShowEndPicker(Platform.OS === 'ios');
@@ -93,6 +90,14 @@ const Datepicker = () => {
     };
     const showEndDatePicker = () => {
         setShowEndPicker(true);
+    };
+    const onStartDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || startDate;
+        setShowStartPicker(Platform.OS === 'ios');
+        setStartDate(currentDate);
+    };
+    const showStartdatePicker = () => {
+        setShowStartPicker(true);
     };
 
     const handleDatePicker = () => {
@@ -193,7 +198,7 @@ const Datepicker = () => {
                             paddingVertical: 7,
                             borderRadius: 15,
                         }}
-                        onPress={() => showEndDatePicker()}>
+                        onPress={() => showStartdatePicker()}>
                         <Text>{startDate ? moment(startDate).format('YYYY-MM-DD') : 'To'}</Text>
                     </TouchableOpacity>
                 </View>

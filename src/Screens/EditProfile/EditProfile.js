@@ -11,28 +11,30 @@ import { Colors } from "../../Utils/Colors";
 import CustomButton from "../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
-import { launchImageLibrary,launchCamera } from 'react-native-image-picker';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import Header from "../../Components/Header/Header";
+import BackButton from "../../Components/BackButton";
 
 
 const EditProfile = () => {
   const [Name, setName] = useState("");
   const [mobile, setmobile] = useState("");
   const [Address, setAddress] = useState("");
-  const [current_Userid,setcurrent_Userid]= useState()
-  const [image, setImage] = useState(null);  const navigation = useNavigation();
+  const [current_Userid, setcurrent_Userid] = useState()
+  const [image, setImage] = useState(null); const navigation = useNavigation();
   const [imageSource, setImageSource] = useState(null);
   const [nameError, setNameError] = useState(false);
- 
+
   useEffect(() => {
     const getUserId = async () => {
-        const userId = await AsyncStorage.getItem('USERID');
-        setcurrent_Userid(userId)
+      const userId = await AsyncStorage.getItem('USERID');
+      setcurrent_Userid(userId)
     };
     getUserId();
-  }, []); 
+  }, []);
 
   const updateUserProfile = async () => {
     try {
@@ -45,17 +47,17 @@ const EditProfile = () => {
         }
       );
       console.log("Update response:", response);
-      
+
     } catch (error) {
       console.log("Error updating profile:", error);
     }
   };
- 
+
 
   const [selectedImage, setSelectedImage] = useState(null);
-  
-   
-  
+
+
+
   const options = {
     mediaType: 'photo',
     quality: 1,
@@ -68,69 +70,64 @@ const EditProfile = () => {
         console.log('Selected image URI:', result);
       }
     } catch (error) {
-      // Handle any errors that occur during image selection
       console.error('Error selecting image:', error);
     }
-  
+
   };
-  
-  
+
   const Gallery = async () => {
     try {
-      const result = await launchImageLibrary (options);
+      const result = await launchImageLibrary(options);
       if (!result?.didCancel && !result?.error) {
         console.log('Selected image URI:', result);
       }
     } catch (error) {
-      // Handle any errors that occur during image selection
       console.error('Error selecting image:', error);
     }
-    
-  };
-  
-  
-  
-  const Select = () => {
-  Alert.alert('Alert Title', 'My Alert Msg', [
-    {
-      text: 'Camera',
-      onPress: () => Cameraopen(),
-    },
-    {
-      text: 'Gallery',
-      onPress: () => Gallery(),
-      style: 'cancel',
-    },
-  ]);
-  };
-  
 
+  };
+
+  const Select = () => {
+    Alert.alert('Alert Title', 'My Alert Msg', [
+      {
+        text: 'Camera',
+        onPress: () => Cameraopen(),
+      },
+      {
+        text: 'Gallery',
+        onPress: () => Gallery(),
+        style: 'cancel',
+      },
+    ]);
+  };
 
   useEffect(() => {
     const getUserId = async () => {
-        const userId = await AsyncStorage.getItem('USERID');
-        setcurrent_Userid(userId)
+      const userId = await AsyncStorage.getItem('USERID');
+      setcurrent_Userid(userId)
     };
     getUserId();
-  }, []); 
-  
-return (
+  }, []);
+
+  return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
-      style={{ flex: 1,backgroundColor: Colors.blueBackground }}>
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Header />
+          <BackButton navigation={navigation} />
+        </View>
         <View style={styles.Login_main_view}>
-        <TouchableOpacity onPress={()=>Select()}>
-          {imageSource && <Image  source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-          
-       </TouchableOpacity>
-          <Image style={styles.logo} source={require('../../Assets/Image/login_image.png')} resizeMode="contain" />
+          <TouchableOpacity onPress={() => Select()}>
+            {imageSource && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          </TouchableOpacity>
         </View>
         <View style={styles.Login_view}>
 
           <View style={{ width: "70%", alignSelf: "center" }}>
-            <View style={{justifyContent:'center',alignSelf:'center'}}>
-            <Image style={{height:100,width:100,borderRadius:50}} source={require('../../Assets/Image/amir.jpg')} resizeMode="contain" />
+            <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+              <Image style={{ height: 100, width: 100, borderRadius: 50 }} source={require('../../Assets/Image/amir.jpg')} resizeMode="contain" />
             </View>
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
@@ -149,7 +146,7 @@ return (
                 placeholder="mobile"
                 value={mobile}
                 onChangeText={(text) => setmobile(text)}
-                keyboardType="default" 
+                keyboardType="default"
               />
             </View>
             <View style={styles.container}>
@@ -164,7 +161,7 @@ return (
             </View>
           </View>
           <View>
-            
+
           </View>
           <CustomButton
             onPress={() => updateUserProfile()}
