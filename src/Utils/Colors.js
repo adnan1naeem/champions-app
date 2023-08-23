@@ -4,6 +4,7 @@ export const Colors = {
   borderColor: "#5746a6",
   theme: "#333239",
   blue: "#003e96",
+  blueBackground: "#0c56af",
   text_Color: '#D0D3E2',
   backgroundColor:"#1951a0",
   flatlist_color:"#D0D3E2",

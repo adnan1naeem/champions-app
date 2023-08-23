@@ -8,7 +8,7 @@ let deviceWidth = Dimensions.get("window").width;
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.blueBackground,
         paddingHorizontal: 20,
     },
     backButton: {

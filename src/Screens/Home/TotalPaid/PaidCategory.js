@@ -13,6 +13,7 @@ import Header from "../../../Components/Header/Header";
 import LinearGradient from "react-native-linear-gradient";
 import axios from "axios";
 import BackButton from "../../../Components/BackButton";
+import { Colors } from "../../../Utils/Colors";
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
@@ -85,13 +86,11 @@ const PaidCategory = ({ route, navigation }) => {
           </View>
         </LinearGradient>
       </TouchableOpacity>
-
-
     </View>
   );
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.blueBackground }}>
       <ImageBackground
         source={require('../../../Assets/Image/background_image.png')}
         style={styles.container}

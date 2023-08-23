@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   Text,
   Button,
@@ -9,7 +10,6 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import NavigateIcon from 'react-native-vector-icons/MaterialIcons';

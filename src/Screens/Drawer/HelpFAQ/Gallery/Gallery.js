@@ -23,7 +23,7 @@ const Gallery = () => {
     return (
         <ImageBackground
             source={require('../../../../Assets/Image/background_image.png')}
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: Colors.blueBackground }}
         >
             <ScrollView>
                 <View style={{ paddingHorizontal: 20 }}>
