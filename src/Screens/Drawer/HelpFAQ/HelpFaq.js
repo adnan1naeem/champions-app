@@ -7,7 +7,6 @@ import {
     Text,
     ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './styles';
@@ -16,8 +15,8 @@ import { Colors } from '../../../Utils/Colors';
 import Header from '../../../Components/Header/Header';
 import BackButton from '../../../Components/BackButton';
 // import { ScrollView } from 'react-native-gesture-handler';
-const HelpFAQ = () => {
-    const navigation = useNavigation();
+const HelpFAQ = ({navigation}) => {
+ 
 
 
     return (

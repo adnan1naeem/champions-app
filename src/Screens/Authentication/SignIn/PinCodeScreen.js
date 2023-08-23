@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../../Components/CustomButton";
 import OtpInput from '../OTP/OTP';
+import BackButton from "../../../Components/BackButton";
 
 const PinCodeScreen = () => {
   const navigation = useNavigation();
@@ -34,7 +35,10 @@ const PinCodeScreen = () => {
 
     >
       <ScrollView>
-
+ 
+            <View style={{marginTop:25,paddingHorizontal:20}}>
+      <BackButton navigation={navigation}/>
+      </View>
         <View style={styles.Login_main_view}>
           <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         </View>

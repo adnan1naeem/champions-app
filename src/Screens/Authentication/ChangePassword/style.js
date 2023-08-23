@@ -9,7 +9,6 @@ let deviceWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
     Login_main_view: {
-        marginTop: "10%",
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center'
@@ -28,7 +27,7 @@ export const styles = StyleSheet.create({
         paddingVertical: 70,
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: "35%",
+        marginTop: "30%",
         borderRadius: 40,
         alignSelf: "center",
         marginBottom: 15,

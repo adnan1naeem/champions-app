@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         height: 100,
         width: "85%",
         alignSelf: 'center',
-        marginVertical: 20
+        // marginVertical: 10
     },
     Login_view: {
         paddingVertical: 20,

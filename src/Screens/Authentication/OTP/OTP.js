@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
+import { Colors } from '../../../Utils/Colors';
 
 const OtpInput = () => {
   const [otp, setOtp] = useState('');
@@ -26,6 +27,7 @@ const OtpInput = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    backgroundColor: Colors.blueBackground,
     alignItems: 'center',
     marginTop: 10,
   },

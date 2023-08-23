@@ -11,6 +11,7 @@ import { Colors } from "../../../Utils/Colors";
 import CustomButton from "../../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
+import BackButton from "../../../Components/BackButton";
 const ChangePassword = () => {
   const [cnic, setCnic] = useState("");
   const [password, setPassword] = useState("");
@@ -109,9 +110,13 @@ const ChangePassword = () => {
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1 }}
+      style={{ flex: 1,backgroundColor: Colors.blueBackground }}
     >
       <ScrollView>
+ 
+            <View style={{marginTop:25,paddingHorizontal:20}}>
+      <BackButton navigation={navigation}/>
+      </View>
         <View style={styles.Login_main_view}>
           <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         </View>

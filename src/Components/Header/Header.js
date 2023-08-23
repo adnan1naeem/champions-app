@@ -40,7 +40,7 @@ const Header = ({ Logo }) => {
     setisVisible(false);
   }
   return (
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15 }}>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15,paddingTop:30 }}>
       <View>
         <TouchableOpacity onPress={() => { navigation.navigate('DrawerScreen') }}>
           <Image

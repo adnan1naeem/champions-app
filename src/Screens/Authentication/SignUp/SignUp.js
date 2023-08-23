@@ -19,6 +19,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 // import axios from "axios";
 import Entypo from 'react-native-vector-icons/Entypo';
+import BackButton from '../../../Components/BackButton';
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -152,8 +153,13 @@ const SignUp = () => {
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1 }}>
+      style={{ flex: 1,backgroundColor: Colors.blueBackground }}>
       <ScrollView>
+      <View style={{marginTop:25,paddingHorizontal:20}}>
+      <BackButton navigation={navigation}/>
+      </View>
+
+
         <Image
           style={styles.logo}
           source={require('../../../Assets/Image/login_image.png')}
