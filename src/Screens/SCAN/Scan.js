@@ -7,7 +7,6 @@ import {
   TextInput,
   Image,
   ImageBackground,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -77,7 +76,6 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    alert('1233');
     try {
       const config = {
         method: 'POST',

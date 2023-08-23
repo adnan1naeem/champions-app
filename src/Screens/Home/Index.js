@@ -5,23 +5,22 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  FlatList
-} from "react-native";
-import Modal from 'react-native-modal'
-import React, { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-import { styles } from "./styles";
-import Header from "../../Components/Header/Header";
-import { useNavigation } from "@react-navigation/native";
+  FlatList,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import React, { useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { styles } from './styles';
+import Header from '../../Components/Header/Header';
+import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Datepicker from "../../Components/Datepicker";
-import CardsButton from "../../Components/CardsButton";
-import { Colors } from "../../Utils/Colors";
+import Datepicker from '../../Components/Datepicker';
+import CardsButton from '../../Components/CardsButton';
+import { Colors } from '../../Utils/Colors';
 const Home = () => {
   const navigation = useNavigation();
-  const [isVisible, setisVisible] = useState(false)
-
+  const [isVisible, setisVisible] = useState(false);
 
   const products = [
     {
@@ -52,14 +51,12 @@ const Home = () => {
 
   const data = [
     {
-      rows: [
-        { RS: "123,123", value: "Total Outstanding", },
-      ],
+      rows: [{ RS: '123,123', value: 'Total Outstanding' }],
       row2: [
-        { RS: "123,123", value: "Total Paid" },
-        { RS: "123,123", value: "Total Approved" },
-      ]
-    }
+        { RS: '123,123', value: 'Total Paid' },
+        { RS: '123,123', value: 'Total Approved' },
+      ],
+    },
   ];
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -92,14 +89,12 @@ const Home = () => {
       label: 'Washing Machine',
       value: 'Washing Machine',
     },
-
-
   ]);
   const handleModalClose = () => {
     setisVisible(false);
-  }
+  };
 
-  const handleSubmmit = (status) => {
+  const handleSubmmit = status => {
     navigation.navigate('PaidCategory', {
       status: status,
     });
@@ -113,8 +108,7 @@ const Home = () => {
         setSelectedValue(item.value);
         setModalVisible(false);
       }}
-      style={styles.dropdownItem}
-    >
+      style={styles.dropdownItem}>
       <Text style={styles.dropdownItemText}>{item.label}</Text>
       {selectedValue === item.value && (
         <Entypo
@@ -124,7 +118,6 @@ const Home = () => {
       )}
     </TouchableOpacity>
   );
-
 
   return (
     <ImageBackground
@@ -136,24 +129,27 @@ const Home = () => {
           <Header value={true} />
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>
-
-
               {selectedValue ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center', }}
-                >
-                  <Text style={{ color: Colors.text_Color }}>{selectedValue}</Text>
-                  <Entypo name={modalVisible ? "chevron-up" : "chevron-down"} style={{ color: Colors.text_Color, fontSize: 20 }} />
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.text_Color }}>
+                    {selectedValue}
+                  </Text>
+                  <Entypo
+                    name={modalVisible ? 'chevron-up' : 'chevron-down'}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                  />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center', }}
-                >
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={styles.dropdownItemText}>All</Text>
-                  <Entypo name={modalVisible ? "chevron-up" : "chevron-down"} style={{ color: Colors.text_Color, fontSize: 20 }} />
-
+                  <Entypo
+                    name={modalVisible ? 'chevron-up' : 'chevron-down'}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                  />
                 </TouchableOpacity>
               )}
             </View>
@@ -161,28 +157,26 @@ const Home = () => {
             <View>
               <Datepicker />
             </View>
-
           </View>
-
-
           <Modal
             animationType="fade"
             transparent={true}
             visible={modalVisible}
             onBackdropPress={() => setModalVisible(false)}
-            onRequestClose={() => setModalVisible(false)}
-
-          >
-            <View style={[styles.modalContainer, {
-              start: "10%",
-              top: '14%',
-            }]}>
+            onRequestClose={() => setModalVisible(false)}>
+            <View
+              style={[
+                styles.modalContainer,
+                {
+                  start: '10%',
+                  top: '14%',
+                },
+              ]}>
               <View style={styles.modalContent}>
                 <FlatList
                   data={items}
                   renderItem={renderDropdownItem}
-
-                  keyExtractor={(item) => item.value}
+                  keyExtractor={item => item.value}
                 />
               </View>
             </View>
@@ -192,13 +186,22 @@ const Home = () => {
             return (
               <React.Fragment key={index}>
                 <View style={{ alignItems: 'center', marginVertical: 10 }}>
-                  <Text style={styles.performance}>RS. {item?.rows[0]?.RS}</Text>
+                  <Text style={styles.performance}>
+                    RS. {item?.rows[0]?.RS}
+                  </Text>
                   <Text style={styles.part}>{item?.rows[0]?.value}</Text>
                 </View>
-                <View style={{ display: "flex", flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}>
                   {item?.row2?.map((value, valueIndex) => {
                     return (
-                      <View style={{ alignItems: 'center', zindex: -1 }} key={valueIndex}>
+                      <View
+                        style={{ alignItems: 'center', zindex: -1 }}
+                        key={valueIndex}>
                         <Text style={styles.performance}>RS.{value?.RS}</Text>
                         <Text style={styles.part}>{value?.value}</Text>
                       </View>
@@ -208,17 +211,53 @@ const Home = () => {
               </React.Fragment>
             );
           })}
-          <Image style={{ width: "48%", marginTop: 10, height: 170, alignSelf: 'center' }} resizeMode="contain" source={require('../../Assets/Image/Orient_icon.png')} />
-          <CardsButton status={"Paid Cards"} value={"50"} onPress={() => handleSubmmit("Paid Cards")} />
-          <CardsButton status={"Approved Cards"} value={"10"} onPress={() => handleSubmmit("Approved Cards")} />
-          <CardsButton status={"Verified Cards"} value={"200"} onPress={() => handleSubmmit("Verified Cards")} />
-          <CardsButton status={"Pendig Cards"} value={"800"} onPress={() => handleSubmmit("Pendig Cards")} />
-          <CardsButton status={"Rejected Cards"} value={"400"} onPress={() => handleSubmmit("Rejected Cards")} />
+          <Image
+            style={{
+              width: '48%',
+              marginTop: 10,
+              height: 170,
+              alignSelf: 'center',
+            }}
+            resizeMode="contain"
+            source={require('../../Assets/Image/Orient_icon.png')}
+          />
+          <CardsButton
+            status={'Paid Cards'}
+            value={'50'}
+            onPress={() => handleSubmmit('Paid Cards')}
+          />
+          <CardsButton
+            status={'Approved Cards'}
+            value={'10'}
+            onPress={() => handleSubmmit('Approved Cards')}
+          />
+          <CardsButton
+            status={'Verified Cards'}
+            value={'200'}
+            onPress={() => handleSubmmit('Verified Cards')}
+          />
+          <CardsButton
+            status={'Pendig Cards'}
+            value={'800'}
+            onPress={() => handleSubmmit('Pendig Cards')}
+          />
+          <CardsButton
+            status={'Rejected Cards'}
+            value={'400'}
+            onPress={() => handleSubmmit('Rejected Cards')}
+          />
 
-          <TouchableOpacity style={styles.scan_button} onPress={() => {
-            navigation.navigate('Scan')
-          }}>
-            <Ionicons name="add" color={Colors.text_Color} size={16} fontWeight={'400'} />
+          <TouchableOpacity
+            style={styles.scan_button}
+            onPress={() => {
+              navigation.navigate('Scan');
+            }}>
+            <Ionicons
+              name="add"
+              color={Colors.text_Color}
+              size={16}
+              fontWeight={'400'}
+            />
             <Text style={styles.scan_text}>SCAN</Text>
           </TouchableOpacity>
 
@@ -226,9 +265,17 @@ const Home = () => {
             <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-                {products.map((product) => (
+                {products.map(product => (
                   <View key={product.id}>
-                    <Text style={{ color: Colors.text_Color, fontWeight: '500', fontSize: 11, paddingVertical: 3 }}>{product.name}</Text>
+                    <Text
+                      style={{
+                        color: Colors.text_Color,
+                        fontWeight: '500',
+                        fontSize: 11,
+                        paddingVertical: 3,
+                      }}>
+                      {product.name}
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -236,7 +283,6 @@ const Home = () => {
           </Modal>
         </ScrollView>
       </View>
-
     </ImageBackground>
   );
 };

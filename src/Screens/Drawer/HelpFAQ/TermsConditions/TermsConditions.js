@@ -10,6 +10,8 @@ import { Colors } from "../../../../Utils/Colors";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import BackButton from "../../../../Components/BackButton";
+import Header from "../../../../Components/Header/Header";
 const TermsAndCondition = () => {
     const navigation = useNavigation();
 
@@ -19,10 +21,9 @@ const TermsAndCondition = () => {
             style={{ flex: 1 }}
         >
             <ScrollView>
-                <Ionicons name="chevron-back" size={25} style={{ paddingTop: 15, paddingLeft: 15 }} color={Colors.text_Color} onPress={() => navigation.goBack()} />
-
-                <View style={styles.Login_main_view}>
-                    <Image style={styles.logo} source={require('../../../../Assets/Image/chapmion_icon.png')} resizeMode="contain" />
+                <View style={{ paddingHorizontal: 20 }}>
+                    <Header />
+                    <BackButton navigation={navigation} />
                 </View>
                 <View style={styles.unlock_view}>
                     <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: '600' }}>

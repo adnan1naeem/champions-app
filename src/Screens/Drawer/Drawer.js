@@ -112,18 +112,13 @@ const DrawerScreen = () => {
                         <Ionicons name="chevron-forward" size={20} color={Colors.text_Color} />
                     </LinearGradient>
                 </TouchableOpacity>
-                {/* /// */}
+
 
                 <TouchableOpacity onPress={() => navigation.navigate("AboutUs", { privacy: true })} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', }}>
-
-
-
-                        <Image source={require('../../Assets/Image/Policy.png')} style={[styles.icons, { width: 25, height: 25, resizeMode: 'contain' }]} />
-
+                    <View style={{ flexDirection: 'row', marginLeft: -6 }}>
+                        <Image source={require('../../Assets/Image/Policy.png')} style={[styles.icons, { width: 27, height: 27, resizeMode: 'contain', }]} />
                         <Text style={styles.user_detail_cate}>Policies</Text>
                     </View>
-
                     <LinearGradient
                         colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
                         style={styles.forward_arrow}
@@ -133,16 +128,11 @@ const DrawerScreen = () => {
                         <Ionicons name="chevron-forward" size={20} color={Colors.text_Color} />
                     </LinearGradient>
                 </TouchableOpacity>
-
-
-                {/* //////// */}
-
-                <TouchableOpacity onPress={() => SignOut()} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, marginLeft: 6 }}>
+                <TouchableOpacity onPress={() => SignOut()} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center" }}>
                         <Image source={require('../../Assets/Image/signout.png')} style={styles.icons} />
                         <Text style={styles.user_detail_cate}>Sign Out</Text>
                     </View>
-
                     <LinearGradient
                         colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
                         style={styles.forward_arrow}
@@ -151,10 +141,7 @@ const DrawerScreen = () => {
                     >
                         <Ionicons name="chevron-forward" size={20} color={Colors.text_Color} style={{ justifyContent: 'center', borderRadius: 10, }} />
                     </LinearGradient>
-
                 </TouchableOpacity>
-
-
 
             </View>
         </ImageBackground>

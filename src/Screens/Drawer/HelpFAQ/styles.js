@@ -11,15 +11,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         paddingHorizontal: 20,
     },
-    backButton: {
-        marginTop: 20,
-        marginBottom: 5,
-        marginLeft: 5,
-    },
-    backIcon_style: {
-        width: 30,
-        borderRadius: 20
-    },
+
+
     user_detail: {
         fontSize: 14,
         color: Colors.text_Color,

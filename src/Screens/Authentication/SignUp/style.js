@@ -22,17 +22,21 @@ export const styles = StyleSheet.create({
     logo: {
         height: 100,
         width: "85%",
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginVertical: 20
     },
     Login_view: {
         paddingVertical: 20,
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: "20%",
         borderRadius: 40,
         alignSelf: "center",
-        marginBottom: 15
     },
+    optionText: {
+        color: Colors.text_Color
+    },
+
+    dropdownContainer: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5 },
     unlock_view: {
         display: "flex",
         flexDirection: 'row',

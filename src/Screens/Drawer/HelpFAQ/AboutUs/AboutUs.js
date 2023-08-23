@@ -4,6 +4,8 @@ import { Colors } from '../../../../Utils/Colors';
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackButton from '../../../../Components/BackButton';
+import Header from '../../../../Components/Header/Header';
 const AboutUs = ({ route }) => {
     const [mobile, setMobile] = useState('');
     const navigation = useNavigation();
@@ -14,33 +16,24 @@ const AboutUs = ({ route }) => {
             source={require('../../../../Assets/Image/background_image.png')}
             style={{ flex: 1 }}>
             <ScrollView>
-                <Ionicons
-                    name="chevron-back"
-                    size={25}
-                    style={{ paddingTop: 15, paddingLeft: 15 }}
-                    color={Colors.text_Color}
-                    onPress={() => navigation.goBack()}
-                />
+                <View style={{ paddingHorizontal: 20 }}>
+                    <Header />
+                    <BackButton navigation={navigation} />
+                </View>
 
-                <View style={styles.Login_main_view}>
-                    <Image
-                        style={styles.logo}
-                        source={require('../../../../Assets/Image/login_image.png')}
-                        resizeMode="contain"
-                    />
+                <View style={styles.unlock_view}>
+                    <Text
+                        style={{
+                            color: Colors.text_Color,
+                            fontSize: 20,
+                            fontWeight: '600',
+                        }}>
+                        {!privacy ? 'About Us' : "Privacy And Policay"}
+                    </Text>
                 </View>
                 {!privacy ? (
                     <View style={styles.Login_view}>
-                        <View style={styles.unlock_view}>
-                            <Text
-                                style={{
-                                    color: Colors.text_Color,
-                                    fontSize: 20,
-                                    fontWeight: '600',
-                                }}>
-                                About Us
-                            </Text>
-                        </View>
+
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                             <View style={styles.container}>
@@ -86,16 +79,6 @@ const AboutUs = ({ route }) => {
                     </View>
                 ) : (
                     <View style={styles.Login_view}>
-                        <View style={styles.unlock_view}>
-                            <Text
-                                style={{
-                                    color: Colors.text_Color,
-                                    fontSize: 20,
-                                    fontWeight: '600',
-                                }}>
-                                Privacy And Policay
-                            </Text>
-                        </View>
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                             <View style={styles.container}>

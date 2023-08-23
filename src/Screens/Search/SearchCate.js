@@ -5,45 +5,44 @@ import {
     ScrollView,
     FlatList,
     ImageBackground,
-    StatusBar,
     TextInput
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { styles } from "./styles";
 import Header from "../../Components/Header/Header";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
 import { Colors } from "../../Utils/Colors";
+import BackButton from "../../Components/BackButton";
 const SearchCate = ({ route }) => {
     const navigation = useNavigation();
     const [matchingRows, setMatchingRows] = useState([]);
     const [title, setTitle] = useState("");
     const data = [
-        { id: 1, name: 'ac',code:'BQ5001001002', title: 'Air Conditioner', value: '50' },
-        { id: 2, name: 'tv',code:'BQ5001001005', title: 'Television', value: '30' },
-        { id: 3, name: 'tv',code:'BQ5001001005', title: 'Television', value: '30' },
-        { id: 4, name: 'tv',code:'BQ5001001005', title: 'Television', value: '30' },
-        { id: 5, name: 'ac',code:'BQ5001001002', title: 'Air Conditioner', value: '50' },
-        { id: 6, name: 'ac',code:'BQ5001001002', title: 'Air Conditioner', value: '50' },
-        { id: 7, name: 'ac',code:'BQ5001001002', title: 'Air Conditioner', value: '50' },
-        // Add more items as needed
-      ];
+        { id: 1, name: 'ac', code: 'BQ5001001002', title: 'Air Conditioner', value: '50' },
+        { id: 2, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
+        { id: 3, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
+        { id: 4, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
+        { id: 5, name: 'ac', code: 'BQ5001001002', title: 'Air Conditioner', value: '50' },
+        { id: 6, name: 'ac', code: 'BQ5001001002', title: 'Air Conditioner', value: '50' },
+        { id: 7, name: 'ac', code: 'BQ5001001002', title: 'Air Conditioner', value: '50' },
+
+    ];
     const handleSearch = () => {
         const filteredRows = data.filter(item => item.name.toLowerCase().includes(title.toLowerCase()));
         setMatchingRows(filteredRows);
         if (filteredRows.length === 0) {
             alert("No results found");
-          }
-      };
+        }
+    };
     const renderItem = ({ item }) => (
         <View style={{ alignItems: 'center' }}>
             <TouchableOpacity style={styles.flatList_container}>
                 <LinearGradient
                     colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
                     style={styles.gradient_container}
-                    start={{ x: 0, y: 0 }} // Start from the left side
-                    end={{ x: 1, y: 0 }} // End at the right side
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
                 >
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -72,24 +71,24 @@ const SearchCate = ({ route }) => {
                 style={styles.container}
                 resizeMode="cover"
             >
-                <StatusBar hidden={true} />
-                <Header value={true} />
-                <View style={styles.back_icon_view}>
-                    <Ionicons name="chevron-back" size={30} color={Colors.text_Color} onPress={() => { navigation.goBack() }} />
+                <View style={{ paddingHorizontal: 15 }}>
+                    <Header value={true} />
+                    <BackButton navigation={navigation} />
                 </View>
-                <View style={{  alignItems: 'center', justifyContent: "center" }}>
+
+                <View style={{ alignItems: 'center', justifyContent: "center" }}>
                     <TextInput
-                        style={[styles.input, { textAlign: 'center',textAlignVertical: 'center',borderColor:'#17b8f5',color:Colors.text_Color,marginTop:30 }]}
+                        style={[styles.input, { textAlign: 'center', textAlignVertical: 'center', borderColor: '#17b8f5', color: Colors.text_Color, marginTop: 30 }]}
                         placeholder="Search"
-                        placeholderTextColor="#FFFFFF"
+                        placeholderTextColor={Colors.text_Color}
                         onChangeText={text => setTitle(text)}
                     />
-                    <TouchableOpacity style={{  width: '25%',paddingVertical:15 }} onPress={()=>{handleSearch()}}>
+                    <TouchableOpacity style={{ width: '25%', paddingVertical: 15 }} onPress={() => { handleSearch() }}>
                         <LinearGradient
                             colors={['rgb(39, 174, 229)', 'rgb(59,90,183)']}
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 7, }}
-                            start={{ x: 0, y: 0 }} // Start from the left side
-                            end={{ x: 1, y: 0 }} // End at the right side
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
                         >
                             <Text style={styles.itemText}>GO</Text>
                         </LinearGradient>

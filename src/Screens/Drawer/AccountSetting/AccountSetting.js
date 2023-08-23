@@ -7,6 +7,7 @@ import { color } from 'react-native-elements/dist/helpers';
 import { styles } from './Style';
 import { Colors } from '../../../Utils/Colors';
 import Header from '../../../Components/Header/Header';
+import BackButton from '../../../Components/BackButton';
 const AccountSetting = () => {
     const navigation = useNavigation();
     const [isEnabled, setIsEnabled] = useState(false);
@@ -32,28 +33,7 @@ const AccountSetting = () => {
             resizeMode="cover"
         >
             <Header />
-
-
-            <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-                <LinearGradient
-                    colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(41,128,201)',
-                        'rgb(50,107,194)',
-                        'rgb(59,90,183)',
-                    ]}
-                    style={styles.backIcon_style}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}>
-                    <Ionicons
-                        name="chevron-back"
-                        size={25}
-                        color={Colors.text_Color}
-                        style={styles.Icon}
-                    />
-                </LinearGradient>
-            </TouchableOpacity>
-
+            <BackButton navigation={navigation} />
 
             <View style={{ marginLeft: 20, marginTop: 20 }}>
                 <Text style={styles.Text}>ACCOUNT SETTINGS</Text>
