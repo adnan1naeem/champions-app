@@ -21,10 +21,12 @@ export const styles = StyleSheet.create({
   sub_container: {
     justifyContent: 'center',
     alignSelf: 'center',
+    height: '100%',
     width: "100%"
   },
   Splash_icon: {
     height: 100,
+    position: 'absolute',
     width: "85%",
     alignSelf: 'center'
   },
