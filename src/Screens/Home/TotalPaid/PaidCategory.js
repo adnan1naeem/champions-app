@@ -59,8 +59,7 @@ const PaidCategory = ({ route, navigation }) => {
   ];
 
   useEffect(() => {
-    console.log(route?.params?.status);
-    const fetchData = async () => {
+    (async () => {
       try {
         const config = {
           method: 'POST',
@@ -115,8 +114,7 @@ const PaidCategory = ({ route, navigation }) => {
       } catch (error) {
         console.log('An error occurred:', error);
       }
-    };
-    fetchData();
+    })();
   }, []);
 
   const renderItem = ({ item, index }) => (

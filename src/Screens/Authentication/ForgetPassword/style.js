@@ -5,8 +5,6 @@ import { Dimensions, StyleSheet } from "react-native";
 import { Colors } from "../../../Utils/Colors";
 let deviceWidth = Dimensions.get("window").width;
 
-
-
 export const styles = StyleSheet.create({
     Login_main_view: {
         marginTop: "10%",

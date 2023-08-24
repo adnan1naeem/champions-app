@@ -27,6 +27,7 @@ const Signin = () => {
     setIsChecked(!isChecked);
   };
   const navigation = useNavigation();
+  
   const handleSignIn = async () => {
     setLoading(true);
     // navigation.replace("Home")
@@ -80,9 +81,7 @@ const Signin = () => {
     }
   };
 
-
   return (
-
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}

@@ -4,6 +4,7 @@ import {
     View,
     ImageBackground,
     ScrollView,
+    Platform,
   } from "react-native";
   import React from "react";
   import { Colors } from "../../../Utils/Colors";
@@ -26,7 +27,7 @@ import {
   
       >
         <ScrollView>
-          <View style={styles.Login_main_view}>
+          <View style={[styles.Login_main_view,{paddingTop: Platform.OS === "ios" ? 20 : 0}]}>
             <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
           </View>
           <View style={styles.Container_view}>

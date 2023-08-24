@@ -27,7 +27,6 @@ const OtpInput = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    backgroundColor: Colors.blueBackground,
     alignItems: 'center',
     marginTop: 10,
   },

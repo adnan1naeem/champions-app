@@ -12,10 +12,11 @@ import CustomButton from "../../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../../Components/BackButton";
-const ChangePassword = () => {
-  const [cnic, setCnic] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+import { API_BASE_URL } from "../../../../Constants";
+const ChangePassword = ({route}) => {
+  const [cnic, setCnic] = useState("3520260422879");
+  const [password, setPassword] = useState("aassddff");
+  const [confirmPassword, setConfirmPassword] = useState("aassddff");
   const [incorrectPassword, setIncorrectPassword] = useState(false);
   const [emptyField, setEmptyField] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,8 @@ const ChangePassword = () => {
             JSON.stringify({
               cnic: cnic,
               newPassword: password,
-              reEnterPassword: confirmPassword
+              reEnterPassword: confirmPassword,
+              verificationCode: route?.params?.varificationCode
             })
           const config = {
             method: "POST",
@@ -54,7 +56,12 @@ const ChangePassword = () => {
           const response = await fetch("http://16.24.45.175:8000/resetPassword", config);
           if (!response.ok) {
             setLoading(false);
-            alert("Invalid Password", "Please check your password and try again.");
+            if(response?.status === 401){
+              alert("Invalid Varification Code");
+              navigation.pop();
+              return
+            }
+            alert("Invalid Password \nPlease check your password and try again.");
             // throw new Error("Network response was not ok");
             return;
           }
@@ -63,7 +70,7 @@ const ChangePassword = () => {
             setLoading(false)
             navigation.reset({
               index: 0,
-              routes: [{ name: 'ConfirmPassword' }],
+              routes: [{ name: 'Congratulation' }],
             });
           }
           else if (response?.status !== 200) {
@@ -174,8 +181,9 @@ const ChangePassword = () => {
               borderRadius: 15,
               opacity: loading ? 0.7 : 1,
             }}
+            loading={loading}
             textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 18, fontFamily: '200' }}
-            title={loading ? "Loading..." : "Proceed"}
+            title={"Proceed"}
           />
         </View>
       </ScrollView>

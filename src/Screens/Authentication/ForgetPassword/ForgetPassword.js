@@ -7,16 +7,63 @@ import {
     ImageBackground,
     ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Colors } from "../../../Utils/Colors";
 import CustomButton from "../../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import config from "../../../../services/config";
+import { API_BASE_URL } from "../../../../Constants";
 import BackButton from "../../../Components/BackButton";
 const ForgetPassword = () => {
     const [mobile, setMobile] = useState(""); // Separate state for name
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
+
+    const handleForgot = async () => {
+        if(mobile?.length !== 13){
+            alert("Please enter valid cnic code");
+            return;
+        }
+        setLoading(true);
+        try {
+          const data = {
+            cnic: mobile,
+          };
+    
+          const config = {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          };
+    
+          const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
+          if (!response?.ok) {
+            setLoading(false);
+            if(response?.status === 404){
+                alert("User not Exist\nPlease check your CNIC and try again.");
+                return;
+            }
+            alert("User not Exist\nPlease check your CNIC and try again.");
+            // throw new Error("Network response was not ok");
+            return;
+          }
+          const responseData = await response.json();
+          console.log("Login Response: ", response?.token);
+          if (responseData) {
+            setLoading(false)
+            navigation.replace('PinCodeScreen')
+            } else {
+            setLoading(false);
+            Alert.alert("Invalid Password", "Please check your password and try again.");
+          }
+        } catch (error) {
+          setLoading(false);
+          console.log("Error posting data:", error.message);
+        }
+      };
 
     return (
         <ImageBackground
@@ -49,7 +96,8 @@ const ForgetPassword = () => {
                         </View>
                     </View>
                     <CustomButton
-                        onPress={() => navigation.navigate('PinCodeScreen')}
+                        loading={loading}
+                        onPress={() => handleForgot()}
                         ContainerStyle={{
                             paddingVertical: 15,
                             marginTop: 30,

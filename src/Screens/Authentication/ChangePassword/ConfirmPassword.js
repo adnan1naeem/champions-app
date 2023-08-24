@@ -8,6 +8,7 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
+  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import { Colors } from "../../../Utils/Colors";
@@ -94,8 +95,12 @@ const ConfirmPassword = () => {
   };
 
   const handleCongratulation = () => {
-    navigation.navigate("Congratulation")
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'SignIn' }],
+    });
   };
+
   return (
 
     <ImageBackground
@@ -104,7 +109,7 @@ const ConfirmPassword = () => {
 
     >
       <ScrollView>
-        <View style={styles.Login_main_view}>
+        <View style={[styles.Login_main_view,{paddingTop: Platform.OS === 'ios' ? 20 : 0}]}>
           <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         </View>
         <View style={styles.Container_view}>
