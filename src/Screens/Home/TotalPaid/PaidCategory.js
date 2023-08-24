@@ -17,6 +17,7 @@ import { API_BASE_URL } from '../../../../Constants';
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
+  const [batchlisting, setbatchlisting] = useState();
 
   const data = [
     {
@@ -62,7 +63,7 @@ const PaidCategory = ({ route, navigation }) => {
     const fetchData = async () => {
       try {
         const config = {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -77,7 +78,37 @@ const PaidCategory = ({ route, navigation }) => {
         const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
         if (response) {
           const data = await response.json();
-          console.log('Fetched data:', data);
+          if (route?.params?.status === 'Paid Cards') {
+            const paidBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus === 'paid',
+            );
+            setbatchlisting(paidBatches);
+            return;
+          } else if (route?.params?.status === 'Approved Cards') {
+            const approvedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus === 'approved',
+            );
+            setbatchlisting(approvedBatches);
+            return;
+          } else if (route?.params?.status === 'Verified Cards') {
+            const verifiedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus === 'verified',
+            );
+            setbatchlisting(verifiedBatches);
+            return;
+          } else if (route?.params?.status === 'Pendig Cards') {
+            const pendingBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus === 'pending',
+            );
+            setbatchlisting(pendingBatches);
+            return;
+          } else if (route?.params?.status === 'Rejected Cards') {
+            const rejectedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus === 'rejected',
+            );
+            setbatchlisting(rejectedBatches);
+            return;
+          }
         } else {
           console.log('Failed to fetch data:', response.statusText);
         }
@@ -103,11 +134,13 @@ const PaidCategory = ({ route, navigation }) => {
           end={{ x: 1, y: 0 }}>
           <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={styles.flatList_text}>{item.value}</Text>
+              <Text style={styles.flatList_text}>{item?.batchCode}</Text>
               <Text style={styles.flatList_text_detail}>{item.name}</Text>
             </View>
             <View style={styles.text_container}>
-              <Text style={styles.flatList_text_qty}>{item.Num}</Text>
+              <Text style={styles.flatList_text_qty}>
+                {item?.incentiveAmount} rs
+              </Text>
             </View>
           </View>
         </LinearGradient>
@@ -135,7 +168,7 @@ const PaidCategory = ({ route, navigation }) => {
         </View>
         <View>
           <FlatList
-            data={data}
+            data={batchlisting}
             contentContainerStyle={{ paddingVertical: 15 }}
             renderItem={renderItem}
             keyExtractor={item => item?.id}
