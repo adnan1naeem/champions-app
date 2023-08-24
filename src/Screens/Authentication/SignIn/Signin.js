@@ -17,6 +17,7 @@ import User_Icon from 'react-native-vector-icons/Zocial';
 import Password from 'react-native-vector-icons/Fontisto';
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL } from "../../../../Constants";
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(true);
   const [mobile, setMobile] = useState(''); // Separate state for name
@@ -28,8 +29,9 @@ const Signin = () => {
   const navigation = useNavigation();
   const handleSignIn = async () => {
     setLoading(true);
-    navigation.replace("Home")
-    return
+    // navigation.replace("Home")
+    // return
+
     try {
       const data = {
         mobile: mobile,
@@ -44,7 +46,7 @@ const Signin = () => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch("http://16.24.45.175:8000/login", config);
+      const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
         setLoading(false);
         alert("Invalid Password", "Please check your password and try again.");

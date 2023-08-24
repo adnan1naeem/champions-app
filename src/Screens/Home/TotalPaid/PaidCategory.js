@@ -5,15 +5,15 @@ import {
   ScrollView,
   FlatList,
   ImageBackground,
-
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { styles } from "./styles";
-import Header from "../../../Components/Header/Header";
-import LinearGradient from "react-native-linear-gradient";
-import axios from "axios";
-import BackButton from "../../../Components/BackButton";
-import { Colors } from "../../../Utils/Colors";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { styles } from './styles';
+import Header from '../../../Components/Header/Header';
+import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
+import BackButton from '../../../Components/BackButton';
+import { Colors } from '../../../Utils/Colors';
+import { API_BASE_URL } from '../../../../Constants';
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
@@ -23,65 +23,91 @@ const PaidCategory = ({ route, navigation }) => {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '1'
+      id: '1',
     },
     {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '2'
+      id: '2',
     },
     {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '3'
+      id: '3',
     },
     {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '4'
+      id: '4',
     },
     {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '5'
+      id: '5',
     },
     {
       name: 'MIGHTY 1 TON OUTDOOR',
       value: 'BQ5001002',
       Num: '400 rs',
-      id: '6'
+      id: '6',
     },
-  ]
+  ];
 
+  useEffect(() => {
+    console.log(route?.params?.status);
+    const fetchData = async () => {
+      try {
+        const config = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
 
-
+          body: JSON.stringify({
+            start_date: '',
+            end_date: '',
+            divCode: '',
+            cnic: '1111111111111',
+          }),
+        };
+        const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
+        if (response) {
+          const data = await response.json();
+          console.log('Fetched data:', data);
+        } else {
+          console.log('Failed to fetch data:', response.statusText);
+        }
+      } catch (error) {
+        console.log('An error occurred:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
       <TouchableOpacity style={styles.flatList_container}>
         <LinearGradient
-          colors={['rgb(39, 174, 229)', 'rgb(29,138,210)', 'rgb(47,111,194)', 'rgb(64,94,171)']}
+          colors={[
+            'rgb(39, 174, 229)',
+            'rgb(29,138,210)',
+            'rgb(47,111,194)',
+            'rgb(64,94,171)',
+          ]}
           style={styles.gradient_container}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
+          end={{ x: 1, y: 0 }}>
           <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={styles.flatList_text}>
-                {item.value}
-              </Text>
-              <Text style={styles.flatList_text_detail}>
-                {item.name}
-              </Text>
+              <Text style={styles.flatList_text}>{item.value}</Text>
+              <Text style={styles.flatList_text_detail}>{item.name}</Text>
             </View>
             <View style={styles.text_container}>
-              <Text style={styles.flatList_text_qty}>
-                {item.Num}
-              </Text>
+              <Text style={styles.flatList_text_qty}>{item.Num}</Text>
             </View>
           </View>
         </LinearGradient>
@@ -90,17 +116,19 @@ const PaidCategory = ({ route, navigation }) => {
   );
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.blueBackground }}>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: Colors.blueBackground,
+      }}>
       <ImageBackground
         source={require('../../../Assets/Image/background_image.png')}
         style={styles.container}
-        resizeMode="cover"
-      >
+        resizeMode="cover">
         <View style={{ paddingHorizontal: 15 }}>
           <Header value={true} />
           <BackButton navigation={navigation} />
         </View>
-
 
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={styles.part}>{title?.toUpperCase()}</Text>
@@ -108,7 +136,7 @@ const PaidCategory = ({ route, navigation }) => {
         <View>
           <FlatList
             data={data}
-            contentContainerStyle={{ paddingVertical: 15, }}
+            contentContainerStyle={{ paddingVertical: 15 }}
             renderItem={renderItem}
             keyExtractor={item => item?.id}
           />

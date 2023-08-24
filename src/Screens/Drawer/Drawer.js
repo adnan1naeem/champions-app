@@ -7,7 +7,6 @@ import { styles } from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from '../../Utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const DrawerScreen = () => {
     const navigation = useNavigation();

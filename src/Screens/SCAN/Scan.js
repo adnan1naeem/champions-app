@@ -17,62 +17,47 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 import { Colors } from '../../Utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import BackButton from '../../Components/BackButton';
+import { API_BASE_URL } from '../../../Constants';
+import { all } from 'axios';
 
 const Scan = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [barCode, setbarCode] = useState();
-  const [dealerCode, setdelearCode] = useState();
-  const [userId, setUserid] = useState('64cbac89e4f75de4acd3f4a3');
-  const [userName, setUserName] = useState();
   const [cnic, setCnic] = useState();
   const [mobile, setMobile] = useState();
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await QRCodeScanner.requestCameraPermission();
-      const u_Id = await AsyncStorage.getItem('USERID');
-      const u_Name = await AsyncStorage.getItem('USERNAME');
       const cnic = await AsyncStorage.getItem('CNIC');
-      const mobile = await AsyncStorage.getItem('MOBILE');
-      const d_Code = await AsyncStorage.getItem('DELEAR');
-      setdelearCode(d_Code);
       setMobile(mobile);
       setCnic(cnic);
-      setUserName(u_Name);
-      setUserid(u_Id);
       setHasPermission(status === 'granted');
     };
     getBarCodeScannerPermissions();
   }, []);
 
-  useEffect(() => {
-    if (barCode?.length == 10) {
-      navigation.navigate('Home');
-    }
-  }, [barCode, navigation]);
-
   const onSuccess = e => {
     setbarCode(e.data);
     setScanned(true);
     handleSubmit();
-    //  setScanning(false);
+    setScanning(false);
   };
 
   const handleScanButtonPress = () => {
     if (barCode) {
       handleSubmit();
-      // setScanning(false);
+      setScanning(false);
     } else {
       setScanning(true);
-      setScanned(false);
     }
   };
 
   const handleCloseButtonPress = () => {
     setScanning(false);
-    setScanned(false);
   };
 
   const handleSubmit = async () => {
@@ -85,21 +70,15 @@ const Scan = ({ navigation }) => {
 
         body: JSON.stringify({
           code: barCode,
-          name: userName,
-          mobile: mobile,
-          cnic: cnic,
-          dealerCode: dealerCode,
-          userId: userId,
+          cnic: '1111111111111',
         }),
       };
-      const response = await fetch(
-        'http://16.24.45.175:8000/batchScan',
-        config,
-      );
+      const response = await fetch(`${API_BASE_URL}/batchScan`, config);
       const data = await response.json();
       if (response?.status === 201) {
         console.log('Responce:: ', response);
         alert('Batch Code Submit');
+        navigation.navigate('Home');
       } else if (response?.status !== 201) {
         if (
           data?.error ===
@@ -111,29 +90,32 @@ const Scan = ({ navigation }) => {
         }
       }
     } catch (e) {
-      alert(JSON.stringify(e));
+      if (e.message.includes('Network request failed')) {
+        alert('Please check your internet connection');
+      } else {
+        console.log('Other error:', e);
+      }
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.blueBackground }}>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: Colors.blueBackground,
+      }}>
       <ImageBackground
         source={require('../../Assets/Image/background_image.png')}
         style={styles.container}
         resizeMode="cover">
+        <View style={{ paddingHorizontal: 15 }}>
+          <Header />
+          <BackButton navigation={navigation} />
+        </View>
 
-        <Header />
-        <Ionicons
-          name="chevron-back"
-          size={25}
-          style={{ paddingTop: 15, paddingLeft: 15 }}
-          color={Colors.text_Color}
-          onPress={() => navigation.goBack()}
-        />
         {!scanning && (
           <View style={styles.Login_view}>
             <View style={styles.unlock_view}>
-
               <TextInput
                 value={barCode}
                 onChangeText={setbarCode}
@@ -141,7 +123,6 @@ const Scan = ({ navigation }) => {
                 placeholderTextColor={Colors.text_Color}
                 style={{ fontSize: 17, color: Colors.text_Color }}
               />
-
             </View>
 
             <View style={styles.scanner_view}>
@@ -168,7 +149,6 @@ const Scan = ({ navigation }) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
-
               }}>
               <CustomButton
                 onPress={() => handleScanButtonPress(true)}
@@ -177,7 +157,7 @@ const Scan = ({ navigation }) => {
                 title="QR CODE"
               />
               <CustomButton
-                onPress={() => handleScanButtonPress(false)}
+                onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
                 title="BARCODE"

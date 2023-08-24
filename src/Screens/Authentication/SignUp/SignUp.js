@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 // import axios from "axios";
 import Entypo from 'react-native-vector-icons/Entypo';
 import BackButton from '../../../Components/BackButton';
+import { API_BASE_URL } from '../../../../Constants';
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -80,18 +81,12 @@ const SignUp = () => {
       Name &&
       cnic &&
       mobile &&
-      Address &&
       password &&
       isChecked === true &&
-      dealerCode
+      dealerCode &&
+      selectedOption
     ) {
-      if (dealerCode.length === 10 && dealerCode.startsWith('000')) {
-        postUserData();
-      } else if (dealerCode.length !== 10) {
-        alert('Please enter a 10-digit dealer code');
-      } else if (!dealerCode.startsWith('000')) {
-        alert("The first 3 digits of the dealer code must be '000'");
-      }
+      postUserData();
     } else {
       alert('There is incomplete data');
     }
@@ -106,15 +101,16 @@ const SignUp = () => {
         },
         body: JSON.stringify({
           name: Name,
-          mobile: mobile,
           cnic: cnic,
+          mobile: mobile,
           dealerCode: dealerCode,
-          status: isChecked,
           password: password,
+          companyCode: selectedOption,
+          status: isChecked,
         }),
       };
 
-      const response = await fetch('http://16.24.45.175:8000/register', config);
+      const response = await fetch(`${API_BASE_URL}/register`, config);
       const data = await response.json();
       if (response?.status === 201) {
         console.log('signup responce:: ', response);
@@ -153,11 +149,11 @@ const SignUp = () => {
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1,backgroundColor: Colors.blueBackground }}>
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-      <View style={{marginTop:25,paddingHorizontal:20}}>
-      <BackButton navigation={navigation}/>
-      </View>
+        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+          <BackButton navigation={navigation} />
+        </View>
 
 
         <Image
@@ -212,16 +208,6 @@ const SignUp = () => {
                 placeholder="Dealer Code"
                 value={dealerCode}
                 onChangeText={text => setDealerCode(text)}
-                keyboardType="default"
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Address"
-                value={Address}
-                onChangeText={text => setAddress(text)}
                 keyboardType="default"
               />
             </View>
