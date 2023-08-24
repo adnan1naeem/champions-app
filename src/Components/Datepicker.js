@@ -57,7 +57,7 @@ const Datepicker = ({ onDateSelect }) => {
       setStartDate(today);
       setEndDate(oneMonthAgo);
       setModalVisible(false);
-      setDateContainer();
+      setDateContainer(true);
       return;
     } else if (value === '1 year') {
       const today = new Date();

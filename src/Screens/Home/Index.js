@@ -14,15 +14,21 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
 import Header from '../../Components/Header/Header';
 import { useNavigation } from '@react-navigation/native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
-import moment from 'moment';
 import { API_BASE_URL } from '../../../Constants';
 const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [startDate, setstartDate] = useState();
+  const [endDate, setendDate] = useState();
+  const [Paid_ammount, setPaid_ammount] = useState(0);
+  const [approved_ammount, setapproved_ammount] = useState(0);
+  const [pending_ammount, setpending_ammount] = useState(0);
+  const [category, setCategory] = useState();
 
   const products = [
     {
@@ -51,17 +57,6 @@ const Home = () => {
     },
   ];
 
-  const data = [
-    {
-      rows: [{ RS: '123,123', value: 'Total Outstanding' }],
-      row2: [
-        { RS: '123,123', value: 'Total Paid' },
-        { RS: '123,123', value: 'Total Approved' },
-      ],
-    },
-  ];
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     {
       label: 'All',
@@ -92,6 +87,7 @@ const Home = () => {
       value: 'Washing Machine',
     },
   ]);
+
   const handleModalClose = () => {
     setisVisible(false);
   };
@@ -101,23 +97,13 @@ const Home = () => {
       status: status,
     });
   };
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [startDate, setstartDate] = useState();
-  const [endDate, setendDate] = useState();
-  const [Paid_ammount, setPaid_ammount] = useState();
-
 
   const handleDateSelect = (start, end) => {
     setstartDate(start), setendDate(end);
   };
-  useEffect(() => {
-    console.log(startDate, endDate, 'jdscnjhfncvjhwefn ');
-  }, []);
-
 
   useEffect(() => {
-    const handleCustomDateSelection = () => {
+    (async () => {
       const payload = {
         cnic: '1111111111111',
         start_date: endDate,
@@ -125,48 +111,105 @@ const Home = () => {
         divCode: '',
       };
 
-      fetch(`${API_BASE_URL}/BatchListing`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('res:::', data);
-          // setPaid_ammount(data)
-          const paidBatches = data?.batchList?.filter(batch => batch.batchPostStatus === 'paid');
-          const totalIncentiveAmount = paidBatches.reduce((sum, batch) => sum + batch.incentiveAmount, 0);
-          console.log("paid filter:: ", totalIncentiveAmount);
-          setPaid_ammount(totalIncentiveAmount)
-
-        })
-        .catch(error => {
-          console.error('Error:', error);
+      try {
+        const response = await fetch(`${API_BASE_URL}/BatchListing`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         });
-    };
-    handleCustomDateSelection()
-  }, [startDate, endDate])
 
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        const paidBatches = data?.batchList?.filter(
+          batch => batch?.batchPostStatus === 'paid',
+        );
+        const total_PaidIncentiveAmount = paidBatches?.reduce(
+          (sum, batch) => sum + batch?.incentiveAmount,
+          0,
+        );
+        setPaid_ammount(total_PaidIncentiveAmount);
+
+        const approvedBatches = data?.batchList?.filter(
+          batch => batch?.batchPostStatus === 'approved',
+        );
+        const total_approvedIncentiveAmount = approvedBatches?.reduce(
+          (sum, batch) => sum + batch?.incentiveAmount,
+          0,
+        );
+        setapproved_ammount(total_approvedIncentiveAmount);
+
+        const pendingBatches = data?.batchList?.filter(
+          batch => batch?.batchPostStatus === 'pending',
+        );
+        const total_pendingIncentiveAmount = pendingBatches?.reduce(
+          (sum, batch) => sum + batch?.incentiveAmount,
+          0,
+        );
+        setpending_ammount(total_pendingIncentiveAmount);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    })();
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    (async () => {
+      const payload = {
+        cnic: '1111111111111',
+        start_date: '',
+        end_date: '',
+        divCode: '',
+      };
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/BatchListing`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        setCategory(data?.batchList);
+        // console.log('category:: ', data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    // console.log("tttt::: ", category);
+  })
 
   const renderDropdownItem = ({ item }) => (
-    <TouchableOpacity
+    < TouchableOpacity
       onPress={() => {
-        setSelectedValue(item.value);
+        setSelectedValue(item.name);
         setModalVisible(false);
+
       }}
-      style={styles.dropdownItem}>
+      style={styles.dropdownItem} >
+      {console.log("2223342::", item)}
+
       <Text style={[styles.dropdownItemText, { color: Colors.black }]}>
-        {item.label}
+        {item?.name}
       </Text>
-      {selectedValue === item.value && (
-        <Entypo
-          name="check"
-          style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
-        />
-      )}
-    </TouchableOpacity>
+      {
+        selectedValue === item?.name && (
+          <Entypo
+            name="check"
+            style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
+          />
+        )
+      }
+    </TouchableOpacity >
   );
 
   return (
@@ -223,41 +266,35 @@ const Home = () => {
                 },
               ]}>
               <View style={styles.modalContent}>
+                {/* {console.log("modal:: ", category)} */}
                 <FlatList
-                  data={items}
+                  data={category}
                   renderItem={renderDropdownItem}
-                  keyExtractor={item => item.value}
+                  keyExtractor={item => item?._id}
                 />
               </View>
             </View>
           </Modal>
-
-
-
           <View style={{ alignItems: 'center', marginVertical: 10 }}>
-            <Text style={styles.performance}>
-              RS.{Paid_ammount ? Paid_ammount : 0}
-            </Text>
+            <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, marginTop: 5 }}>
-            <View
-              style={{ alignSelf: 'center' }}
-            >
-              <Text style={styles.performance}>RS.</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: 50,
+              marginTop: 5,
+            }}>
+            <View style={{ alignSelf: 'center' }}>
+              <Text style={styles.performance}>RS. {Paid_ammount}</Text>
               <Text style={styles.part}>Total Paid</Text>
             </View>
-            <View
-              style={{}}
-            >
-              <Text style={styles.performance}>RS.</Text>
+            <View>
+              <Text style={styles.performance}>RS. {approved_ammount}</Text>
               <Text style={styles.part}>Total Approved</Text>
             </View>
           </View>
-
-
-
-          {/* ///////// */}
 
           <Image
             style={{
