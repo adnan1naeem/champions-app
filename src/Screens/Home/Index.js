@@ -191,7 +191,7 @@ const Home = () => {
   const renderDropdownItem = ({ item }) => (
     < TouchableOpacity
       onPress={() => {
-        setSelectedValue(item.name);
+        setSelectedValue(item);
         setModalVisible(false);
 
       }}
@@ -202,7 +202,7 @@ const Home = () => {
         {item?.name}
       </Text>
       {
-        selectedValue === item?.name && (
+        selectedValue?._id === item?._id && (
           <Entypo
             name="check"
             style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
@@ -222,12 +222,12 @@ const Home = () => {
           <Header value={true} />
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>
-              {selectedValue ? (
+              {selectedValue?._id ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                   style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ color: Colors.text_Color }}>
-                    {selectedValue}
+                    {selectedValue?.name}
                   </Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
