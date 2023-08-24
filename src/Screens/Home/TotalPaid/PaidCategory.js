@@ -67,6 +67,7 @@ const PaidCategory = ({ route, navigation }) => {
           headers: {
             'Content-Type': 'application/json',
           },
+
           body: JSON.stringify({
             start_date: '',
             end_date: '',
@@ -120,7 +121,7 @@ const PaidCategory = ({ route, navigation }) => {
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
-      <TouchableOpacity style={styles.flatList_container}>
+      <TouchableOpacity style={styles.flatList_container} disabled={true}>
         <LinearGradient
           colors={[
             'rgb(39, 174, 229)',
