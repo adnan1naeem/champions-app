@@ -68,8 +68,6 @@ const Datepicker = ({ onDateSelect }) => {
       setDateContainer(true);
       return;
     } else if (value === 'custom') {
-      setShowEndPicker(true);
-      setShowStartPicker(true);
       setDateContainer(true);
       setModalVisible(false);
       return;
@@ -77,10 +75,10 @@ const Datepicker = ({ onDateSelect }) => {
   };
 
   useEffect(() => {
-    if(startDate && endDate){
+    if (startDate && endDate) {
       handleCustomDateSelection();
     }
-  }, [startDate, endDate])
+  }, [startDate, endDate]);
 
   const handleCustomDateSelection = () => {
     onDateSelect(startDate, endDate);
@@ -224,7 +222,6 @@ const Datepicker = ({ onDateSelect }) => {
                     mode="date"
                     display="default"
                     onChange={onStartDateChange}
-
                   />
                 </TouchableOpacity>
               </View>
@@ -232,9 +229,7 @@ const Datepicker = ({ onDateSelect }) => {
           ) : (
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
-                onPress={() => [
-                  showEndDatePicker(),
-                ]}
+                onPress={() => [showEndDatePicker()]}
                 style={{
                   backgroundColor: Colors.White,
                   paddingHorizontal: 17,
@@ -253,30 +248,30 @@ const Datepicker = ({ onDateSelect }) => {
                   paddingVertical: 7,
                   borderRadius: 15,
                 }}
-                onPress={() => [
-                  showStartdatePicker(),
-                ]}>
+                onPress={() => [showStartdatePicker()]}>
                 <Text>
                   {startDate ? moment(startDate).format('YYYY/MM/DD') : 'To'}
                 </Text>
               </TouchableOpacity>
-              {/* <DateTimePicker
-                testID="startDateTimePicker"
-                value={startDate}
-                mode="date"
-                display="default"
-                onChange={onStartDateChange}
-
-              />
-              <DateTimePicker
-                testID="endDateTimePicker"
-                value={endDate}
-                mode="date"
-                display="default"
-                onChange={onEndDateChange}
-              /> */}
+              {showStartPicker && (
+                <DateTimePicker
+                  testID="startDateTimePicker"
+                  value={startDate}
+                  mode="date"
+                  display="default"
+                  onChange={onStartDateChange}
+                />
+              )}
+              {showEndPicker && (
+                <DateTimePicker
+                  testID="endDateTimePicker"
+                  value={endDate}
+                  mode="date"
+                  display="default"
+                  onChange={onEndDateChange}
+                />
+              )}
             </View>
-
           )}
         </View>
       )}
