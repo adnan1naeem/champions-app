@@ -109,11 +109,11 @@ const Home = () => {
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={styles.dropdownItemText}>{item.label}</Text>
+      <Text style={[styles.dropdownItemText,{color: Colors.black}]}>{item.label}</Text>
       {selectedValue === item.value && (
         <Entypo
           name="check"
-          style={{ color: Colors.text_Color, fontSize: 16, marginLeft: 10 }}
+          style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
         />
       )}
     </TouchableOpacity>
@@ -169,7 +169,7 @@ const Home = () => {
                 styles.modalContainer,
                 {
                   start: '10%',
-                  top: '14%',
+                  top: 128,
                 },
               ]}>
               <View style={styles.modalContent}>

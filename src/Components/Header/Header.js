@@ -57,7 +57,7 @@ const Header = ({ Logo }) => {
       </View>
       <View style={styles.topRight}>
         <TouchableOpacity onPress={() => {
-          setisVisible(!isVisible)
+          navigation.navigate('Gallery')
         }}>
           <Image style={{ height: 40, width: 70, justifyContent: 'center', }} source={require('../../Assets/Image/read.png')} />
         </TouchableOpacity>
@@ -73,13 +73,6 @@ const Header = ({ Logo }) => {
       <Modal visible={isVisible} transparent animationType="fade">
         <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            {products.map((product) => (
-              <View key={product.id}>
-                <Text style={{ color: Colors.text_Color, fontWeight: 500, fontSize: 11, paddingVertical: 3 }}>{product.name}</Text>
-              </View>
-            ))}
-          </View>
         </View>
       </Modal>
     </View>
@@ -88,3 +81,12 @@ const Header = ({ Logo }) => {
 };
 
 export default Header;
+
+
+  // <View style={styles.modalContent}>
+          //   {products.map((product) => (
+          //     <View key={product.id}>
+          //       <Text style={{ color: Colors.text_Color, fontWeight: 500, fontSize: 11, paddingVertical: 3 }}>{product.name}</Text>
+          //     </View>
+          //   ))}
+          // </View>

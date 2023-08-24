@@ -50,7 +50,7 @@ const RootNavigator = ({ navigation }) => {
   // }, []);
 
   return (
-    <Stack.Navigator initialRouteName={"Home"}>
+    <Stack.Navigator initialRouteName={"SplashScreen"}>
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}

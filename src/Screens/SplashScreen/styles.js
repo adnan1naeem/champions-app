@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: Colors.blueBackground,
     width: '100%',
     height: '100%',
     alignItems: "center",

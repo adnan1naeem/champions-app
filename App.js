@@ -7,7 +7,7 @@ import { Colors } from "./src/Utils/Colors";
 
 const App = () => {
   useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    LogBox.ignoreAllLogs();
   }, []);
 
   return (

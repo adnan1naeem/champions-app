@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     start: "10%",
     top: '17%',
-    backgroundColor: '#1B4679',
+    backgroundColor: Colors.White,
     width: 200,
     borderRadius: 8,
   },

@@ -127,7 +127,7 @@ const Datepicker = () => {
       </TouchableOpacity>
       <View>
         <Modal
-          animationType="Fade"
+          animationType="fade"
           transparent={true}
           visible={isModalVisible}
           onBackdropPress={() => setModalVisible(false)}
@@ -140,7 +140,7 @@ const Datepicker = () => {
               borderRadius: 10,
               height: 150,
               position: 'absolute',
-              top: 95,
+              top: 125,
               right: 40,
               paddingHorizontal: 30,
             }}>

@@ -121,7 +121,7 @@ const Scan = ({ navigation }) => {
                 onChangeText={setbarCode}
                 placeholder="Enter Code Manually"
                 placeholderTextColor={Colors.text_Color}
-                style={{ fontSize: 17, color: Colors.text_Color }}
+                style={{ paddingHorizontal: 10, fontSize: 17, color: Colors.text_Color }}
               />
             </View>
 

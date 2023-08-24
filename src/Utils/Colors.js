@@ -1,6 +1,7 @@
 export const Colors = {
   Half_white: "#b1b0b5",
   White: "#ffffff",
+  black: "#000000",
   borderColor: "#5746a6",
   theme: "#333239",
   blue: "#003e96",

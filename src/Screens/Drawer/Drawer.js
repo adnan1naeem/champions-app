@@ -7,6 +7,7 @@ import { styles } from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from '../../Utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Header from '../../Components/Header/Header';
 
 const DrawerScreen = () => {
     const navigation = useNavigation();
@@ -34,8 +35,8 @@ const DrawerScreen = () => {
             style={styles.container}
             resizeMode="cover"
         >
+            <Header value={true} />
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-
                 <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
                     <LinearGradient
                         colors={['rgb(39, 174, 229)', 'rgb(41,128,201)', 'rgb(50,107,194)', 'rgb(59,90,183)']}
@@ -43,16 +44,12 @@ const DrawerScreen = () => {
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                     >
-                        <Ionicons name="chevron-back" size={25} color={Colors.text_Color} style={styles.Icon} />
+                        <Ionicons name="chevron-back" size={25} color={Colors.text_Color} />
                     </LinearGradient>
                 </TouchableOpacity>
 
-                <Image
-                    source={require('../../Assets/Image/chapmion_icon.png')}
-                    style={{ resizeMode: 'contain', height: 40, width: 250, marginTop: 12 }}
-                />
                 <TouchableOpacity onPress={() => {
-                    navigation.replace("EditProfile")
+                    navigation.navigate("EditProfile")
                 }} style={{}}>
                     <FontAwesome5 name="user-edit" color={Colors.text_Color} size={20} style={{ marginTop: 12 }} />
                 </TouchableOpacity>
