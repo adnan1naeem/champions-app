@@ -20,8 +20,8 @@ const Datepicker = ({ onDateSelect }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dateContainer, setDateContainer] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const options = [
     { label: '1 week', value: '1 weekly' },
@@ -77,7 +77,9 @@ const Datepicker = ({ onDateSelect }) => {
   };
 
   useEffect(() => {
-    handleCustomDateSelection();
+    if(startDate && endDate){
+      handleCustomDateSelection();
+    }
   }, [startDate, endDate])
 
   const handleCustomDateSelection = () => {

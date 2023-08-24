@@ -8,23 +8,23 @@ import {
   FlatList,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { styles } from './styles';
+import {styles} from './styles';
 import Header from '../../Components/Header/Header';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
-import { Colors } from '../../Utils/Colors';
-import { API_BASE_URL } from '../../../Constants';
+import {Colors} from '../../Utils/Colors';
+import {API_BASE_URL} from '../../../Constants';
 const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
-  const [startDate, setstartDate] = useState();
-  const [endDate, setendDate] = useState();
+  const [startDate, setstartDate] = useState('');
+  const [endDate, setendDate] = useState('');
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
   const [pending_ammount, setpending_ammount] = useState(0);
@@ -99,7 +99,8 @@ const Home = () => {
   };
 
   const handleDateSelect = (start, end) => {
-    setstartDate(start), setendDate(end);
+    setstartDate(start);
+    setendDate(end);
   };
 
   useEffect(() => {
@@ -108,8 +109,10 @@ const Home = () => {
         cnic: '1111111111111',
         start_date: endDate,
         end_date: startDate,
-        divCode: '',
+        divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,
       };
+
+      console.log(JSON.stringify(payload, null,2))
 
       try {
         const response = await fetch(`${API_BASE_URL}/BatchListing`, {
@@ -125,6 +128,8 @@ const Home = () => {
         }
 
         const data = await response.json();
+
+        console.log(JSON.stringify(data, null,2));
 
         const paidBatches = data?.batchList?.filter(
           batch => batch?.batchPostStatus === 'paid',
@@ -156,19 +161,16 @@ const Home = () => {
         console.error('Error:', error);
       }
     })();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, selectedValue]);
 
   useEffect(() => {
     (async () => {
       const payload = {
-        cnic: '1111111111111',
-        start_date: '',
-        end_date: '',
-        divCode: '',
+        companyCode:"1000"
       };
 
       try {
-        const response = await fetch(`${API_BASE_URL}/BatchListing`, {
+        const response = await fetch(`${API_BASE_URL}/getCategory`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -176,7 +178,14 @@ const Home = () => {
           body: JSON.stringify(payload),
         });
         const data = await response.json();
-        setCategory(data?.batchList);
+        let dataIs = {
+            _id: "11111",
+            categoryCode: "0",
+            categoryName: "All",
+            companyName: "Orient Electronics Pvt. Ltd.",
+            companyCode: "1000",
+        }
+        setCategory([dataIs,...data?.category]);
         // console.log('category:: ', data);
       } catch (error) {
         console.error('Error:', error);
@@ -184,32 +193,23 @@ const Home = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    // console.log("tttt::: ", category);
-  })
-
-  const renderDropdownItem = ({ item }) => (
-    < TouchableOpacity
+  const renderDropdownItem = ({item}) => (
+    <TouchableOpacity
       onPress={() => {
         setSelectedValue(item);
         setModalVisible(false);
-
       }}
-      style={styles.dropdownItem} >
-      {console.log("2223342::", item)}
-
-      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>
-        {item?.name}
+      style={styles.dropdownItem}>
+      <Text style={[styles.dropdownItemText, {color: Colors.black}]}>
+        {item?.categoryName}
       </Text>
-      {
-        selectedValue?._id === item?._id && (
-          <Entypo
-            name="check"
-            style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
-          />
-        )
-      }
-    </TouchableOpacity >
+      {selectedValue?.categoryCode === item?.categoryCode && (
+        <Entypo
+          name="check"
+          style={{color: Colors.black, fontSize: 16, marginLeft: 10}}
+        />
+      )}
+    </TouchableOpacity>
   );
 
   return (
@@ -217,31 +217,31 @@ const Home = () => {
       source={require('../../Assets/Image/background_image.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={{ paddingHorizontal: 10 }}>
-        <ScrollView>
+      <View style={{paddingHorizontal: 10}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Header value={true} />
           <View style={styles.filter_view}>
-            <View style={{ marginTop: 15 }}>
+            <View style={{marginTop: 15}}>
               {selectedValue?._id ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: Colors.text_Color }}>
-                    {selectedValue?.name}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{color: Colors.text_Color}}>
+                    {selectedValue?.categoryName}
                   </Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                    style={{color: Colors.text_Color, fontSize: 20}}
                   />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={styles.dropdownItemText}>All</Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                    style={{color: Colors.text_Color, fontSize: 20}}
                   />
                 </TouchableOpacity>
               )}
@@ -275,7 +275,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-          <View style={{ alignItems: 'center', marginVertical: 10 }}>
+          <View style={{alignItems: 'center', marginVertical: 10}}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
@@ -286,7 +286,7 @@ const Home = () => {
               paddingHorizontal: 50,
               marginTop: 5,
             }}>
-            <View style={{ alignSelf: 'center' }}>
+            <View style={{alignSelf: 'center'}}>
               <Text style={styles.performance}>RS. {Paid_ammount}</Text>
               <Text style={styles.part}>Total Paid</Text>
             </View>
@@ -347,7 +347,7 @@ const Home = () => {
           </TouchableOpacity>
 
           <Modal visible={isVisible} transparent animationType="fade">
-            <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
+            <TouchableOpacity style={{flex: 1}} onPress={handleModalClose} />
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 {products.map(product => (
