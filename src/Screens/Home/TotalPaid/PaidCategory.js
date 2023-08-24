@@ -17,68 +17,7 @@ import { API_BASE_URL } from '../../../../Constants';
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
-  const [batchlisting, setbatchlisting] = useState();
-
-
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
-          body: JSON.stringify({
-            start_date: '',
-            end_date: '',
-            divCode: '',
-            cnic: '1111111111111',
-          }),
-        };
-        const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
-        if (response) {
-          const data = await response.json();
-          if (route?.params?.status === 'Paid Cards') {
-            const paidBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus === 'paid',
-            );
-            setbatchlisting(paidBatches);
-            return;
-          } else if (route?.params?.status === 'Approved Cards') {
-            const approvedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus === 'approved',
-            );
-            setbatchlisting(approvedBatches);
-            return;
-          } else if (route?.params?.status === 'Verified Cards') {
-            const verifiedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus === 'verified',
-            );
-            setbatchlisting(verifiedBatches);
-            return;
-          } else if (route?.params?.status === 'Pendig Cards') {
-            const pendingBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus === 'pending',
-            );
-            setbatchlisting(pendingBatches);
-            return;
-          } else if (route?.params?.status === 'Rejected Cards') {
-            const rejectedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus === 'rejected',
-            );
-            setbatchlisting(rejectedBatches);
-            return;
-          }
-        } else {
-          console.log('Failed to fetch data:', response.statusText);
-        }
-      } catch (error) {
-        console.log('An error occurred:', error);
-      }
-    })();
-  }, []);
+  let batchlisting = route?.params?.list;
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>

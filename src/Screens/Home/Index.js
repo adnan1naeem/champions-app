@@ -28,6 +28,12 @@ const Home = () => {
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
   const [pending_ammount, setpending_ammount] = useState(0);
+  const [paid_list, setPaid_list] = useState([]);
+  const [approved_list, setApproved_list] = useState([]);
+  const [pending_list, setPending_list] = useState([]);
+  const [verified_list, setVerified_list] = useState([]);
+  const [rejected_list, setRejected_list] = useState([]);
+
   const [category, setCategory] = useState();
 
   const products = [
@@ -92,9 +98,10 @@ const Home = () => {
     setisVisible(false);
   };
 
-  const handleSubmmit = status => {
+  const handleSubmmit = (status, list) => {
     navigation.navigate('PaidCategory', {
       status: status,
+      list: list
     });
   };
 
@@ -122,15 +129,10 @@ const Home = () => {
           },
           body: JSON.stringify(payload),
         });
-
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
-
-        console.log(JSON.stringify(data, null,2));
-
         const paidBatches = data?.batchList?.filter(
           batch => batch?.batchPostStatus === 'paid',
         );
@@ -138,8 +140,6 @@ const Home = () => {
           (sum, batch) => sum + batch?.incentiveAmount,
           0,
         );
-        setPaid_ammount(total_PaidIncentiveAmount);
-
         const approvedBatches = data?.batchList?.filter(
           batch => batch?.batchPostStatus === 'approved',
         );
@@ -147,8 +147,12 @@ const Home = () => {
           (sum, batch) => sum + batch?.incentiveAmount,
           0,
         );
-        setapproved_ammount(total_approvedIncentiveAmount);
-
+        const verifiedBatches = data?.batchList?.filter(
+          batch => batch?.batchPostStatus === 'verified',
+        );
+        const rejectedBatches = data?.batchList?.filter(
+          batch => batch?.batchPostStatus === 'rejected',
+        );
         const pendingBatches = data?.batchList?.filter(
           batch => batch?.batchPostStatus === 'pending',
         );
@@ -156,7 +160,16 @@ const Home = () => {
           (sum, batch) => sum + batch?.incentiveAmount,
           0,
         );
+
+        setPending_list(pendingBatches);
+        setRejected_list(rejectedBatches);
+        setVerified_list(verifiedBatches);
+        setPaid_list(paidBatches);
+        setApproved_list(approvedBatches);
+        setapproved_ammount(total_approvedIncentiveAmount);
+        setPaid_ammount(total_PaidIncentiveAmount);
         setpending_ammount(total_pendingIncentiveAmount);
+
       } catch (error) {
         console.error('Error:', error);
       }
@@ -308,28 +321,28 @@ const Home = () => {
           />
           <CardsButton
             status={'Paid Cards'}
-            value={'50'}
-            onPress={() => handleSubmmit('Paid Cards')}
+            value={paid_list?.length}
+            onPress={() => handleSubmmit('Paid Cards' ,paid_list)}
           />
           <CardsButton
             status={'Approved Cards'}
-            value={'10'}
-            onPress={() => handleSubmmit('Approved Cards')}
+            value={approved_list?.length}
+            onPress={() => handleSubmmit('Approved Cards',approved_list)}
           />
           <CardsButton
             status={'Verified Cards'}
-            value={'200'}
-            onPress={() => handleSubmmit('Verified Cards')}
+            value={verified_list?.length}
+            onPress={() => handleSubmmit('Verified Cards', verified_list)}
           />
           <CardsButton
             status={'Pendig Cards'}
-            value={'800'}
-            onPress={() => handleSubmmit('Pendig Cards')}
+            value={pending_list?.length}
+            onPress={() => handleSubmmit('Pendig Cards',pending_list)}
           />
           <CardsButton
             status={'Rejected Cards'}
-            value={'400'}
-            onPress={() => handleSubmmit('Rejected Cards')}
+            value={rejected_list?.length}
+            onPress={() => handleSubmmit('Rejected Cards',rejected_list)}
           />
 
           <TouchableOpacity
