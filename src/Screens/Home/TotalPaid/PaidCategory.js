@@ -67,7 +67,6 @@ const PaidCategory = ({ route, navigation }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-
           body: JSON.stringify({
             start_date: '',
             end_date: '',

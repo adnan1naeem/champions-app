@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,12 @@ import {
   Alert,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Colors} from '../Utils/Colors';
+import { Colors } from '../Utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import Modal from 'react-native-modal';
 
-const Datepicker = () => {
+const Datepicker = ({ onDateSelect }) => {
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -22,12 +22,13 @@ const Datepicker = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
   const options = [
-    {label: '1 week', value: '1 weekly'},
-    {label: '2 week', value: '2 week'},
-    {label: '1 month', value: '1 month'},
-    {label: '1 year', value: '1 year'},
-    {label: 'Custom', value: 'custom'},
+    { label: '1 week', value: '1 weekly' },
+    { label: '2 week', value: '2 week' },
+    { label: '1 month', value: '1 month' },
+    { label: '1 year', value: '1 year' },
+    { label: 'Custom', value: 'custom' },
   ];
 
   const handleOptionSelect = value => {
@@ -69,9 +70,14 @@ const Datepicker = () => {
     } else if (value === 'custom') {
       setShowEndPicker(true);
       setDateContainer(true);
+      setShowStartPicker(true);
       setModalVisible(false);
       return;
     }
+  };
+
+  const handleCustomDateSelection = () => {
+    onDateSelect(startDate, endDate);
   };
 
   const onEndDateChange = (event, selectedDate) => {
@@ -79,14 +85,17 @@ const Datepicker = () => {
     setShowEndPicker(Platform.OS === 'ios');
     setEndDate(currentDate);
   };
+
   const showEndDatePicker = () => {
     setShowEndPicker(true);
   };
+
   const onStartDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setShowStartPicker(Platform.OS === 'ios');
     setStartDate(currentDate);
   };
+
   const showStartdatePicker = () => {
     setShowStartPicker(true);
   };
@@ -122,7 +131,7 @@ const Datepicker = () => {
         </Text>
         <Entypo
           name={!isModalVisible ? 'chevron-down' : 'chevron-up'}
-          style={{color: Colors.text_Color, fontSize: 20}}
+          style={{ color: Colors.text_Color, fontSize: 20 }}
         />
       </TouchableOpacity>
       <View>
@@ -146,7 +155,7 @@ const Datepicker = () => {
             }}>
             <FlatList
               data={options}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => handleOptionSelect(item.value)}
                   style={styles.optionItem}>
@@ -212,9 +221,12 @@ const Datepicker = () => {
               </View>
             </View>
           ) : (
-            <View>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
-                onPress={() => showEndDatePicker()}
+                onPress={() => [
+                  showEndDatePicker(),
+                  handleCustomDateSelection(),
+                ]}
                 style={{
                   backgroundColor: Colors.White,
                   paddingHorizontal: 17,
@@ -233,7 +245,10 @@ const Datepicker = () => {
                   paddingVertical: 7,
                   borderRadius: 15,
                 }}
-                onPress={() => showStartdatePicker()}>
+                onPress={() => [
+                  showStartdatePicker(),
+                  handleCustomDateSelection(),
+                ]}>
                 <Text>
                   {startDate ? moment(startDate).format('YYYY-MM-DD') : 'To'}
                 </Text>

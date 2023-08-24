@@ -102,6 +102,11 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
 
+  const handleDateSelect = (start, end) => {
+    console.log('Selected Start Date12:', start);
+    console.log('Selected End Date12:', end);
+  };
+
   const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -109,7 +114,7 @@ const Home = () => {
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText,{color: Colors.black}]}>{item.label}</Text>
+      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>{item.label}</Text>
       {selectedValue === item.value && (
         <Entypo
           name="check"
@@ -155,7 +160,7 @@ const Home = () => {
             </View>
 
             <View>
-              <Datepicker />
+              <Datepicker onDateSelect={handleDateSelect} />
             </View>
           </View>
           <Modal

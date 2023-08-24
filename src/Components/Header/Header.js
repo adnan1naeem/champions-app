@@ -3,7 +3,8 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Text
+  Text,
+  Platform
 } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./styles";
@@ -40,7 +41,7 @@ const Header = ({ Logo }) => {
     setisVisible(false);
   }
   return (
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15,paddingTop:30 }}>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15, paddingTop: Platform.OS === 'ios' && 30 }}>
       <View>
         <TouchableOpacity onPress={() => { navigation.navigate('DrawerScreen') }}>
           <Image
