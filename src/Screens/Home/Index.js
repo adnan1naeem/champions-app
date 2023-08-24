@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
@@ -18,6 +18,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
+import moment from 'moment';
+import { API_BASE_URL } from '../../../Constants';
 const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
@@ -101,11 +103,52 @@ const Home = () => {
   };
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
+  const [startDate, setstartDate] = useState();
+  const [endDate, setendDate] = useState();
+  const [Paid_ammount, setPaid_ammount] = useState();
+
 
   const handleDateSelect = (start, end) => {
-    console.log('Selected Start Date12:', start);
-    console.log('Selected End Date12:', end);
+    setstartDate(start), setendDate(end);
   };
+  useEffect(() => {
+    console.log(startDate, endDate, 'jdscnjhfncvjhwefn ');
+  }, []);
+
+
+  useEffect(() => {
+    const handleCustomDateSelection = () => {
+      const payload = {
+        cnic: '1111111111111',
+        start_date: endDate,
+        end_date: startDate,
+        divCode: '',
+      };
+
+      fetch(`${API_BASE_URL}/BatchListing`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('res:::', data);
+          // setPaid_ammount(data)
+          const paidBatches = data?.batchList?.filter(batch => batch.batchPostStatus === 'paid');
+          const totalIncentiveAmount = paidBatches.reduce((sum, batch) => sum + batch.incentiveAmount, 0);
+          console.log("paid filter:: ", totalIncentiveAmount);
+          setPaid_ammount(totalIncentiveAmount)
+
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    };
+    handleCustomDateSelection()
+  }, [startDate, endDate])
+
 
   const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
@@ -114,7 +157,9 @@ const Home = () => {
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>{item.label}</Text>
+      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>
+        {item.label}
+      </Text>
       {selectedValue === item.value && (
         <Entypo
           name="check"
@@ -187,35 +232,33 @@ const Home = () => {
             </View>
           </Modal>
 
-          {data?.map((item, index) => {
-            return (
-              <React.Fragment key={index}>
-                <View style={{ alignItems: 'center', marginVertical: 10 }}>
-                  <Text style={styles.performance}>
-                    RS. {item?.rows[0]?.RS}
-                  </Text>
-                  <Text style={styles.part}>{item?.rows[0]?.value}</Text>
-                </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                  }}>
-                  {item?.row2?.map((value, valueIndex) => {
-                    return (
-                      <View
-                        style={{ alignItems: 'center', zindex: -1 }}
-                        key={valueIndex}>
-                        <Text style={styles.performance}>RS.{value?.RS}</Text>
-                        <Text style={styles.part}>{value?.value}</Text>
-                      </View>
-                    );
-                  })}
-                </View>
-              </React.Fragment>
-            );
-          })}
+
+
+          <View style={{ alignItems: 'center', marginVertical: 10 }}>
+            <Text style={styles.performance}>
+              RS.{Paid_ammount ? Paid_ammount : 0}
+            </Text>
+            <Text style={styles.part}>Total Outstanding</Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, marginTop: 5 }}>
+            <View
+              style={{ alignSelf: 'center' }}
+            >
+              <Text style={styles.performance}>RS.</Text>
+              <Text style={styles.part}>Total Paid</Text>
+            </View>
+            <View
+              style={{}}
+            >
+              <Text style={styles.performance}>RS.</Text>
+              <Text style={styles.part}>Total Approved</Text>
+            </View>
+          </View>
+
+
+
+          {/* ///////// */}
+
           <Image
             style={{
               width: '48%',

@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
     color: Colors.text_Color,
     fontSize: 15,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   part: {
     color: Colors.text_Color,

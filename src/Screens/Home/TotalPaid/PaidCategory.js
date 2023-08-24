@@ -19,44 +19,7 @@ const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
   const [batchlisting, setbatchlisting] = useState();
 
-  const data = [
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '1',
-    },
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '2',
-    },
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '3',
-    },
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '4',
-    },
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '5',
-    },
-    {
-      name: 'MIGHTY 1 TON OUTDOOR',
-      value: 'BQ5001002',
-      Num: '400 rs',
-      id: '6',
-    },
-  ];
+
 
   useEffect(() => {
     (async () => {
