@@ -1,22 +1,18 @@
-
-
 // import typography from "native-base/lib/typescript/theme/base/typography";
-import { Dimensions, StyleSheet } from "react-native";
-import { Colors } from "../../../../Utils/Colors";
-let deviceWidth = Dimensions.get("window").width;
-
-
+import { Dimensions, StyleSheet } from 'react-native';
+import { Colors } from '../../../../Utils/Colors';
+let deviceWidth = Dimensions.get('window').width;
 
 export const styles = StyleSheet.create({
     Login_main_view: {
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     logo: {
         height: 100,
-        width: "85%",
+        width: '85%',
         alignSelf: 'center',
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     startScreen_text: {
         color: Colors.text_Color,
@@ -26,50 +22,48 @@ export const styles = StyleSheet.create({
     Login_view: {
         paddingVertical: 10,
         width: '90%',
-        backgroundColor: "#3F6FAD",
+        backgroundColor: '#3F6FAD',
         borderRadius: 40,
-        alignSelf: "center",
+        alignSelf: 'center',
         paddingBottom: 100,
-        marginTop: 25
+        marginTop: 25,
     },
     unlock_view: {
-        display: "flex",
+        display: 'flex',
         flexDirection: 'row',
-        justifyContent: "center",
+        justifyContent: 'center',
         width: '90%',
         borderRadius: 10,
-        alignSelf: "center",
+        alignSelf: 'center',
         // marginTop: 30,
         // Add the borderColor property
-
+    },
+    privacyDetailText: {
+        fontSize: 12,
+        textAlign: 'center',
+        color: Colors.text_Color,
+        paddingVertical: 2
     },
     Unlock_Icon: {
-        color: Colors.text_Color
+        color: Colors.text_Color,
     },
     container: {
         flex: 1,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        paddingHorizontal:25,
-        paddingTop:20
-
-
+        paddingHorizontal: 25,
+        paddingTop: 20,
     },
     about_text: {
         fontSize: 14,
         fontWeight: '300',
         color: Colors.text_Color,
         paddingBottom: 8,
-        lineHeight: 20
-
+        lineHeight: 20,
     },
 
     icon: {
         marginRight: 10,
-        marginBottom: 5
-
+        marginBottom: 5,
     },
-
 });
-
-

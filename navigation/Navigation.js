@@ -30,6 +30,11 @@ import Testing from "../src/Testing";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import Congrats from "../src/Screens/Authentication/ForgetPassword/Congrats";
+import ProductManuals from "../src/Screens/Drawer/HelpFAQ/Gallery/ProductManuals";
+import Videos from "../src/Screens/Drawer/HelpFAQ/Gallery/Videos";
+import Blogs from "../src/Screens/Drawer/HelpFAQ/Gallery/Blogs";
+import Catelogue from "../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue";
+import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
 
 const Stack = createNativeStackNavigator();
 
@@ -234,7 +239,41 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-
+      <Stack.Screen
+        name="ProductManuals"
+        component={ProductManuals}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Videos"
+        component={Videos}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Blogs"
+        component={Blogs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Catelogue"
+        component={Catelogue}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Policy"
+        component={Policy}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

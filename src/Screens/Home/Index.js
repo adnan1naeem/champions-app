@@ -8,16 +8,17 @@ import {
   FlatList,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {styles} from './styles';
+import { styles } from './styles';
 import Header from '../../Components/Header/Header';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
-import {Colors} from '../../Utils/Colors';
-import {API_BASE_URL} from '../../../Constants';
+import { Colors } from '../../Utils/Colors';
+import { API_BASE_URL } from '../../../Constants';
+
 const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
@@ -33,7 +34,6 @@ const Home = () => {
   const [pending_list, setPending_list] = useState([]);
   const [verified_list, setVerified_list] = useState([]);
   const [rejected_list, setRejected_list] = useState([]);
-
   const [category, setCategory] = useState();
 
   const products = [
@@ -63,36 +63,6 @@ const Home = () => {
     },
   ];
 
-  const [items, setItems] = useState([
-    {
-      label: 'All',
-      value: 'All',
-    },
-    {
-      label: 'LED',
-      value: 'LED',
-    },
-    {
-      label: 'Air Conditioner',
-      value: 'Air Conditioner',
-    },
-    {
-      label: 'Refrigerator',
-      value: 'Refrigerator',
-    },
-    {
-      label: 'Water Dispenser',
-      value: 'Water Dispenser',
-    },
-    {
-      label: 'Microwave Oven',
-      value: 'Microwave Oven',
-    },
-    {
-      label: 'Washing Machine',
-      value: 'Washing Machine',
-    },
-  ]);
 
   const handleModalClose = () => {
     setisVisible(false);
@@ -119,7 +89,7 @@ const Home = () => {
         divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,
       };
 
-      console.log(JSON.stringify(payload, null,2))
+      console.log(JSON.stringify(payload, null, 2))
 
       try {
         const response = await fetch(`${API_BASE_URL}/BatchListing`, {
@@ -179,7 +149,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       const payload = {
-        companyCode:"1000"
+        companyCode: "1000"
       };
 
       try {
@@ -192,34 +162,33 @@ const Home = () => {
         });
         const data = await response.json();
         let dataIs = {
-            _id: "11111",
-            categoryCode: "0",
-            categoryName: "All",
-            companyName: "Orient Electronics Pvt. Ltd.",
-            companyCode: "1000",
+          _id: "11111",
+          categoryCode: "0",
+          categoryName: "All",
+          companyName: "Orient Electronics Pvt. Ltd.",
+          companyCode: "1000",
         }
-        setCategory([dataIs,...data?.category]);
-        // console.log('category:: ', data);
+        setCategory([dataIs, ...data?.category]);
       } catch (error) {
         console.error('Error:', error);
       }
     })();
   }, []);
 
-  const renderDropdownItem = ({item}) => (
+  const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
         setSelectedValue(item);
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText, {color: Colors.black}]}>
+      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>
         {item?.categoryName}
       </Text>
       {selectedValue?.categoryCode === item?.categoryCode && (
         <Entypo
           name="check"
-          style={{color: Colors.black, fontSize: 16, marginLeft: 10}}
+          style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
         />
       )}
     </TouchableOpacity>
@@ -230,31 +199,31 @@ const Home = () => {
       source={require('../../Assets/Image/background_image.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{ paddingHorizontal: 10 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Header value={true} />
           <View style={styles.filter_view}>
-            <View style={{marginTop: 15}}>
+            <View style={{ marginTop: 15 }}>
               {selectedValue?._id ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{color: Colors.text_Color}}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.text_Color }}>
                     {selectedValue?.categoryName}
                   </Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{color: Colors.text_Color, fontSize: 20}}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
                   />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={styles.dropdownItemText}>All</Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{color: Colors.text_Color, fontSize: 20}}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
                   />
                 </TouchableOpacity>
               )}
@@ -279,7 +248,6 @@ const Home = () => {
                 },
               ]}>
               <View style={styles.modalContent}>
-                {/* {console.log("modal:: ", category)} */}
                 <FlatList
                   data={category}
                   renderItem={renderDropdownItem}
@@ -288,7 +256,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-          <View style={{alignItems: 'center', marginVertical: 10}}>
+          <View style={{ alignItems: 'center', marginVertical: 10 }}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
@@ -299,7 +267,7 @@ const Home = () => {
               paddingHorizontal: 50,
               marginTop: 5,
             }}>
-            <View style={{alignSelf: 'center'}}>
+            <View style={{ alignSelf: 'center' }}>
               <Text style={styles.performance}>RS. {Paid_ammount}</Text>
               <Text style={styles.part}>Total Paid</Text>
             </View>
@@ -322,12 +290,12 @@ const Home = () => {
           <CardsButton
             status={'Paid Cards'}
             value={paid_list?.length}
-            onPress={() => handleSubmmit('Paid Cards' ,paid_list)}
+            onPress={() => handleSubmmit('Paid Cards', paid_list)}
           />
           <CardsButton
             status={'Approved Cards'}
             value={approved_list?.length}
-            onPress={() => handleSubmmit('Approved Cards',approved_list)}
+            onPress={() => handleSubmmit('Approved Cards', approved_list)}
           />
           <CardsButton
             status={'Verified Cards'}
@@ -337,12 +305,12 @@ const Home = () => {
           <CardsButton
             status={'Pendig Cards'}
             value={pending_list?.length}
-            onPress={() => handleSubmmit('Pendig Cards',pending_list)}
+            onPress={() => handleSubmmit('Pendig Cards', pending_list)}
           />
           <CardsButton
             status={'Rejected Cards'}
             value={rejected_list?.length}
-            onPress={() => handleSubmmit('Rejected Cards',rejected_list)}
+            onPress={() => handleSubmmit('Rejected Cards', rejected_list)}
           />
 
           <TouchableOpacity
@@ -360,7 +328,7 @@ const Home = () => {
           </TouchableOpacity>
 
           <Modal visible={isVisible} transparent animationType="fade">
-            <TouchableOpacity style={{flex: 1}} onPress={handleModalClose} />
+            <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 {products.map(product => (
