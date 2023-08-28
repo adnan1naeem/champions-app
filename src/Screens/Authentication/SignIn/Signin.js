@@ -29,21 +29,28 @@ const Signin = () => {
   const navigation = useNavigation();
 
   const formatMobileNumber = number => {
-    if (number.startsWith('0')) {
+    if (number?.startsWith('0')) {
       return '92' + number.slice(1);
     }
     return number;
   };
 
   const handleSignIn = async () => {
+    if (!mobile) {
+      Alert.alert('Field Required', 'Please enter mobile number.');
+      return;
+    }
+    else if (!password) {
+      Alert.alert('Field Required', 'Please enter password.');
+      return;
+    }
     setLoading(true);
     const formattedMobile = formatMobileNumber(mobile);
-    const formattedPassword = password.toLowerCase();
 
     try {
       const data = {
         mobile: formattedMobile,
-        password: formattedPassword,
+        password: password,
       };
 
       const config = {
@@ -56,10 +63,10 @@ const Signin = () => {
       const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
         setLoading(false);
-        if (response.status === 401) {
+        if (response?.status === 401) {
           Alert.alert(
-            'Invalid Password',
-            'please enter mobile and password.',
+            'Not Exist',
+            'Account do not exist.',
           );
         } else {
           Alert.alert(
@@ -87,7 +94,7 @@ const Signin = () => {
       }
     } catch (error) {
       setLoading(false);
-      console.log('Error posting data:', error.message);
+      console.log('Error posting data:', error?.message);
       Alert.alert(
         'Network Error',
         'An error occurred while connecting to the server.',

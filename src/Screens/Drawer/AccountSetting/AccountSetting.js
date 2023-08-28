@@ -37,7 +37,7 @@ const AccountSetting = () => {
 
             <View style={{ marginLeft: 20, marginTop: 20 }}>
                 <Text style={styles.Text}>ACCOUNT SETTINGS</Text>
-                <Text style={styles.Text_detail}>Account,Setting,More</Text>
+                <Text style={styles.Text_detail}>Account,{' '}Setting,{' '}More</Text>
             </View>
             <View style={{ paddingHorizontal: 20, marginTop: 30, gap: 5 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>

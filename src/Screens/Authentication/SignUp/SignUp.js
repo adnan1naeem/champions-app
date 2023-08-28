@@ -8,7 +8,10 @@ import {
   ImageBackground,
   ScrollView,
   FlatList,
+  Dimensions,
+  Alert,
 } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useState } from 'react';
@@ -18,7 +21,7 @@ import { styles } from './style';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 // import axios from "axios";
-import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 
@@ -77,23 +80,34 @@ const SignUp = () => {
   };
 
   const handleSignUp = () => {
-    if (
-      Name &&
-      cnic &&
-      mobile &&
-      password &&
-      isChecked === true &&
-      dealerCode &&
-      selectedOption
-    ) {
+    if (!value) {
+      Alert.alert('Please select a company.');
+      return;
+    } else if (!Name) {
+      Alert.alert('Field Required', 'Please enter name.');
+      return;
+    } else if (!cnic) {
+      Alert.alert('Field Required', 'Please enter cnic.');
+      return;
+    } else if (!mobile) {
+      Alert.alert('Field Required', 'Please enter mobile.');
+      return;
+    } else if (!password) {
+      Alert.alert('Field Required', 'Please enter password.');
+      return;
+    } else if (isChecked === false) {
+      Alert.alert('Agree the terms and condition.');
+      return;
+    } else if (!dealerCode) {
+      Alert.alert('Field Required', 'Please enter dealerCode.');
+      return;
+    }
+    else {
       postUserData();
-    } else {
-      alert('There is incomplete data');
     }
   };
 
   const postUserData = async () => {
-    const formattedPassword = password.toLowerCase();
     try {
       const config = {
         method: 'POST',
@@ -105,7 +119,7 @@ const SignUp = () => {
           cnic: cnic,
           mobile: mobile,
           dealerCode: dealerCode,
-          password: formattedPassword,
+          password: password,
           companyCode: selectedOption,
           status: isChecked,
         }),
@@ -113,6 +127,7 @@ const SignUp = () => {
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
       const data = await response.json();
+      console.log("dataa:: ", response);
       if (response?.status === 201) {
         console.log('signup responce:: ', response);
         navigation.reset({
@@ -120,7 +135,7 @@ const SignUp = () => {
           routes: [{ name: 'SignIn' }],
         });
       } else if (response?.status !== 201) {
-        alert(data?.message);
+        Alert.alert(data?.message);
       }
     } catch (error) {
       console.error('Error posting data:', error.message);
@@ -128,24 +143,14 @@ const SignUp = () => {
     }
   };
 
-
-  const options = [
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
     { label: 'Orient Electronics Pvt. Ltd', value: '1000' },
     { label: 'Orient Material Pvt.Ltd', value: '2020' },
     { label: 'Adnan Corporation', value: '3000' },
     { label: 'Orient Apparel', value: '8080' },
-  ];
-
-  const renderOptionItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        setSelectedOption(item.value);
-        setModalVisible(false);
-      }}
-      style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
-      <Text style={styles.optionText}>{item.label}</Text>
-    </TouchableOpacity>
-  );
+  ]);
 
   return (
     <ImageBackground
@@ -155,14 +160,11 @@ const SignUp = () => {
         <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
           <BackButton navigation={navigation} />
         </View>
-
-
         <Image
           style={styles.logo}
           source={require('../../../Assets/Image/login_image.png')}
           resizeMode="contain"
         />
-
         <View style={styles.Login_view}>
           <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={{ alignItems: 'center' }}>
@@ -172,6 +174,34 @@ const SignUp = () => {
               </Text>
             </View>
 
+            <View style={[styles.container, { zIndex: 1 }]}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                placeholder="Select company"
+                autoScroll={true}
+                textStyle={{ color: Colors.text_Color, fontSize: 12 }}
+                style={[
+                  { color: Colors.text_Color, borderColor: 'transparent' },
+                  { backgroundColor: open ? '#1A4578' : 'transparent' },
+                ]}
+                containerStyle={{ width: 228, color: 'white', zIndex: 1 }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#1A4578',
+                  borderColor: 'transparent',
+                  height: 180,
+                  zIndex: 999,
+                }}
+                TickIconComponent={() => (
+                  <FontAwesome6 name="check" color={Colors.text_Color} />
+                )}
+                arrowIconStyle={{ tintColor: Colors.text_Color }}
+              />
+            </View>
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
                 style={styles.input}
@@ -223,40 +253,6 @@ const SignUp = () => {
                 secureTextEntry
               />
             </View>
-            <View style={styles.container}>
-              <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                style={styles.dropdownContainer}>
-                <Text style={styles.optionText}>
-                  {selectedOption ? selectedOption : 'Company Name'}
-                </Text>
-                <Entypo
-                  name={isModalVisible ? 'chevron-up' : 'chevron-down'}
-                  style={{ color: Colors.text_Color, fontSize: 20 }}
-                />
-              </TouchableOpacity>
-            </View>
-            <Modal
-              animationType="Fade"
-              transparent={true}
-              visible={isModalVisible}
-              onBackdropPress={() => setModalVisible(false)}
-              onRequestClose={() => setModalVisible(false)}>
-              <View
-                style={{
-                  backgroundColor: '#1A4578',
-                  width: '90%',
-                  paddingVertical: 15,
-                  alignSelf: 'center',
-                  borderRadius: 10,
-                }}>
-                <FlatList
-                  data={options}
-                  renderItem={renderOptionItem}
-                  keyExtractor={item => item.value}
-                />
-              </View>
-            </Modal>
           </View>
           <View style={styles.remember_view}>
             <TouchableOpacity
@@ -317,6 +313,30 @@ const SignUp = () => {
             <Text style={styles.text}> Sign In</Text>
           </TouchableOpacity>
         </View>
+        {/* <Modal
+          animationType="Fade"
+          transparent={true}
+          backdropColor='green'
+          // backdropColor="red"
+          visible={isModalVisible}
+          onBackdropPress={() => setModalVisible(false)}
+          onRequestClose={() => setModalVisible(false)}>
+          <View
+            style={{
+              backgroundColor: '#1A4578',
+              width: '90%',
+              paddingVertical: 15,
+              alignSelf: 'center',
+              borderRadius: 10,
+            }}>
+            <FlatList
+              data={options}
+              renderItem={renderOptionItem}
+              keyExtractor={item => item.value}
+            />
+          </View>
+
+        </Modal> */}
       </ScrollView>
     </ImageBackground>
   );

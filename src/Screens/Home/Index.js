@@ -252,6 +252,7 @@ const Home = () => {
               ]}>
               <View style={styles.modalContent}>
                 <FlatList
+                  showsVerticalScrollIndicator={false}
                   data={category}
                   renderItem={renderDropdownItem}
                   keyExtractor={item => item?._id}

@@ -1,7 +1,6 @@
 import {
     Image,
     Text,
-    TouchableOpacity,
     View,
     TextInput,
     ImageBackground,
@@ -12,11 +11,10 @@ import { Colors } from "../../../Utils/Colors";
 import CustomButton from "../../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
-import config from "../../../../services/config";
 import { API_BASE_URL } from "../../../../Constants";
 import BackButton from "../../../Components/BackButton";
 const ForgetPassword = () => {
-    const [mobile, setMobile] = useState(""); // Separate state for name
+    const [mobile, setMobile] = useState("");
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
 

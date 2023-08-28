@@ -10,10 +10,8 @@ import React, { useEffect, useState } from 'react';
 import { styles } from './styles';
 import Header from '../../../Components/Header/Header';
 import LinearGradient from 'react-native-linear-gradient';
-import axios from 'axios';
 import BackButton from '../../../Components/BackButton';
 import { Colors } from '../../../Utils/Colors';
-import { API_BASE_URL } from '../../../../Constants';
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
