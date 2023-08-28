@@ -83,10 +83,11 @@ const Home = () => {
   };
 
   useEffect(() => {
+
     (async () => {
       const Cnic_Number = await AsyncStorage.getItem("CNIC")
       const payload = {
-        cnic: Cnic_Number,
+        cnic: '1111111111111',
         start_date: endDate,
         end_date: startDate,
         divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,

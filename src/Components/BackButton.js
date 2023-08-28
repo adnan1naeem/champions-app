@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 5,
         marginLeft: 5,
+        width: 70,
+        paddingVertical: 5
     },
     backIcon_style: {
         width: 30,

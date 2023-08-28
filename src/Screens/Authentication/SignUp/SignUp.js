@@ -7,12 +7,9 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
-  FlatList,
-  Dimensions,
   Alert,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { Colors } from '../../../Utils/Colors';
@@ -20,7 +17,6 @@ import CustomButton from '../../../Components/CustomButton';
 import { styles } from './style';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-// import axios from "axios";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
@@ -32,10 +28,8 @@ const SignUp = () => {
   const [cnic, setCnic] = useState('');
   const [mobile, setmobile] = useState('');
   const [dealerCode, setDealerCode] = useState('');
-  const [Address, setAddress] = useState('');
   const [password, setPassword] = useState('');
 
-  const [isModalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const navigation = useNavigation();
 
@@ -101,8 +95,13 @@ const SignUp = () => {
     } else if (!dealerCode) {
       Alert.alert('Field Required', 'Please enter dealerCode.');
       return;
-    }
-    else {
+    } else if (dealerCode === '000') {
+      Alert.alert('Invalid Dealer Code', 'Dealer code cannot be "000".');
+      return;
+    } else if (dealerCode.length >= 3 && dealerCode.slice(0, 3) === '000') {
+      Alert.alert('Invalid Dealer Code', 'First 3 digits cannot be "000".');
+      return;
+    } else {
       postUserData();
     }
   };
@@ -120,14 +119,14 @@ const SignUp = () => {
           mobile: mobile,
           dealerCode: dealerCode,
           password: password,
-          companyCode: selectedOption,
+          companyCode: value,
           status: isChecked,
         }),
       };
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
       const data = await response.json();
-      console.log("dataa:: ", response);
+      console.log('dataa:: ', response);
       if (response?.status === 201) {
         console.log('signup responce:: ', response);
         navigation.reset({
@@ -138,7 +137,7 @@ const SignUp = () => {
         Alert.alert(data?.message);
       }
     } catch (error) {
-      console.error('Error posting data:', error.message);
+      console.error('Error posting data:', error?.message);
       throw error;
     }
   };
@@ -170,7 +169,7 @@ const SignUp = () => {
             <View style={{ alignItems: 'center' }}>
               <Text style={styles.Started}>Getting Started</Text>
               <Text style={styles.create_account}>
-                Create an Account to Continue!
+                Create an account to continue!
               </Text>
             </View>
 

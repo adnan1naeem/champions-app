@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CustomButton from '../../../Components/CustomButton';
@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../../Constants';
 const Signin = () => {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,8 +41,7 @@ const Signin = () => {
     if (!mobile) {
       Alert.alert('Field Required', 'Please enter mobile number.');
       return;
-    }
-    else if (!password) {
+    } else if (!password) {
       Alert.alert('Field Required', 'Please enter password.');
       return;
     }
@@ -66,10 +65,7 @@ const Signin = () => {
       if (!response.ok) {
         setLoading(false);
         if (response?.status === 401) {
-          Alert.alert(
-            'Not Exist',
-            'Account do not exist.',
-          );
+          Alert.alert('Not Exist', 'Account do not exist.');
         } else {
           Alert.alert(
             'Error',
@@ -85,6 +81,7 @@ const Signin = () => {
         const cnic = responseData?.cnic;
         await AsyncStorage.setItem('TOKEN', Token);
         await AsyncStorage.setItem('CNIC', cnic);
+        await AsyncStorage.setItem('USER', JSON.stringify(responseData));
         setLoading(false);
         navigation.replace('Home');
       } else {
@@ -109,7 +106,6 @@ const Signin = () => {
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-
         <Image
           style={styles.logo}
           source={require('../../../Assets/Image/login_image.png')}
@@ -118,7 +114,15 @@ const Signin = () => {
 
         <View style={styles.Login_view}>
           <View style={styles.unlock_view}>
-            <Image source={require('../../../Assets/Image/face.png')} style={{ height: 90, width: 90, resizeMode: 'contain' }} />
+            <Image
+              source={require('../../../Assets/Image/face.png')}
+              style={{
+                height: 70,
+                width: 68,
+                resizeMode: 'contain',
+                marginRight: 15,
+              }}
+            />
             <Icon
               style={styles.Unlock_Icon}
               name="finger-print-outline"
@@ -128,6 +132,7 @@ const Signin = () => {
           </View>
           <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
+
               <User_Icon
                 name="email"
                 style={styles.icon}
@@ -141,7 +146,9 @@ const Signin = () => {
                 marginLeft={20}
                 value={mobile}
                 onChangeText={setMobile}
+                keyboardType={'phone-pad'}
               />
+
             </View>
             <View style={styles.container}>
               <Password
@@ -154,13 +161,19 @@ const Signin = () => {
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Password"
-                autoCapitalize='none'
+                autoCapitalize="none"
                 marginLeft={20}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={isPasswordSecure}
               />
-              <MaterialIcons onPress={()=>setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
+              <MaterialIcons
+                onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+                name={isPasswordSecure ? 'visibility' : 'visibility-off'}
+                size={20}
+                color={'#D0D3E2'}
+                style={{ paddingTop: 16 }}
+              />
             </View>
           </View>
           <View style={styles.remember_view}>
@@ -169,11 +182,15 @@ const Signin = () => {
               onPress={handleCheckboxChange}
               activeOpacity={0.8}>
               <View style={styles.checkbox}>
-                <Icon
-                  name={isChecked ? 'checkbox-outline' : 'checkbox'}
-                  size={24}
-                  color={Colors.text_Color}
-                />
+                {isChecked ?
+                  <Icon
+                    name='checkbox'
+                    size={24}
+                    color={Colors.text_Color}
+                  /> :
+                  <MaterialIcons name="check-box-outline-blank" size={20}
+                    color={Colors.text_Color} />
+                }
               </View>
               <Text style={styles.label}>Remember me</Text>
             </TouchableOpacity>

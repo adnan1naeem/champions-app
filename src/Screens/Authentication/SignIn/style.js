@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
         borderLeftColor: '#3DB2DE',
         borderRightColor: '#5C91D3',
         borderTopColor: '#4CACE1',
-        borderBottomColor: '#4493C9', // Add the borderColor property
+        borderBottomColor: '#4493C9',
 
     },
     Unlock_Icon: {

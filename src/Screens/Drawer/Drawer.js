@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet, ImageBackground, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,10 +11,26 @@ import Header from '../../Components/Header/Header';
 
 const DrawerScreen = () => {
     const navigation = useNavigation();
+    const [user_Info, setUserInfo] = useState([]);
 
     const handleBackPress = () => {
         navigation.goBack();
     };
+    useEffect(() => {
+        (async () => {
+
+            const user = await AsyncStorage.getItem('USER');
+            if (user) {
+                const parsedUser = JSON.parse(user);
+                setUserInfo(parsedUser);
+            }
+
+        })();
+    }, []);
+
+    console.log("wqdwqe:: ", user_Info?.name);
+
+
 
     const SignOut = async () => {
         try {
@@ -65,9 +81,9 @@ const DrawerScreen = () => {
                         <Image source={require('../../Assets/Image/amir.jpg')} style={{ height: 60, width: 50, borderRadius: 30 }} />
                     </View>
                     <View style={{ marginLeft: 15, justifyContent: 'center' }}>
-                        <Text style={styles.user_detail}>Amir Ali</Text>
-                        <Text style={styles.user_detail}>0333-3593699</Text>
-                        <Text style={styles.user_detail}>Lahore Center</Text>
+                        <Text style={styles.user_detail}>{user_Info?.name}</Text>
+                        <Text style={styles.user_detail}>{user_Info?.mobile}</Text>
+                        {/* <Text style={styles.user_detail}>Lahore Center</Text> */}
                     </View>
                 </View>
             </View>

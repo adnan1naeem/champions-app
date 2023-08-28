@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import { Colors } from '../../../Utils/Colors';
 
-const OtpInput = ({onPress}) => {
+const OtpInput = ({ onPress }) => {
 
   return (
     <View style={styles.container}>
@@ -16,6 +16,7 @@ const OtpInput = ({onPress}) => {
         borderColor={'#41CBEB'}
         secureTextEntry={true}
       />
+      {/* 3520260422879 */}
     </View>
   );
 };
@@ -31,8 +32,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: 250,
-    height: 40,
-    borderColor:'#41CBEB',
+    height: 70,
+    borderColor: '#41CBEB',
+
   },
   otpInput: {
     borderWidth: 1,
@@ -41,10 +43,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     width: 35,
-    height: 35,
+    height: 42,
     marginHorizontal: 6,
     textAlign: 'center',
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
+
   },
 });
 
