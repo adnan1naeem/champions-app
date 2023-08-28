@@ -26,8 +26,8 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Image source={require('../../../../Assets/Image/Catalogue.png')} style={{ height: 100, width: 100, resizeMode: 'contain', alignSelf: 'center' }} />
-                <Text style={{ textAlign: 'center', fontSize: 10, color: Colors.text_Color }}>Policy</Text>
+                <Image source={require('../../../../Assets/Image/Catalogue.png')} style={{ height: 70, width: 70, resizeMode: 'contain', alignSelf: 'center', zIndex: 1, marginTop: -35, }} />
+                <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.text_Color, marginTop: -20, fontWeight: 'bold' }}>Policy</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40, paddingHorizontal: 20 }]}>
                     <Text style={styles.privacyDetailText}>Privacy Policy</Text>

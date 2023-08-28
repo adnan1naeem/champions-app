@@ -7,16 +7,16 @@ import {
   ImageBackground,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from './styles';
+import React, { useEffect, useState } from 'react';
+import { styles } from './styles';
 import Header from '../../Components/Header/Header';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Colors} from '../../Utils/Colors';
-import {API_BASE_URL} from '../../../Constants';
+import { Colors } from '../../Utils/Colors';
+import { API_BASE_URL } from '../../../Constants';
 import BackButton from '../../Components/BackButton';
 
-const SearchCate = ({route}) => {
+const SearchCate = ({ route }) => {
   const navigation = useNavigation();
   const [batchlisting, setbatchlisting] = useState([]);
   const [searchBatchlisting, setSearchBatchlisting] = useState([]);
@@ -30,9 +30,9 @@ const SearchCate = ({route}) => {
       title: 'Air Conditioner',
       value: '50',
     },
-    {id: 2, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30'},
-    {id: 3, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30'},
-    {id: 4, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30'},
+    { id: 2, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
+    { id: 3, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
+    { id: 4, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
     {
       id: 5,
       name: 'ac',
@@ -58,6 +58,7 @@ const SearchCate = ({route}) => {
 
   useEffect(() => {
     (async () => {
+      const Cnic_Number = await AsyncStorage.getItem("CNIC")
       try {
         const config = {
           method: 'POST',
@@ -68,7 +69,7 @@ const SearchCate = ({route}) => {
             start_date: '',
             end_date: '',
             divCode: '',
-            cnic: '1111111111111',
+            cnic: Cnic_Number,
           }),
         };
         const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
@@ -93,9 +94,9 @@ const SearchCate = ({route}) => {
     setSearchBatchlisting(filteredRows);
   };
 
-  const renderItem = ({item}) => (
-    <View style={{alignItems: 'center'}}>
-      <TouchableOpacity style={styles.flatList_container}>
+  const renderItem = ({ item }) => (
+    <View style={{ alignItems: 'center' }}>
+      <TouchableOpacity disabled={true} style={styles.flatList_container}>
         <LinearGradient
           colors={[
             'rgb(39, 174, 229)',
@@ -104,9 +105,9 @@ const SearchCate = ({route}) => {
             'rgb(59,90,183)',
           ]}
           style={styles.gradient_container}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}>
-          <View style={{flexDirection: 'row'}}>
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}>
+          <View style={{ flexDirection: 'row' }}>
             <View>
               <Text style={styles.flatList_text}>{item?.batchCode}</Text>
               <Text style={styles.flatList_text_detail}>{item?.name}</Text>
@@ -132,12 +133,12 @@ const SearchCate = ({route}) => {
         source={require('../../Assets/Image/background_image.png')}
         style={styles.container}
         resizeMode="cover">
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           <Header value={true} />
           <BackButton navigation={navigation} />
         </View>
 
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <TextInput
             style={[
               styles.input,
@@ -151,9 +152,9 @@ const SearchCate = ({route}) => {
             ]}
             placeholder="Search"
             placeholderTextColor={Colors.text_Color}
-            onChangeText={text =>  handleSearch(text)}
+            onChangeText={text => handleSearch(text)}
           />
-          <TouchableOpacity style={{width: '25%', paddingVertical: 15}}>
+          <TouchableOpacity style={{ width: '25%', paddingVertical: 15 }}>
             <LinearGradient
               colors={['rgb(39, 174, 229)', 'rgb(59,90,183)']}
               style={{
@@ -162,8 +163,8 @@ const SearchCate = ({route}) => {
                 alignItems: 'center',
                 borderRadius: 7,
               }}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}>
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}>
               <Text style={styles.itemText}>GO</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -171,7 +172,7 @@ const SearchCate = ({route}) => {
         <View>
           <FlatList
             data={searchBatchlisting}
-            contentContainerStyle={{paddingVertical: 50, gap: 10}}
+            contentContainerStyle={{ paddingVertical: 50, gap: 10 }}
             renderItem={renderItem}
             keyExtractor={item => item?._id?.toString()}
           />

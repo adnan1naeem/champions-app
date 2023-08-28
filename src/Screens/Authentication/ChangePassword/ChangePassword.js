@@ -13,7 +13,7 @@ import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../../Components/BackButton";
 import { API_BASE_URL } from "../../../../Constants";
-const ChangePassword = ({route}) => {
+const ChangePassword = ({ route }) => {
   const [cnic, setCnic] = useState("3520260422879");
   const [password, setPassword] = useState("aassddff");
   const [confirmPassword, setConfirmPassword] = useState("aassddff");
@@ -56,7 +56,7 @@ const ChangePassword = ({route}) => {
           const response = await fetch("http://16.24.45.175:8000/resetPassword", config);
           if (!response.ok) {
             setLoading(false);
-            if(response?.status === 401){
+            if (response?.status === 401) {
               alert("Invalid Varification Code");
               navigation.pop();
               return
@@ -89,8 +89,6 @@ const ChangePassword = ({route}) => {
   const formatCnic = (input) => {
     // Remove all non-numeric characters from the input
     const numericInput = input.replace(/[^\d]/g, "");
-
-    // Split the CNIC into three parts with dashes
     let formattedCnic = "";
     for (let i = 0; i < numericInput.length; i++) {
       if (i === 5 || i === 12) {
@@ -99,7 +97,6 @@ const ChangePassword = ({route}) => {
       formattedCnic += numericInput[i];
     }
 
-    // Return the formatted CNIC
     return formattedCnic;
   };
   const handleInputChange = (field, value) => {
@@ -112,18 +109,16 @@ const ChangePassword = ({route}) => {
       setConfirmPassword(value);
     }
   };
-
-
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1,backgroundColor: Colors.blueBackground }}
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}
     >
       <ScrollView>
- 
-            <View style={{marginTop:25,paddingHorizontal:20}}>
-      <BackButton navigation={navigation}/>
-      </View>
+
+        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+          <BackButton navigation={navigation} />
+        </View>
         <View style={styles.Login_main_view}>
           <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         </View>

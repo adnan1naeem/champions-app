@@ -93,6 +93,7 @@ const SignUp = () => {
   };
 
   const postUserData = async () => {
+    const formattedPassword = password.toLowerCase();
     try {
       const config = {
         method: 'POST',
@@ -104,7 +105,7 @@ const SignUp = () => {
           cnic: cnic,
           mobile: mobile,
           dealerCode: dealerCode,
-          password: password,
+          password: formattedPassword,
           companyCode: selectedOption,
           status: isChecked,
         }),

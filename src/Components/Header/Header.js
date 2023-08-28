@@ -46,7 +46,7 @@ const Header = ({ Logo }) => {
         <TouchableOpacity onPress={() => { navigation.navigate('DrawerScreen') }}>
           <Image
             source={require('../../Assets/Image/drawer_icon.png')}
-            style={styles.image}
+            style={[styles.image, { tintColor: Colors.text_Color }]}
           />
         </TouchableOpacity>
       </View>
@@ -60,7 +60,7 @@ const Header = ({ Logo }) => {
         <TouchableOpacity onPress={() => {
           navigation.navigate('Gallery')
         }}>
-          <Image style={{ height: 40, width: 70, justifyContent: 'center', }} source={require('../../Assets/Image/read.png')} />
+          <Image style={{ height: 40, width: 70, justifyContent: 'center', tintColor: Colors.text_Color }} source={require('../../Assets/Image/read.png')} />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: 57, justifyContent: 'space-between' }}>
           <TouchableOpacity onPress={() => {

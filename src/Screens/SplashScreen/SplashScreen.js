@@ -2,17 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { View, Animated, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
 
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Home');
+      const getInitialRoute = async () => {
+        const accessToken = await AsyncStorage.getItem("TOKEN");
+        console.log("initial:: ", accessToken);
+        let initialRoute = "SignIn";
+        if (accessToken) {
+          initialRoute = "Home";
+        }
+        await AsyncStorage.setItem("INITIAL_ROUTE", initialRoute);
+        navigation.replace(initialRoute);
+      };
+      getInitialRoute();
     }, 4600);
 
     return () => clearTimeout(timer);
   }, []);
+
+
+
+
+
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [fadeAnim2] = useState(new Animated.Value(0));
@@ -71,11 +88,11 @@ const SplashScreen = () => {
           style={[styles.Splash_icon, { opacity: fadeAnim }]}
           resizeMode="contain"
         />
-        {/* <Animated.Image
-          source={require('../../Assets/Image/splashnew.png')}
+        <Animated.Image
+          source={require('../../Assets/Image/chapmion_icon-removebg-preview.png')}
           style={[styles.Splash_icon, { opacity: fadeAnim2 }]}
           resizeMode="contain"
-        /> */}
+        />
       </View>
     </ImageBackground>
   );

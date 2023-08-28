@@ -61,6 +61,7 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
+    const Cnic_Number = await AsyncStorage.getItem("CNIC")
     try {
       const config = {
         method: 'POST',
@@ -70,7 +71,7 @@ const Scan = ({ navigation }) => {
 
         body: JSON.stringify({
           code: barCode,
-          cnic: '1111111111111',
+          cnic: Cnic_Number,
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);

@@ -6,16 +6,12 @@ import { Colors } from "../../../Utils/Colors";
 let deviceWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-    Login_main_view: {
-        marginTop: "10%",
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
+
     logo: {
         height: 100,
         width: "85%",
-        alignSelf: 'center'
+        alignSelf: 'center',
+        // marginTop: "5%",
     },
     startScreen_text: {
         color: Colors.text_Color,
@@ -26,9 +22,9 @@ export const styles = StyleSheet.create({
         paddingVertical: 30,
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: "30%",
+        marginTop: "20%",
         borderRadius: 40,
-        marginBottom:15,
+        marginBottom: 15,
         alignSelf: "center",
     },
     unlock_view: {
@@ -53,7 +49,7 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         marginBottom: 10,
         paddingBottom: 5,
-        paddingVertical:150
+        paddingVertical: 150
     },
     container1: {
         flexDirection: 'row',
@@ -94,7 +90,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         fontStyle: 'italic',
         fontWeight: "200",
-        fontSize:12
+        fontSize: 12
     },
     proceed_button: {
         paddingVertical: 15,

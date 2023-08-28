@@ -21,62 +21,61 @@ const ForgetPassword = () => {
     const [loading, setLoading] = useState(false);
 
     const handleForgot = async () => {
-        if(mobile?.length !== 13){
+        if (mobile?.length !== 13) {
             alert("Please enter valid cnic code");
             return;
         }
         setLoading(true);
         try {
-          const data = {
-            cnic: mobile,
-          };
-    
-          const config = {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          };
-    
-          const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
-          if (!response?.ok) {
-            setLoading(false);
-            if(response?.status === 404){
+            const data = {
+                cnic: mobile,
+            };
+
+            const config = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
+            if (!response?.ok) {
+                setLoading(false);
+                if (response?.status === 404) {
+                    alert("User not Exist\nPlease check your CNIC and try again.");
+                    return;
+                }
                 alert("User not Exist\nPlease check your CNIC and try again.");
+                // throw new Error("Network response was not ok");
                 return;
             }
-            alert("User not Exist\nPlease check your CNIC and try again.");
-            // throw new Error("Network response was not ok");
-            return;
-          }
-          const responseData = await response.json();
-          console.log("Login Response: ", response?.token);
-          if (responseData) {
-            setLoading(false)
-            navigation.replace('PinCodeScreen')
+            const responseData = await response.json();
+            console.log("Login Response: ", response?.token);
+            if (responseData) {
+                setLoading(false)
+                navigation.replace('PinCodeScreen')
             } else {
-            setLoading(false);
-            Alert.alert("Invalid Password", "Please check your password and try again.");
-          }
+                setLoading(false);
+                Alert.alert("Invalid Password", "Please check your password and try again.");
+            }
         } catch (error) {
-          setLoading(false);
-          console.log("Error posting data:", error.message);
+            setLoading(false);
+            console.log("Error posting data:", error.message);
         }
-      };
+    };
 
     return (
         <ImageBackground
             source={require('../../../Assets/Image/background_image.png')}
-            style={{ flex: 1,backgroundColor: Colors.blueBackground }}
+            style={{ flex: 1, backgroundColor: Colors.blueBackground }}
         >
             <ScrollView>
-            <View style={{marginTop:25,paddingHorizontal:20}}>
-      <BackButton navigation={navigation}/>
-      </View>
-                <View style={styles.Login_main_view}>
-                    <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+                <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+                    <BackButton navigation={navigation} />
                 </View>
+                <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+
                 <View style={styles.Login_view}>
                     <View style={styles.unlock_view}>
                         <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: 200 }}>
@@ -90,8 +89,8 @@ const ForgetPassword = () => {
                                 placeholderTextColor={Colors.text_Color}
                                 placeholder=""
                                 marginLeft={20}
-                                value={mobile} // Set the value of the input field to name state
-                                onChangeText={setMobile} // Update the name state when the text changes
+                                value={mobile}
+                                onChangeText={setMobile}
                             />
                         </View>
                     </View>

@@ -6,96 +6,118 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { Colors } from "../../../Utils/Colors";
-import CustomButton from "../../../Components/CustomButton";
-import orient_icon from '../../../Assets/Image/OrientNewLogo.png';
-import { styles } from "./style";
+  Alert,
+} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Colors } from '../../../Utils/Colors';
+import CustomButton from '../../../Components/CustomButton';
+import { styles } from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import User_Icon from 'react-native-vector-icons/Zocial';
 import Password from 'react-native-vector-icons/Fontisto';
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE_URL } from "../../../../Constants";
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../../../../Constants';
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(true);
-  const [mobile, setMobile] = useState(''); // Separate state for name
+  const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
   const navigation = useNavigation();
-  
+
+  const formatMobileNumber = number => {
+    if (number.startsWith('0')) {
+      return '92' + number.slice(1);
+    }
+    return number;
+  };
+
   const handleSignIn = async () => {
     setLoading(true);
-    // navigation.replace("Home")
-    // return
+    const formattedMobile = formatMobileNumber(mobile);
+    const formattedPassword = password.toLowerCase();
 
     try {
       const data = {
-        mobile: mobile,
-        password: password,
+        mobile: formattedMobile,
+        password: formattedPassword,
       };
 
       const config = {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       };
-
       const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
         setLoading(false);
-        alert("Invalid Password", "Please check your password and try again.");
-        // throw new Error("Network response was not ok");
+        if (response.status === 401) {
+          Alert.alert(
+            'Invalid Password',
+            'please enter mobile and password.',
+          );
+        } else {
+          Alert.alert(
+            'Error',
+            'An error occurred while processing your request.',
+          );
+        }
         return;
       }
       const responseData = await response.json();
-      console.log("Login Response: ", response?.token);
       if (responseData) {
-        const Token = responseData?.token
-        const userId = responseData?.userId
-        const user_name = responseData?.name
-        const cnic = responseData?.cnic
-        const mobile_no = responseData?.mobile
-        const dealerCode = responseData?.dealerCode
-        await AsyncStorage.setItem("DELEAR", dealerCode)
-        await AsyncStorage.setItem("TOKEN", Token)
-        await AsyncStorage.setItem("USERID", userId)
-        await AsyncStorage.setItem("USERNAME", user_name)
-        await AsyncStorage.setItem("CNIC", cnic)
-        await AsyncStorage.setItem("MOBILE", mobile_no)
-        setLoading(false)
-        navigation.replace("Home");
+        console.log('res:: ', responseData?.cnic);
+        const Token = responseData?.token;
+        const cnic = responseData?.cnic;
+        await AsyncStorage.setItem('TOKEN', Token);
+        await AsyncStorage.setItem('CNIC', cnic);
+        setLoading(false);
+        navigation.replace('Home');
       } else {
         setLoading(false);
-        Alert.alert("Invalid Password", "Please check your password and try again.");
+        Alert.alert(
+          'Invalid Password',
+          'Please Enter your password and try again.',
+        );
       }
     } catch (error) {
       setLoading(false);
-      console.log("Error posting data:", error.message);
+      console.log('Error posting data:', error.message);
+      Alert.alert(
+        'Network Error',
+        'An error occurred while connecting to the server.',
+      );
     }
   };
 
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1, backgroundColor: Colors.blueBackground }}
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
+      <ScrollView>
 
-    ><ScrollView>
-        <View style={styles.Login_main_view}>
-          <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
-        </View>
+        <Image
+          style={styles.logo}
+          source={require('../../../Assets/Image/login_image.png')}
+          resizeMode="contain"
+        />
+
         <View style={styles.Login_view}>
           <View style={styles.unlock_view}>
-            <Icon style={styles.Unlock_Icon} name="finger-print-outline" size={70} color="black" />
-            <Icon style={styles.Unlock_Icon} name="finger-print-outline" size={70} color="black" />
+            <Image source={require('../../../Assets/Image/face.png')} style={{ height: 90, width: 90, resizeMode: 'contain' }} />
+            <Icon
+              style={styles.Unlock_Icon}
+              name="finger-print-outline"
+              size={70}
+              color="black"
+            />
           </View>
-          <View style={{ width: "70%", alignSelf: "center" }}>
+          <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
               <User_Icon
                 name="email"
@@ -108,8 +130,8 @@ const Signin = () => {
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Mobile No."
                 marginLeft={20}
-                value={mobile} // Set the value of the input field to name state
-                onChangeText={setMobile} // Update the name state when the text changes
+                value={mobile}
+                onChangeText={setMobile}
               />
             </View>
             <View style={styles.container}>
@@ -124,39 +146,32 @@ const Signin = () => {
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Password"
                 marginLeft={20}
-
-                value={password} // Set the value of the input field to password state
-                onChangeText={setPassword} // Update the password state when the text changes
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry
-
               />
             </View>
           </View>
-          <View
-            style={styles.remember_view}
-          >
+          <View style={styles.remember_view}>
             <TouchableOpacity
               style={styles.container1}
               onPress={handleCheckboxChange}
-              activeOpacity={0.8}
-            >
+              activeOpacity={0.8}>
               <View style={styles.checkbox}>
-                {isChecked ? (
-                  <Icon name="checkbox" size={24} color={Colors.text_Color} />
-                ) : (
-                  <Icon name="checkbox-outline" size={24} color='#789FC4' />
-                )}
+                <Icon
+                  name={isChecked ? 'checkbox-outline' : 'checkbox'}
+                  size={24}
+                  color={Colors.text_Color}
+                />
               </View>
               <Text style={styles.label}>Remember me</Text>
             </TouchableOpacity>
 
-
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("ForgetPassword")
-            }}>
-              <Text style={styles.forgotpassword}>
-                Forgot Password?
-              </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('ForgetPassword');
+              }}>
+              <Text style={styles.forgotpassword}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
           <CustomButton
@@ -165,35 +180,38 @@ const Signin = () => {
             ContainerStyle={{
               paddingVertical: 15,
               marginTop: 10,
-              justifyContent: "center",
-              alignSelf: "center",
+              justifyContent: 'center',
+              alignSelf: 'center',
               height: 50,
-              width: "80%",
+              width: '80%',
               borderRadius: 15,
               opacity: loading ? 0.7 : 1,
             }}
-            textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 16, fontFamily: '200' }}
-            title={loading ? "Loading..." : "Login"}
+            textStyle={{
+              color: Colors.text_Color,
+              textAlign: 'center',
+              fontSize: 16,
+              fontFamily: '200',
+            }}
+            title={loading ? 'Loading...' : 'Login'}
           />
           <CustomButton
             onPress={() => navigation.navigate('SignUp')}
             ContainerStyle={{
               paddingVertical: 15,
               marginTop: 10,
-              justifyContent: "center",
-              alignSelf: "center",
+              justifyContent: 'center',
+              alignSelf: 'center',
               height: 50,
-              width: "80%",
-              borderRadius: 15
+              width: '80%',
+              borderRadius: 15,
             }}
-            textStyle={{ color: Colors.text_Color, textAlign: "center" }}
+            textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
             title="SIGN UP"
           />
-
         </View>
       </ScrollView>
     </ImageBackground>
-
   );
 };
 

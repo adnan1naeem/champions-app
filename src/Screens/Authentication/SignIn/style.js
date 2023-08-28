@@ -9,15 +9,14 @@ let deviceWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
     Login_main_view: {
-        marginTop: "10%",
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center'
+
+
     },
     logo: {
         height: 100,
         width: "85%",
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: "10%",
     },
     startScreen_text: {
         color: Colors.text_Color,
@@ -29,7 +28,7 @@ export const styles = StyleSheet.create({
         paddingBottom: "10%",
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: "35%",
+        marginTop: "20%",
         borderRadius: 40,
         marginBottom: 15,
         alignSelf: "center",
@@ -94,14 +93,14 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     otp_not_received: {
-        flex:1,
+        flex: 1,
     },
     otp: {
         fontWeight: '600',
-         color: Colors.text_Color,
+        color: Colors.text_Color,
         fontSize: 14,
-        lineHeight:20,
-        textAlign:'center'
+        lineHeight: 20,
+        textAlign: 'center'
 
     },
     remember_view: {

@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import React, { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
 import { API_BASE_URL } from '../../../Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -82,8 +84,9 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
+      const Cnic_Number = await AsyncStorage.getItem("CNIC")
       const payload = {
-        cnic: '1111111111111',
+        cnic: Cnic_Number,
         start_date: endDate,
         end_date: startDate,
         divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,
