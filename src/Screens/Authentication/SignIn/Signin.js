@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CustomButton from '../../../Components/CustomButton';
@@ -23,6 +24,7 @@ const Signin = () => {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -152,11 +154,13 @@ const Signin = () => {
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Password"
+                autoCapitalize='none'
                 marginLeft={20}
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
+                secureTextEntry={isPasswordSecure}
               />
+              <MaterialIcons onPress={()=>setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
           </View>
           <View style={styles.remember_view}>

@@ -6,7 +6,6 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import {TextInput as Icon} from 'react-native-paper';
 import React, {useState} from 'react';
 import {Colors} from '../../../Utils/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -19,8 +18,8 @@ import {API_BASE_URL} from '../../../../Constants';
 const ChangePassword = ({route}) => {
   const [cnic, setCnic] = useState(route?.params?.cnic);
   const [password, setPassword] = useState('');
-  const [isPasswordSecure, setIsPasswordSecure] = useState(false);
-  const [isConfirmPasswordSecure, setIsConfirmPasswordSecure] = useState(false);
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const [isConfirmPasswordSecure, setIsConfirmPasswordSecure] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [incorrectPassword, setIncorrectPassword] = useState(false);
   const [emptyField, setEmptyField] = useState(false);
@@ -163,6 +162,7 @@ const ChangePassword = ({route}) => {
                 keyboardType="default"
                 secureTextEntry={isConfirmPasswordSecure}
               />
+
               <MaterialIcons onPress={()=>setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
             {incorrectPassword ? (
