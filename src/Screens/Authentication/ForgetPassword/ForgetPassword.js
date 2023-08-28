@@ -54,7 +54,7 @@ const ForgetPassword = () => {
             console.log("Login Response: ", response?.token);
             if (responseData) {
                 setLoading(false)
-                navigation.replace('PinCodeScreen')
+                navigation.replace('PinCodeScreen', {cnic: mobile});
             } else {
                 setLoading(false);
                 Alert.alert("Invalid Password", "Please check your password and try again.");

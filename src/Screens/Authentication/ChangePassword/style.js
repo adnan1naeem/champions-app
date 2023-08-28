@@ -74,6 +74,7 @@ export const styles = StyleSheet.create({
         color: Colors.text_Color
     },
     container: {
+        flexDirection:'row',
         borderBottomColor: Colors.text_Color,
         borderBottomWidth: 1,
         marginBottom: 10,

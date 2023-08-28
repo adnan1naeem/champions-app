@@ -5,94 +5,99 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
-} from "react-native";
-import React, { useState } from "react";
-import { Colors } from "../../../Utils/Colors";
-import CustomButton from "../../../Components/CustomButton";
-import { styles } from "./style";
-import { useNavigation } from "@react-navigation/native";
-import BackButton from "../../../Components/BackButton";
-import { API_BASE_URL } from "../../../../Constants";
-const ChangePassword = ({ route }) => {
-  const [cnic, setCnic] = useState("3520260422879");
-  const [password, setPassword] = useState("aassddff");
-  const [confirmPassword, setConfirmPassword] = useState("aassddff");
+} from 'react-native';
+import {TextInput as Icon} from 'react-native-paper';
+import React, {useState} from 'react';
+import {Colors} from '../../../Utils/Colors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import CustomButton from '../../../Components/CustomButton';
+import {styles} from './style';
+import {useNavigation} from '@react-navigation/native';
+import BackButton from '../../../Components/BackButton';
+import {API_BASE_URL} from '../../../../Constants';
+
+const ChangePassword = ({route}) => {
+  const [cnic, setCnic] = useState(route?.params?.cnic);
+  const [password, setPassword] = useState('');
+  const [isPasswordSecure, setIsPasswordSecure] = useState(false);
+  const [isConfirmPasswordSecure, setIsConfirmPasswordSecure] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [incorrectPassword, setIncorrectPassword] = useState(false);
   const [emptyField, setEmptyField] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const handleSignUp = async () => {
-    setLoading(true)
+    setLoading(true);
     setEmptyField(false);
-    if (cnic === "" || password === "" || confirmPassword === "") {
-      setLoading(false)
-      setEmptyField(true)
-    }
-    else {
+    if (cnic === '' || password === '' || confirmPassword === '') {
+      setLoading(false);
+      setEmptyField(true);
+    } else {
       if (password !== confirmPassword) {
-        setLoading(false)
-        setIncorrectPassword(true)
+        setLoading(false);
+        setIncorrectPassword(true);
         return;
-      }
-      else {
+      } else {
         setIncorrectPassword(false);
         try {
-          let data =
-            JSON.stringify({
-              cnic: cnic,
-              newPassword: password,
-              reEnterPassword: confirmPassword,
-              verificationCode: route?.params?.varificationCode
-            })
+          let data = JSON.stringify({
+            cnic: cnic,
+            newPassword: password,
+            reEnterPassword: confirmPassword,
+            verificationCode: route?.params?.varificationCode?.toString(),
+          });
           const config = {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: data,
           };
 
-          const response = await fetch("http://16.24.45.175:8000/resetPassword", config);
+          const response = await fetch(
+            'http://16.24.45.175:8000/resetPassword',
+            config,
+          );
           if (!response.ok) {
             setLoading(false);
             if (response?.status === 401) {
-              alert("Invalid Varification Code");
+              alert('Invalid Varification Code');
               navigation.pop();
-              return
+              return;
             }
-            alert("Invalid Password \nPlease check your password and try again.");
+            alert(
+              'Invalid Password \nPlease check your password and try again.',
+            );
             // throw new Error("Network response was not ok");
             return;
           }
           const responsedata = await response.json();
           if (response?.status === 200) {
-            setLoading(false)
+            setLoading(false);
             navigation.reset({
               index: 0,
-              routes: [{ name: 'Congratulation' }],
+              routes: [{name: 'Congratulation'}],
             });
+          } else if (response?.status !== 200) {
+            setLoading(false);
+            alert(responsedata?.message);
           }
-          else if (response?.status !== 200) {
-            setLoading(false)
-            alert(responsedata?.message)
-          }
-        }
-        catch (error) {
-          setLoading(fasle)
-          console.error("Error posting data:" + error?.message);
+        } catch (error) {
+          setLoading(fasle);
+          console.error('Error posting data:' + error?.message);
         }
       }
     }
-  }
+  };
 
-  const formatCnic = (input) => {
+  const formatCnic = input => {
     // Remove all non-numeric characters from the input
-    const numericInput = input.replace(/[^\d]/g, "");
-    let formattedCnic = "";
-    for (let i = 0; i < numericInput.length; i++) {
+    const numericInput = input?.replace(/[^\d]/g, '');
+    let formattedCnic = '';
+    for (let i = 0; i < numericInput?.length; i++) {
       if (i === 5 || i === 12) {
-        formattedCnic += "-";
+        formattedCnic += '-';
       }
       formattedCnic += numericInput[i];
     }
@@ -100,85 +105,92 @@ const ChangePassword = ({ route }) => {
     return formattedCnic;
   };
   const handleInputChange = (field, value) => {
-    if (field === "cnic") {
-      const formattedCnic = formatCnic(value);
-      setCnic(formattedCnic);
-    } else if (field === "password") {
+    if (field === 'password') {
       setPassword(value);
-    } else if (field === "confirmPassword") {
+    } else if (field === 'confirmPassword') {
       setConfirmPassword(value);
     }
   };
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1, backgroundColor: Colors.blueBackground }}
-    >
+      style={{flex: 1, backgroundColor: Colors.blueBackground}}>
       <ScrollView>
-
-        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+        <View style={{marginTop: 25, paddingHorizontal: 20}}>
           <BackButton navigation={navigation} />
         </View>
         <View style={styles.Login_main_view}>
-          <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+          <Image
+            style={styles.logo}
+            source={require('../../../Assets/Image/login_image.png')}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.Login_view}>
-
-          <View style={{ width: "70%", alignSelf: "center" }}>
-
+          <View style={{width: '70%', alignSelf: 'center'}}>
             <View style={styles.container}>
               <TextInput
+                editable={false}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="CNIC/Social Security"
-                value={cnic}
-                onChangeText={(text) => handleInputChange("cnic", text)}
-                keyboardType={"numeric"}
+                value={formatCnic(route?.params?.cnic?.toString())}
+                onChangeText={text => handleInputChange('cnic', text)}
+                keyboardType={'numeric'}
               />
             </View>
             <View style={styles.container}>
               <TextInput
                 style={styles.input}
+                autoCapitalize='none'
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Enter Password"
                 value={password}
-                onChangeText={(text) => handleInputChange("password", text)}
+                onChangeText={text => handleInputChange('password', text)}
                 keyboardType="default"
-                secureTextEntry
+                secureTextEntry={isPasswordSecure}
               />
+              <MaterialIcons onPress={()=>setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
             <View style={styles.container}>
               <TextInput
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Re-enter New Password"
+                autoCapitalize='none'
                 value={confirmPassword}
-                onChangeText={(text) => setConfirmPassword(text)}
+                onChangeText={text => setConfirmPassword(text)}
                 keyboardType="default"
-                secureTextEntry
+                secureTextEntry={isConfirmPasswordSecure}
               />
+              <MaterialIcons onPress={()=>setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
-            {incorrectPassword ? <Text style={{ color: 'red' }}>
-              Password is Incorrect
-            </Text> : null}
-            {emptyField ? <Text style={{ color: 'red' }}>
-              Field should not be Empty
-            </Text> : null}
+            {incorrectPassword ? (
+              <Text style={{color: 'red'}}>Password is Incorrect</Text>
+            ) : null}
+            {emptyField ? (
+              <Text style={{color: 'red'}}>Field should not be Empty</Text>
+            ) : null}
           </View>
           <CustomButton
             onPress={() => handleSignUp()}
             disabled={loading}
             ContainerStyle={{
               marginTop: 50,
-              justifyContent: "center",
-              alignSelf: "center",
-              width: "80%",
+              justifyContent: 'center',
+              alignSelf: 'center',
+              width: '80%',
               borderRadius: 15,
               opacity: loading ? 0.7 : 1,
             }}
             loading={loading}
-            textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 18, fontFamily: '200' }}
-            title={"Proceed"}
+            textStyle={{
+              color: Colors.text_Color,
+              textAlign: 'center',
+              fontSize: 18,
+              fontFamily: '200',
+            }}
+            title={'Proceed'}
           />
         </View>
       </ScrollView>

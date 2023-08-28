@@ -3,17 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import { Colors } from '../../../Utils/Colors';
 
-const OtpInput = () => {
-  const [otp, setOtp] = useState('');
-
-  const handleOtpChange = (code) => {
-    setOtp(code);
-  };
+const OtpInput = ({onPress}) => {
 
   return (
     <View style={styles.container}>
       <OTPTextInput
-        handleTextChange={handleOtpChange}
+        autoFocus={true}
+        handleTextChange={onPress}
         containerStyle={styles.otpContainer}
         textInputStyle={styles.otpInput}
         inputCount={5}
@@ -40,6 +36,7 @@ const styles = StyleSheet.create({
   },
   otpInput: {
     borderWidth: 1,
+    color: Colors.text_Color,
     borderColor: '#41CBEB',
     fontSize: 20,
     fontWeight: 'bold',

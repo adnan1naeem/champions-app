@@ -19,24 +19,10 @@ import CustomButton from '../../../Components/CustomButton';
 import OtpInput from '../OTP/OTP';
 import BackButton from '../../../Components/BackButton';
 
-const PinCodeScreen = () => {
+const PinCodeScreen = ({route}) => {
   const navigation = useNavigation();
-  const [isModalVisible, setisModalVisible] = useState(false);
-  const [varificationCode, setVarificationCode] = useState("62279");
-  let otpInput = useRef(null);
+  const [varificationCode, setVarificationCode] = useState("");
 
-  const clearText = () => {
-    otpInput.current.clear();
-  };
-
-  const setText = () => {
-    otpInput.current.setValue('1234');
-  };
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
@@ -60,7 +46,7 @@ const PinCodeScreen = () => {
                 fontSize: 20,
                 fontWeight: '300',
               }}>
-              33100-3217986-1
+              {route?.params?.cnic}
             </Text>
           </View>
           <View style={{width: '78%', alignSelf: 'center', marginVertical: 50}}>
@@ -75,7 +61,7 @@ const PinCodeScreen = () => {
                 }}>
                 Enter your 5 digit Pin
               </Text>
-              <OtpInput />
+              <OtpInput onPress={(text)=>setVarificationCode(text)}/>
             </View>
           </View>
 
@@ -90,7 +76,7 @@ const PinCodeScreen = () => {
             </Text>
           </View>
           <CustomButton
-            onPress={() => navigation.navigate('ChangePassword', {varificationCode: varificationCode})}
+            onPress={() => navigation.navigate('ChangePassword', {cnic: route?.params?.cnic, varificationCode: varificationCode})}
             ContainerStyle={styles.proceed_button}
             textStyle={{color: Colors.text_Color, textAlign: 'center'}}
             title="Proceed"
