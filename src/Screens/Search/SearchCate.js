@@ -23,44 +23,11 @@ const SearchCate = ({ route }) => {
   const [searchBatchlisting, setSearchBatchlisting] = useState([]);
   const [matchingRows, setMatchingRows] = useState([]);
   const [title, setTitle] = useState('');
-  const data = [
-    {
-      id: 1,
-      name: 'ac',
-      code: 'BQ5001001002',
-      title: 'Air Conditioner',
-      value: '50',
-    },
-    { id: 2, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
-    { id: 3, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
-    { id: 4, name: 'tv', code: 'BQ5001001005', title: 'Television', value: '30' },
-    {
-      id: 5,
-      name: 'ac',
-      code: 'BQ5001001002',
-      title: 'Air Conditioner',
-      value: '50',
-    },
-    {
-      id: 6,
-      name: 'ac',
-      code: 'BQ5001001002',
-      title: 'Air Conditioner',
-      value: '50',
-    },
-    {
-      id: 7,
-      name: 'ac',
-      code: 'BQ5001001002',
-      title: 'Air Conditioner',
-      value: '50',
-    },
-  ];
+
 
   useEffect(() => {
     (async () => {
       const Cnic_Number = await AsyncStorage.getItem("CNIC")
-      console.log("Search:: ", Cnic_Number);
       try {
         const config = {
           method: 'POST',
