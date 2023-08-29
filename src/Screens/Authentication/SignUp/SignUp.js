@@ -134,18 +134,22 @@ const SignUp = () => {
       };
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
-      setLoading(false); // Stop loading indicator
+      setLoading(false);
 
       if (!response.ok) {
         Alert.alert('Network Error', 'An error occurred while connecting to the server.');
       } else {
         const data = await response.json();
-        console.log("12432eds:: ", data);
+
         if (response?.status === 201) {
           Alert.alert('Message', 'Your registration will be completed within 24 hours.', [
             {
               text: 'OK',
               onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'SignIn' }],
+                });
                 console.log('signup response:: ', response);
 
               },
@@ -156,7 +160,7 @@ const SignUp = () => {
         }
       }
     } catch (error) {
-      setLoading(false); // Stop loading indicator
+      setLoading(false);
       Alert.alert('Error', 'An error occurred while processing your request. Please try again.');
       console.error('Error posting data: ', error?.message);
       throw error;

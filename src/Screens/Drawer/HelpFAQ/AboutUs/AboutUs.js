@@ -28,7 +28,7 @@ const AboutUs = ({ route }) => {
                             fontSize: 20,
                             fontWeight: '600',
                         }}>
-                        {!privacy ? 'About Us' : "Privacy And Policay"}
+                        {!privacy ? 'About Us' : "Privacy Policay"}
                     </Text>
                 </View>
                 {!privacy ? (

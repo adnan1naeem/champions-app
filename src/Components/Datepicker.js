@@ -36,7 +36,7 @@ const Datepicker = ({ onDateSelect }) => {
     if (value === '1 weekly') {
       const today = new Date();
       const oneWeekLater = new Date(today);
-      oneWeekLater.setDate(today.getDate() - 7);
+      oneWeekLater.setDate(today?.getDate() - 7);
       setStartDate(today);
       setEndDate(oneWeekLater);
       setModalVisible(false);
@@ -45,7 +45,7 @@ const Datepicker = ({ onDateSelect }) => {
     } else if (value === '2 week') {
       const today = new Date();
       const twoWeeksLater = new Date(today);
-      twoWeeksLater.setDate(today.getDate() - 14);
+      twoWeeksLater.setDate(today?.getDate() - 14);
       setStartDate(today);
       setEndDate(twoWeeksLater);
       setModalVisible(false);
@@ -53,7 +53,7 @@ const Datepicker = ({ onDateSelect }) => {
       return;
     } else if (value === '1 month') {
       const today = new Date();
-      const oneMonthAgo = moment(today).subtract(1, 'months').toDate();
+      const oneMonthAgo = moment(today)?.subtract(1, 'months')?.toDate();
       setStartDate(today);
       setEndDate(oneMonthAgo);
       setModalVisible(false);
@@ -61,7 +61,7 @@ const Datepicker = ({ onDateSelect }) => {
       return;
     } else if (value === '1 year') {
       const today = new Date();
-      const oneYearAgo = moment(today).subtract(1, 'years').toDate();
+      const oneYearAgo = moment(today)?.subtract(1, 'years')?.toDate();
       setStartDate(today);
       setEndDate(oneYearAgo);
       setModalVisible(false);

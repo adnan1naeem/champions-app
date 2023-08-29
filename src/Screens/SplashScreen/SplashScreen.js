@@ -13,7 +13,7 @@ const SplashScreen = () => {
       const getInitialRoute = async () => {
         const accessToken = await AsyncStorage.getItem("TOKEN");
         console.log("initial:: ", accessToken);
-        let initialRoute = "SignIn";
+        let initialRoute = "Home";
         if (accessToken) {
           initialRoute = "Home";
         }

@@ -23,36 +23,30 @@ const EditProfile = ({ route, }) => {
   const [Name, setName] = useState("");
   const [mobile, setmobile] = useState("");
   const [Address, setAddress] = useState("");
-  const [current_Userid, setcurrent_Userid] = useState()
   const [image, setImage] = useState(null); const navigation = useNavigation();
   const [imageSource, setImageSource] = useState(null);
   const [nameError, setNameError] = useState(false);
   const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
 
 
-  useEffect(() => {
-    (async () => {
-      const userId = await AsyncStorage.getItem('USERID');
-      setcurrent_Userid(userId)
-    })();
-  })
 
-  const updateUserProfile = async () => {
-    try {
-      const response = await axios.put(
-        `http://16.24.45.175:8000/updateUserProfile/${current_Userid}`,
-        {
-          name: Name,
-          mobile: mobile,
-          address: Address,
-        }
-      );
-      console.log("Update response:", response);
 
-    } catch (error) {
-      console.log("Error updating profile:", error);
-    }
-  };
+  // const updateUserProfile = async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `http://16.24.45.175:8000/updateUserProfile/${current_Userid}`,
+  //       {
+  //         name: Name,
+  //         mobile: mobile,
+  //         address: Address,
+  //       }
+  //     );
+  //     console.log("Update response:", response);
+
+  //   } catch (error) {
+  //     console.log("Error updating profile:", error);
+  //   }
+  // };
 
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -102,13 +96,7 @@ const EditProfile = ({ route, }) => {
     ]);
   };
 
-  useEffect(() => {
-    const getUserId = async () => {
-      const userId = await AsyncStorage.getItem('USERID');
-      setcurrent_Userid(userId)
-    };
-    getUserId();
-  }, []);
+
 
   return (
     <ImageBackground

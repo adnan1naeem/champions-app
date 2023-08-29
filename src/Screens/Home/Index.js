@@ -65,7 +65,6 @@ const Home = () => {
     },
   ];
 
-
   const handleModalClose = () => {
     setisVisible(false);
   };
@@ -73,7 +72,7 @@ const Home = () => {
   const handleSubmmit = (status, list) => {
     navigation.navigate('PaidCategory', {
       status: status,
-      list: list
+      list: list,
     });
   };
 
@@ -83,17 +82,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-
     (async () => {
-      const Cnic_Number = await AsyncStorage.getItem("CNIC")
+      const Cnic_Number = await AsyncStorage.getItem('CNIC');
       const payload = {
         cnic: Cnic_Number,
         start_date: endDate,
         end_date: startDate,
-        divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,
+        divCode:
+          selectedValue?.categoryCode === '0'
+            ? ''
+            : selectedValue?.categoryCode,
       };
 
-      console.log(JSON.stringify(payload, null, 2))
+      console.log(JSON.stringify(payload, null, 2));
 
       try {
         const response = await fetch(`${API_BASE_URL}/BatchListing`, {
@@ -143,7 +144,6 @@ const Home = () => {
         setapproved_ammount(total_approvedIncentiveAmount);
         setPaid_ammount(total_PaidIncentiveAmount);
         setpending_ammount(total_pendingIncentiveAmount);
-
       } catch (error) {
         console.error('Error:', error);
       }
@@ -153,7 +153,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       const payload = {
-        companyCode: "1000"
+        companyCode: '1000',
       };
 
       try {
@@ -166,12 +166,12 @@ const Home = () => {
         });
         const data = await response.json();
         let dataIs = {
-          _id: "11111",
-          categoryCode: "0",
-          categoryName: "All",
-          companyName: "Orient Electronics Pvt. Ltd.",
-          companyCode: "1000",
-        }
+          _id: '11111',
+          categoryCode: '0',
+          categoryName: 'All',
+          companyName: 'Orient Electronics Pvt. Ltd.',
+          companyCode: '1000',
+        };
         setCategory([dataIs, ...data?.category]);
       } catch (error) {
         console.error('Error:', error);
