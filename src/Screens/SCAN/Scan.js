@@ -45,7 +45,9 @@ const Scan = ({ navigation }) => {
     console.log("sucess scan:: ", e?.data);
     setbarCode(e?.data);
     setScanned(true);
-    handleSubmit();
+    if (e?.data?.length === 10) {
+      handleSubmitForScan(e?.data);
+    }
     setScanning(false);
     if (e?.data?.length !== 10) {
       alert("Selected Batch code is not valid");
@@ -67,10 +69,11 @@ const Scan = ({ navigation }) => {
     setScanning(false);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitForScan = async (barCode) => {
     const Cnic_Number = await AsyncStorage.getItem('CNIC');
     try {
       setLoading(true);
+      console.log(barCode);
 
       const config = {
         method: 'POST',
@@ -92,7 +95,49 @@ const Scan = ({ navigation }) => {
           alert('Invalid Batch Code. Batch character length must be 10');
         } else {
           console.log('Error:', data);
-          // alert(data?.error);
+          alert(data?.message);
+        }
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log('Error posting data:', error);
+
+
+      if (error.message.includes('Network request failed')) {
+        alert('Please check your SAP connection');
+      } else {
+        alert('An error occurred while connecting to the server.');
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    const Cnic_Number = await AsyncStorage.getItem('CNIC');
+    try {
+      setLoading(true);
+      console.log(barCode);
+
+      const config = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: barCode,
+          cnic: Cnic_Number,
+        }),
+      };
+      const response = await fetch(`${API_BASE_URL}/batchScan`, config);
+      console.log("reeeessw:: ", response);
+      const data = await response.json();
+      if (response.status === 201) {
+        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hour's" });
+      } else if (response.status !== 201) {
+        if (data?.error === 'Invalid batch length. Batch character length must be 10') {
+          alert('Invalid Batch Code. Batch character length must be 10');
+        } else {
+          console.log('Error:', data);
+          alert(data?.message);
         }
         setLoading(false);
       }
