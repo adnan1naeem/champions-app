@@ -15,6 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../../Utils/Colors';
 import { API_BASE_URL } from '../../../Constants';
 import BackButton from '../../Components/BackButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchCate = ({ route }) => {
   const navigation = useNavigation();
@@ -59,6 +60,7 @@ const SearchCate = ({ route }) => {
   useEffect(() => {
     (async () => {
       const Cnic_Number = await AsyncStorage.getItem("CNIC")
+      console.log("Search:: ", Cnic_Number);
       try {
         const config = {
           method: 'POST',

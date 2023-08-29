@@ -71,7 +71,6 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    alert('1')
     const Cnic_Number = await AsyncStorage.getItem('CNIC');
     try {
 
@@ -97,7 +96,7 @@ const Scan = ({ navigation }) => {
           alert('Invalid Batch Code. Batch character length must be 10');
         } else {
           console.log('Error:', data);
-          alert(data?.error);
+          // alert(data?.error);
         }
       }
     } catch (error) {

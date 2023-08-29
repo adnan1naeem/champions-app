@@ -15,8 +15,8 @@ import { Colors } from '../../../Utils/Colors';
 import Header from '../../../Components/Header/Header';
 import BackButton from '../../../Components/BackButton';
 // import { ScrollView } from 'react-native-gesture-handler';
-const HelpFAQ = ({navigation}) => {
- 
+const HelpFAQ = ({ navigation }) => {
+
 
 
     return (
@@ -35,7 +35,7 @@ const HelpFAQ = ({navigation}) => {
                     </Text>
                     <Text
                         style={{ fontSize: 12, fontWeight: '400', color: Colors.text_Color }}>
-                        Account,Setting,More
+                        Account,{' '}Setting,{' '}More
                     </Text>
                 </View>
                 <View style={styles.help_container}>
