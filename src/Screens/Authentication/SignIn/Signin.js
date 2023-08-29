@@ -37,14 +37,87 @@ const Signin = () => {
     return number;
   };
 
+  // const handleSignIn = async () => {
+  //   if (!mobile) {
+  //     Alert.alert('Field Required', 'Please enter mobile number.');
+  //     return;
+  //   } else if (!password) {
+  //     Alert.alert('Field Required', 'Please enter password.');
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const formattedMobile = formatMobileNumber(mobile);
+
+  //   try {
+  //     const data = {
+  //       mobile: formattedMobile,
+  //       password: password,
+  //     };
+
+  //     const config = {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(data),
+  //     };
+  //     const response = await fetch(`${API_BASE_URL}/login`, config);
+  //     if (!response.ok) {
+  //       setLoading(false);
+  //       if (response?.status === 401) {
+  //         // console.log("response:: ", response);
+  //         console.log(JSON.stringify(response, null, 2))
+
+  //         Alert.alert('Not Exist', 'Account do not exist.');
+  //       } else {
+  //         Alert.alert(
+  //           'Error',
+  //           'An error occurred while processing your request.',
+  //         );
+  //       }
+  //       return;
+  //     }
+  //     const responseData = await response.json();
+  //     if (responseData) {
+  //       const Token = responseData?.token;
+  //       const cnic = responseData?.cnic;
+  //       await AsyncStorage.setItem('TOKEN', Token);
+  //       await AsyncStorage.setItem('CNIC', cnic);
+  //       await AsyncStorage.setItem('USER', JSON.stringify(responseData));
+  //       setLoading(false);
+  //       navigation.replace('Home');
+  //     } else {
+  //       setLoading(false);
+  //       Alert.alert(
+  //         'Invalid Password',
+  //         'Please Enter your password and try again.',
+  //       );
+  //     }
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log('Error posting data:', error);
+  //     Alert.alert(
+  //       'Network Error',
+  //       'An error occurred while connecting to the server.',
+  //     );
+  //   }
+  // };
+
+
+
   const handleSignIn = async () => {
+    let errorMessage = null;
+
     if (!mobile) {
-      Alert.alert('Field Required', 'Please enter mobile number.');
-      return;
+      errorMessage = 'Please enter mobile number.';
     } else if (!password) {
-      Alert.alert('Field Required', 'Please enter password.');
+      errorMessage = 'Please enter password.';
+    }
+    if (errorMessage) {
+      Alert.alert('Field Required', errorMessage);
       return;
     }
+
     setLoading(true);
     const formattedMobile = formatMobileNumber(mobile);
 
@@ -61,45 +134,53 @@ const Signin = () => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(`${API_BASE_URL}/login`, config);
+
+      const response = await fetch('http://16.24.45.175:8000/login', config);
       if (!response.ok) {
         setLoading(false);
         if (response?.status === 401) {
-          Alert.alert('Not Exist', 'Account do not exist.');
-        } else {
-          Alert.alert(
-            'Error',
-            'An error occurred while processing your request.',
-          );
+          const responseData = await response?.json();
+          errorMessage = responseData?.message || responseData?.error;
         }
-        return;
-      }
-      const responseData = await response.json();
-      if (responseData) {
-        console.log('res:: ', responseData?.cnic);
-        const Token = responseData?.token;
-        const cnic = responseData?.cnic;
-        await AsyncStorage.setItem('TOKEN', Token);
-        await AsyncStorage.setItem('CNIC', cnic);
-        await AsyncStorage.setItem('USER', JSON.stringify(responseData));
-        setLoading(false);
-        navigation.replace('Home');
       } else {
-        setLoading(false);
-        Alert.alert(
-          'Invalid Password',
-          'Please Enter your password and try again.',
-        );
+        const responseData = await response?.json();
+        console.log("responce hh:: ", responseData);
+        if (responseData) {
+          const Token = responseData?.token;
+          const cnic = responseData?.cnic;
+          await AsyncStorage.setItem('TOKEN', Token);
+          await AsyncStorage.setItem('CNIC', cnic);
+          await AsyncStorage.setItem('USER', JSON.stringify(responseData));
+          navigation.replace('Home');
+        } else {
+          errorMessage = 'Invalid Password';
+        }
       }
     } catch (error) {
-      setLoading(false);
-      console.log('Error posting data:', error?.message);
-      Alert.alert(
-        'Network Error',
-        'An error occurred while connecting to the server.',
-      );
+      console.log('Error posting data: ', error);
+      errorMessage = 'An error occurred while connecting to the server.';
+    }
+
+    setLoading(false);
+    if (errorMessage) {
+      Alert.alert('Error', errorMessage);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <ImageBackground

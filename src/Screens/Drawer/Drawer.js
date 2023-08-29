@@ -18,17 +18,15 @@ const DrawerScreen = () => {
     };
     useEffect(() => {
         (async () => {
-
             const user = await AsyncStorage.getItem('USER');
             if (user) {
                 const parsedUser = JSON.parse(user);
                 setUserInfo(parsedUser);
             }
-
         })();
     }, []);
 
-    console.log("wqdwqe:: ", user_Info?.name);
+
 
 
 
@@ -65,7 +63,7 @@ const DrawerScreen = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate("EditProfile")
+                    navigation.navigate("EditProfile", { userInfo: user_Info })
                 }} style={{}}>
                     <FontAwesome5 name="user-edit" color={Colors.text_Color} size={20} style={{ marginTop: 12 }} />
                 </TouchableOpacity>
@@ -81,9 +79,9 @@ const DrawerScreen = () => {
                         <Image source={require('../../Assets/Image/amir.jpg')} style={{ height: 60, width: 50, borderRadius: 30 }} />
                     </View>
                     <View style={{ marginLeft: 15, justifyContent: 'center' }}>
-                        <Text style={styles.user_detail}>{user_Info?.name}</Text>
-                        <Text style={styles.user_detail}>{user_Info?.mobile}</Text>
-                        {/* <Text style={styles.user_detail}>Lahore Center</Text> */}
+                        <Text style={styles.user_detail}>Name: {user_Info?.name}</Text>
+                        <Text style={styles.user_detail}>Mobile: {user_Info?.mobile}</Text>
+                        <Text style={styles.user_detail}>Cnic: {user_Info?.cnic}</Text>
                     </View>
                 </View>
             </View>

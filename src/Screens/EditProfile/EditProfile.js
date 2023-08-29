@@ -19,7 +19,7 @@ import Header from "../../Components/Header/Header";
 import BackButton from "../../Components/BackButton";
 
 
-const EditProfile = () => {
+const EditProfile = ({ route, }) => {
   const [Name, setName] = useState("");
   const [mobile, setmobile] = useState("");
   const [Address, setAddress] = useState("");
@@ -27,14 +27,15 @@ const EditProfile = () => {
   const [image, setImage] = useState(null); const navigation = useNavigation();
   const [imageSource, setImageSource] = useState(null);
   const [nameError, setNameError] = useState(false);
+  const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
+
 
   useEffect(() => {
-    const getUserId = async () => {
+    (async () => {
       const userId = await AsyncStorage.getItem('USERID');
       setcurrent_Userid(userId)
-    };
-    getUserId();
-  }, []);
+    })();
+  })
 
   const updateUserProfile = async () => {
     try {
@@ -134,9 +135,10 @@ const EditProfile = () => {
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Name"
-                value={Name}
+                value={User_Info?.name}
                 onChangeText={(text) => setName(text)}
                 keyboardType="default"
+                editable={false}
               />
             </View>
             <View style={nameError ? styles?.inputError : styles.container}>
@@ -144,19 +146,22 @@ const EditProfile = () => {
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="mobile"
-                value={mobile}
+                value={User_Info?.mobile}
                 onChangeText={(text) => setmobile(text)}
                 keyboardType="default"
+                editable={false}
               />
             </View>
             <View style={styles.container}>
               <TextInput
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
-                placeholder="Address"
-                value={Address}
+                placeholder="Cnic"
+                value={User_Info?.cnic}
                 onChangeText={(text) => setAddress(text)}
                 keyboardType="default"
+                editable={false}
+
               />
             </View>
           </View>

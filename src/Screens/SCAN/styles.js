@@ -20,10 +20,10 @@ export const styles = StyleSheet.create({
   },
   unlock_view: {
     backgroundColor: '#4279BC',
-    width: '80%',
+    width: '85%',
     height: 50,
     borderRadius: 10,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignSelf: 'center',
     borderWidth: 1.5,
     borderLeftColor: '#3DB2DE',

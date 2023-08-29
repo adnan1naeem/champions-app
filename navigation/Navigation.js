@@ -40,20 +40,6 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = ({ navigation }) => {
 
-  // const [initialRoute, setInitialRoute] = useState();
-
-  // useEffect(() => {
-  //   const getInitialRoute = async () => {
-  //     const accessToken = await AsyncStorage.getItem("TOKEN");
-  //     if (accessToken) {
-  //       setInitialRoute("Home");
-  //     } else {
-  //       setInitialRoute("SignIn");  
-  //     }
-  //   };
-  //   getInitialRoute();
-  // }, []);
-
   return (
     <Stack.Navigator initialRouteName={"SplashScreen"}>
       <Stack.Screen

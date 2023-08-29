@@ -56,7 +56,7 @@ const SignUp = () => {
       }
     } else if (field === 'cnic') {
       const formattedCnic = formatCnic(value);
-      setCnic(formattedCnic);
+      setCnic(value);
     } else if (field === 'mobileNo') {
       const numericRegex = /^[0-9]*$/;
       if (numericRegex.test(value)) {
@@ -86,27 +86,32 @@ const SignUp = () => {
     } else if (!mobile) {
       Alert.alert('Field Required', 'Please enter mobile.');
       return;
-    } else if (!password) {
-      Alert.alert('Field Required', 'Please enter password.');
+    } else if (!dealerCode) {
+      Alert.alert('Field Required', 'Please enter dealerCode.');
       return;
     } else if (isChecked === false) {
       Alert.alert('Agree the terms and condition.');
       return;
-    } else if (!dealerCode) {
-      Alert.alert('Field Required', 'Please enter dealerCode.');
+    } else if (!password) {
+      Alert.alert('Field Required', 'Please enter password.');
       return;
-    } else if (dealerCode === '000') {
-      Alert.alert('Invalid Dealer Code', 'Dealer code cannot be "000".');
-      return;
-    } else if (dealerCode.length >= 3 && dealerCode.slice(0, 3) === '000') {
-      Alert.alert('Invalid Dealer Code', 'First 3 digits cannot be "000".');
-      return;
+    } else if (dealerCode.length != 7) {
+      Alert.alert('Field Required', 'Please enter 7 digit delear code.');
     } else {
       postUserData();
     }
   };
 
+  const formatMobileNumber = number => {
+    if (number?.startsWith('0')) {
+      return '92' + number?.slice(1);
+    }
+    return number;
+  };
+
   const postUserData = async () => {
+    const formattedMobile = formatMobileNumber(mobile);
+    // Alert.alert('asdawdedsjn')
     try {
       const config = {
         method: 'POST',
@@ -116,7 +121,7 @@ const SignUp = () => {
         body: JSON.stringify({
           name: Name,
           cnic: cnic,
-          mobile: mobile,
+          mobile: formattedMobile,
           dealerCode: dealerCode,
           password: password,
           companyCode: value,
@@ -125,9 +130,15 @@ const SignUp = () => {
       };
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
+      if (!response.ok) {
+        Alert.alert('Network Error',
+          'An error occurred while connecting to the server.',);
+      }
       const data = await response.json();
-      console.log('dataa:: ', response);
+      console.log("12432eds:: ", data);
       if (response?.status === 201) {
+        Alert.alert('201')
+
         console.log('signup responce:: ', response);
         navigation.reset({
           index: 0,
@@ -137,7 +148,9 @@ const SignUp = () => {
         Alert.alert(data?.message);
       }
     } catch (error) {
-      console.error('Error posting data:', error?.message);
+
+      Alert.alert('error')
+      console.error('Error posting data: ', error?.message);
       throw error;
     }
   };
@@ -146,9 +159,9 @@ const SignUp = () => {
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: 'Orient Electronics Pvt. Ltd', value: '1000' },
-    { label: 'Orient Material Pvt.Ltd', value: '2020' },
-    { label: 'Adnan Corporation', value: '3000' },
-    { label: 'Orient Apparel', value: '8080' },
+    // { label: 'Orient Material Pvt.Ltd', value: '2020' },
+    // { label: 'Adnan Corporation', value: '3000' },
+    // { label: 'Orient Apparel', value: '8080' },
   ]);
 
   return (
@@ -188,11 +201,11 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: 228, color: 'white', zIndex: 1 }}
+                containerStyle={{ width: 238, color: 'white', zIndex: 1 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
-                  height: 180,
+                  paddingVertical: 5,
                   zIndex: 999,
                 }}
                 TickIconComponent={() => (
@@ -219,6 +232,7 @@ const SignUp = () => {
                 value={cnic}
                 onChangeText={text => handleInputChange('cnic', text)}
                 keyboardType={'numeric'}
+                maxLength={13}
               />
             </View>
             <View style={mobileNo ? styles?.inputError : styles.container}>
@@ -229,6 +243,7 @@ const SignUp = () => {
                 value={mobile}
                 onChangeText={text => handleInputChange('mobileNo', text)}
                 keyboardType="numeric"
+                maxLength={12}
               />
             </View>
             <View style={styles.container}>
@@ -237,8 +252,9 @@ const SignUp = () => {
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Dealer Code"
                 value={dealerCode}
-                onChangeText={text => setDealerCode(text)}
+                onChangeText={(text) => setDealerCode(text)}
                 keyboardType="default"
+                maxLength={7}
               />
             </View>
             <View style={styles.container}>

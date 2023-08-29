@@ -13,7 +13,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar
-        backgroundColor={Colors.blue}
+        backgroundColor={Colors.blueBar}
         barStyle="light-content"
       />
       <Navigation />

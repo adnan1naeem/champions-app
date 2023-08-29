@@ -41,16 +41,26 @@ const Scan = ({ navigation }) => {
   }, []);
 
   const onSuccess = e => {
-    setbarCode(e.data);
+    console.log("sucess scan:: ", e?.data);
+    setbarCode(e?.data);
     setScanned(true);
+
     handleSubmit();
     setScanning(false);
   };
+  useEffect(() => {
+    onSuccess()
+    if (barCode?.length >= 10) {
+      handleSubmit();
+      setScanning(false);
+    }
+  }, [barCode])
 
   const handleScanButtonPress = () => {
     if (barCode) {
       handleSubmit();
       setScanning(false);
+
     } else {
       setScanning(true);
     }
@@ -61,43 +71,47 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const Cnic_Number = await AsyncStorage.getItem("CNIC")
+    alert('1')
+    const Cnic_Number = await AsyncStorage.getItem('CNIC');
     try {
+
       const config = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-
         body: JSON.stringify({
           code: barCode,
           cnic: Cnic_Number,
         }),
       };
+
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
+      console.log("reeeessw:: ", response);
       const data = await response.json();
-      if (response?.status === 201) {
-        console.log('Responce:: ', response);
-        alert('Batch Code Submit');
+      if (response.status === 201) {
+        alert('Batch Code Submitted');
         navigation.navigate('Home');
-      } else if (response?.status !== 201) {
-        if (
-          data?.error ===
-          'Invalid batch length. Batch character length must be 10'
-        ) {
+      } else if (response.status !== 201) {
+        if (data?.error === 'Invalid batch length. Batch character length must be 10') {
           alert('Invalid Batch Code. Batch character length must be 10');
         } else {
-          console.log('error: ', data);
+          console.log('Error:', data);
+          alert(data?.error);
         }
       }
-    } catch (e) {
-      if (e.message.includes('Network request failed')) {
-        alert('Please check your internet connection');
+    } catch (error) {
+      console.log('Error posting data:', error);
+
+
+      if (error.message.includes('Network request failed')) {
+        alert('Please check your SAP connection');
       } else {
-        console.log('Other error:', e);
+        alert('An error occurred while connecting to the server.');
       }
     }
   };
+
 
   return (
     <ScrollView
@@ -167,7 +181,7 @@ const Scan = ({ navigation }) => {
           </View>
         )}
 
-        {scanned && (
+        {scanned && scanning === true && (
           <View style={styles.buttonContainer}>
             <Button
               title="Tap to Scan Again"

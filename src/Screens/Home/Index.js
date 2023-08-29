@@ -87,7 +87,7 @@ const Home = () => {
     (async () => {
       const Cnic_Number = await AsyncStorage.getItem("CNIC")
       const payload = {
-        cnic: '1111111111111',
+        cnic: Cnic_Number,
         start_date: endDate,
         end_date: startDate,
         divCode: selectedValue?.categoryCode === '0' ? "" : selectedValue?.categoryCode,
