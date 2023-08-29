@@ -20,8 +20,8 @@ const Datepicker = ({ onDateSelect }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dateContainer, setDateContainer] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const options = [
     { label: '1 week', value: '1 weekly' },
@@ -203,7 +203,7 @@ const Datepicker = ({ onDateSelect }) => {
                   }}>
                   <DateTimePicker
                     testID="endDateTimePicker"
-                    value={endDate}
+                    value={endDate || new Date()}
                     mode="date"
                     display="default"
                     onChange={onEndDateChange}
@@ -218,7 +218,7 @@ const Datepicker = ({ onDateSelect }) => {
                   onPress={() => showStartdatePicker()}>
                   <DateTimePicker
                     testID="startDateTimePicker"
-                    value={startDate}
+                    value={startDate || new Date()}
                     mode="date"
                     display="default"
                     onChange={onStartDateChange}
@@ -256,7 +256,7 @@ const Datepicker = ({ onDateSelect }) => {
               {showStartPicker && (
                 <DateTimePicker
                   testID="startDateTimePicker"
-                  value={startDate}
+                  value={startDate || new Date()}
                   mode="date"
                   display="default"
                   onChange={onStartDateChange}
@@ -265,7 +265,7 @@ const Datepicker = ({ onDateSelect }) => {
               {showEndPicker && (
                 <DateTimePicker
                   testID="endDateTimePicker"
-                  value={endDate}
+                  value={endDate || new Date()}
                   mode="date"
                   display="default"
                   onChange={onEndDateChange}
