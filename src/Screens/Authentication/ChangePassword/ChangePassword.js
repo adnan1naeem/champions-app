@@ -6,16 +6,16 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Colors} from '../../../Utils/Colors';
+import React, { useState } from 'react';
+import { Colors } from '../../../Utils/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CustomButton from '../../../Components/CustomButton';
-import {styles} from './style';
-import {useNavigation} from '@react-navigation/native';
+import { styles } from './style';
+import { useNavigation } from '@react-navigation/native';
 import BackButton from '../../../Components/BackButton';
-import {API_BASE_URL} from '../../../../Constants';
+import { API_BASE_URL } from '../../../../Constants';
 
-const ChangePassword = ({route}) => {
+const ChangePassword = ({ route }) => {
   const [cnic, setCnic] = useState(route?.params?.cnic);
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
@@ -76,7 +76,7 @@ const ChangePassword = ({route}) => {
             setLoading(false);
             navigation.reset({
               index: 0,
-              routes: [{name: 'Congratulation'}],
+              routes: [{ name: 'Congratulation', params: { message: "Congratulations your password has been changed successfully" } }],
             });
           } else if (response?.status !== 200) {
             setLoading(false);
@@ -113,9 +113,9 @@ const ChangePassword = ({route}) => {
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{flex: 1, backgroundColor: Colors.blueBackground}}>
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{marginTop: 25, paddingHorizontal: 20}}>
+        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
           <BackButton navigation={navigation} />
         </View>
         <View style={styles.Login_main_view}>
@@ -126,7 +126,7 @@ const ChangePassword = ({route}) => {
           />
         </View>
         <View style={styles.Login_view}>
-          <View style={{width: '70%', alignSelf: 'center'}}>
+          <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
               <TextInput
                 editable={false}
@@ -149,7 +149,7 @@ const ChangePassword = ({route}) => {
                 keyboardType="default"
                 secureTextEntry={isPasswordSecure}
               />
-              <MaterialIcons onPress={()=>setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
+              <MaterialIcons onPress={() => setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
             <View style={styles.container}>
               <TextInput
@@ -163,13 +163,13 @@ const ChangePassword = ({route}) => {
                 secureTextEntry={isConfirmPasswordSecure}
               />
 
-              <MaterialIcons onPress={()=>setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
+              <MaterialIcons onPress={() => setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
             </View>
             {incorrectPassword ? (
-              <Text style={{color: 'red'}}>Password is Incorrect</Text>
+              <Text style={{ color: 'red' }}>Password is Incorrect</Text>
             ) : null}
             {emptyField ? (
-              <Text style={{color: 'red'}}>Field should not be Empty</Text>
+              <Text style={{ color: 'red' }}>Field should not be Empty</Text>
             ) : null}
           </View>
           <CustomButton

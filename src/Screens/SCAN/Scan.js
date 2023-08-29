@@ -26,7 +26,8 @@ const Scan = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
-  const [barCode, setbarCode] = useState();
+  const [loading, setLoading] = useState(false);
+  const [barCode, setbarCode] = useState("");
   const [cnic, setCnic] = useState();
   const [mobile, setMobile] = useState();
   useEffect(() => {
@@ -44,9 +45,11 @@ const Scan = ({ navigation }) => {
     console.log("sucess scan:: ", e?.data);
     setbarCode(e?.data);
     setScanned(true);
-
     handleSubmit();
     setScanning(false);
+    if (e?.data?.length !== 10) {
+      alert("Selected Batch code is not valid");
+    }
   };
 
   useEffect(() => {
@@ -57,13 +60,7 @@ const Scan = ({ navigation }) => {
   }, [barCode])
 
   const handleScanButtonPress = () => {
-    if (barCode) {
-      handleSubmit();
-      setScanning(false);
-
-    } else {
-      setScanning(true);
-    }
+    setScanning(true);
   };
 
   const handleCloseButtonPress = () => {
@@ -73,6 +70,7 @@ const Scan = ({ navigation }) => {
   const handleSubmit = async () => {
     const Cnic_Number = await AsyncStorage.getItem('CNIC');
     try {
+      setLoading(true);
 
       const config = {
         method: 'POST',
@@ -84,14 +82,11 @@ const Scan = ({ navigation }) => {
           cnic: Cnic_Number,
         }),
       };
-      alert('hhfh' +barCode)
-
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
       console.log("reeeessw:: ", response);
       const data = await response.json();
       if (response.status === 201) {
-        alert('Batch Code Submitted');
-        navigation.navigate('Home');
+        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hour's" });
       } else if (response.status !== 201) {
         if (data?.error === 'Invalid batch length. Batch character length must be 10') {
           alert('Invalid Batch Code. Batch character length must be 10');
@@ -99,6 +94,7 @@ const Scan = ({ navigation }) => {
           console.log('Error:', data);
           // alert(data?.error);
         }
+        setLoading(false);
       }
     } catch (error) {
       console.log('Error posting data:', error);
@@ -133,7 +129,11 @@ const Scan = ({ navigation }) => {
             <View style={styles.unlock_view}>
               <TextInput
                 value={barCode}
-                onChangeText={setbarCode}
+                onChangeText={(text) => {
+                  let barCodeIS = text?.replaceAll(/\s/g, '')
+                  setbarCode(barCodeIS)
+                }}
+                maxLength={10}
                 placeholder="Enter Code Manually"
                 placeholderTextColor={Colors.text_Color}
                 style={{ paddingHorizontal: 10, fontSize: 17, color: Colors.text_Color }}
@@ -166,12 +166,14 @@ const Scan = ({ navigation }) => {
                 justifyContent: 'center',
               }}>
               <CustomButton
+                disabled={loading}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
                 title="QR CODE"
               />
               <CustomButton
+                disabled={loading}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}

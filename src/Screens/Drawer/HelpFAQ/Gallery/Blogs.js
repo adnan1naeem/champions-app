@@ -27,7 +27,7 @@ const ProductManuals = () => {
                     <BackButton navigation={navigation} />
                 </View>
                 <Image source={require('../../../../Assets/Image/Blog.png')} style={{ height: 50, width: 50, resizeMode: 'contain', alignSelf: 'center', tintColor: Colors.White, }} />
-                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 10, color: Colors.text_Color }}>Blog</Text>
+                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 10, color: Colors.text_Color }}>Blogs</Text>
                 <View style={[styles.Login_view, { paddingBottom: 40 }]}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 }}>

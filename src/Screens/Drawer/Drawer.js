@@ -26,8 +26,12 @@ const DrawerScreen = () => {
         })();
     }, []);
 
-
-
+    const formatMobileNumber = number => {
+        if (number?.startsWith('92')) {
+            return '0' + number.slice(2);
+        }
+        return number;
+    };
 
 
     const SignOut = async () => {
@@ -80,7 +84,7 @@ const DrawerScreen = () => {
                     </View>
                     <View style={{ marginLeft: 15, justifyContent: 'center' }}>
                         <Text style={styles.user_detail}>{user_Info?.name}</Text>
-                        <Text style={styles.user_detail}>{user_Info?.mobile}</Text>
+                        <Text style={styles.user_detail}>{formatMobileNumber(user_Info?.mobile)}</Text>
                         <Text style={styles.user_detail}>{user_Info?.cnic}</Text>
                     </View>
                 </View>

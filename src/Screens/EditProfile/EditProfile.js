@@ -157,7 +157,7 @@ const EditProfile = ({ route, }) => {
 
           </View>
           <CustomButton
-            onPress={() => updateUserProfile()}
+            // onPress={() => updateUserProfile()}
             ContainerStyle={{
               paddingVertical: 15,
               justifyContent: "center",

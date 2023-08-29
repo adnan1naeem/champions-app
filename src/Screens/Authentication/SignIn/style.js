@@ -79,6 +79,7 @@ export const styles = StyleSheet.create({
     input: {
         flex: 1,
         color: Colors.text_Color,
+        textTransform: 'none',
         // marginTop: 10,
         fontSize: 20,
         fontWeight: '200',

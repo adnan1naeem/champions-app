@@ -31,7 +31,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-
   const [selectedOption, setSelectedOption] = useState(null);
   const navigation = useNavigation();
 
@@ -81,7 +80,6 @@ const SignUp = () => {
     return number;
   };
 
-
   const handleSignUp = () => {
     if (!value) {
       Alert.alert('Please select a company.');
@@ -94,6 +92,9 @@ const SignUp = () => {
       return;
     } else if (!mobile) {
       Alert.alert('Field Required', 'Please enter mobile.');
+      return;
+    } else if (mobile?.length < 11) {
+      Alert.alert('Mobile Number', 'Please enter valid mobile number.');
       return;
     } else if (!dealerCode) {
       Alert.alert('Field Required', 'Please enter dealerCode.');
@@ -137,31 +138,30 @@ const SignUp = () => {
       setLoading(false);
 
       if (!response.ok) {
-        Alert.alert('Network Error', 'An error occurred while connecting to the server.');
+        if (response?.status === 403) {
+          const data = await response.json();
+          alert(data?.message);
+          return;
+        }
+        Alert.alert("Network Error!", "Unable to connect to server, \n Please try again later");
       } else {
         const data = await response.json();
 
         if (response?.status === 201) {
-          Alert.alert('Message', 'Your registration will be completed within 24 hours.', [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'SignIn' }],
-                });
-                console.log('signup response:: ', response);
-
-              },
-            },
-          ]);
+          navigation.replace('Congratulation', {
+            message:
+              'Your registration will be completed within next 24 hours.',
+          });
         } else if (response?.status !== 201) {
           Alert.alert(data?.message);
         }
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert('Error', 'An error occurred while processing your request. Please try again.');
+      Alert.alert(
+        'Error',
+        'An error occurred while processing your request. Please try again.',
+      );
       console.error('Error posting data: ', error?.message);
       throw error;
     }
@@ -198,7 +198,6 @@ const SignUp = () => {
               </Text>
             </View>
 
-
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
                 style={styles.input}
@@ -231,6 +230,28 @@ const SignUp = () => {
                 maxLength={12}
               />
             </View>
+            <View style={styles.container}>
+              <TextInput
+                style={styles.input}
+                placeholderTextColor={Colors.text_Color}
+                placeholder="Dealer Code"
+                value={dealerCode}
+                onChangeText={text => setDealerCode(text)}
+                keyboardType="numeric"
+                maxLength={7}
+              />
+            </View>
+            <View style={styles.container}>
+              <TextInput
+                style={styles.input}
+                placeholderTextColor={Colors.text_Color}
+                placeholder="Password"
+                value={password}
+                onChangeText={text => handleInputChange('password', text)}
+                keyboardType="default"
+                secureTextEntry
+              />
+            </View>
             <View style={[styles.container, { zIndex: 1 }]}>
               <DropDownPicker
                 open={open}
@@ -246,7 +267,7 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: 238, color: 'white', zIndex: 1 }}
+                containerStyle={{ width: "100%", color: 'white', zIndex: 1 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
@@ -257,28 +278,6 @@ const SignUp = () => {
                   <FontAwesome6 name="check" color={Colors.text_Color} />
                 )}
                 arrowIconStyle={{ tintColor: Colors.text_Color }}
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Dealer Code"
-                value={dealerCode}
-                onChangeText={(text) => setDealerCode(text)}
-                keyboardType="numeric"
-                maxLength={7}
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Password"
-                value={password}
-                onChangeText={text => handleInputChange('password', text)}
-                keyboardType="default"
-                secureTextEntry
               />
             </View>
           </View>
@@ -318,7 +317,6 @@ const SignUp = () => {
             </TouchableOpacity>
           </View>
           <CustomButton
-
             onPress={() => handleSignUp()}
             ContainerStyle={{
               paddingVertical: 15,
@@ -333,9 +331,8 @@ const SignUp = () => {
               fontSize: 16,
               fontFamily: '200',
             }}
-            title={loading ? 'Loading...' : "Proceed"}
+            title={loading ? 'Loading...' : 'Proceed'}
             disabled={loading}
-
           />
           <TouchableOpacity
             style={styles.signin}
