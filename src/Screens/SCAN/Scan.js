@@ -48,8 +48,8 @@ const Scan = ({ navigation }) => {
     handleSubmit();
     setScanning(false);
   };
+
   useEffect(() => {
-    onSuccess()
     if (barCode?.length >= 10) {
       handleSubmit();
       setScanning(false);
@@ -84,6 +84,7 @@ const Scan = ({ navigation }) => {
           cnic: Cnic_Number,
         }),
       };
+      alert('hhfh' +barCode)
 
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
       console.log("reeeessw:: ", response);
