@@ -1,7 +1,7 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import {Colors} from '../Utils/Colors';
-import {Badge} from 'react-native-elements';
+import { Colors } from '../Utils/Colors';
+import { Badge } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -12,9 +12,11 @@ const CustomButton = ({
   ContainerStyle,
   Notification,
   textStyle,
+  disabled
 }) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={ContainerStyle ? ContainerStyle : styles.Container}>
       {Notification && (
@@ -29,17 +31,17 @@ const CustomButton = ({
         <LinearGradient
           colors={['#17b8f5', '#619dea']}
           style={styles.gradient}
-          start={{x: 0, y: 0}} // Start from the left side
-          end={{x: 1, y: 0}} // End at the right side
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
         >
-          <ActivityIndicator style={{}} size={"small"} color= {Colors.White} />
+          <ActivityIndicator style={{}} size={"small"} color={Colors.White} />
         </LinearGradient>
       ) : (
         <LinearGradient
           colors={['#17b8f5', '#619dea']}
           style={styles.gradient}
-          start={{x: 0, y: 0}} // Start from the left side
-          end={{x: 1, y: 0}} // End at the right side
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
         >
           <Text style={textStyle ? textStyle : styles.title}>{title}</Text>
         </LinearGradient>

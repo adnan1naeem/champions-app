@@ -115,7 +115,7 @@ const EditProfile = ({ route, }) => {
       source={require('../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{ paddingHorizontal: 20 }}>
+        <View style={{ paddingHorizontal: 10 }}>
           <Header />
           <BackButton navigation={navigation} />
         </View>

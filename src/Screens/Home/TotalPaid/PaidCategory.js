@@ -56,7 +56,7 @@ const PaidCategory = ({ route, navigation }) => {
         source={require('../../../Assets/Image/background_image.png')}
         style={styles.container}
         resizeMode="cover">
-        <View style={{ paddingHorizontal: 15 }}>
+        <View style={{ paddingHorizontal: 10 }}>
           <Header value={true} />
           <BackButton navigation={navigation} />
         </View>

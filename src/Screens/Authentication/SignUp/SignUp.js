@@ -29,6 +29,8 @@ const SignUp = () => {
   const [mobile, setmobile] = useState('');
   const [dealerCode, setDealerCode] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const [selectedOption, setSelectedOption] = useState(null);
   const navigation = useNavigation();
@@ -72,6 +74,13 @@ const SignUp = () => {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+  const formatMobileNumber = number => {
+    if (number?.startsWith('0')) {
+      return '92' + number?.slice(1);
+    }
+    return number;
+  };
+
 
   const handleSignUp = () => {
     if (!value) {
@@ -95,23 +104,18 @@ const SignUp = () => {
     } else if (!password) {
       Alert.alert('Field Required', 'Please enter password.');
       return;
-    } else if (dealerCode.length != 7) {
-      Alert.alert('Field Required', 'Please enter 7 digit delear code.');
-    } else {
-      postUserData();
+    } else if (dealerCode.length !== 7) {
+      Alert.alert('Field Required', 'Please enter a 7-digit dealer code.');
+      return;
     }
-  };
 
-  const formatMobileNumber = number => {
-    if (number?.startsWith('0')) {
-      return '92' + number?.slice(1);
-    }
-    return number;
+    setLoading(true); // Start loading indicator
+    postUserData();
   };
 
   const postUserData = async () => {
     const formattedMobile = formatMobileNumber(mobile);
-    // Alert.alert('asdawdedsjn')
+
     try {
       const config = {
         method: 'POST',
@@ -130,26 +134,25 @@ const SignUp = () => {
       };
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
-      if (!response.ok) {
-        Alert.alert('Network Error',
-          'An error occurred while connecting to the server.',);
-      }
-      const data = await response.json();
-      console.log("12432eds:: ", data);
-      if (response?.status === 201) {
-        Alert.alert('201')
+      setLoading(false); // Stop loading indicator
 
-        console.log('signup responce:: ', response);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'SignIn' }],
-        });
-      } else if (response?.status !== 201) {
-        Alert.alert(data?.message);
+      if (!response.ok) {
+        Alert.alert('Network Error', 'An error occurred while connecting to the server.');
+      } else {
+        const data = await response.json();
+        console.log("12432eds:: ", data);
+        if (response?.status === 201) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'SignIn' }],
+          });
+        } else if (response?.status !== 201) {
+          Alert.alert(data?.message);
+        }
       }
     } catch (error) {
-
-      Alert.alert('error')
+      setLoading(false); // Stop loading indicator
+      Alert.alert('Error', 'An error occurred while processing your request. Please try again.');
       console.error('Error posting data: ', error?.message);
       throw error;
     }
@@ -186,34 +189,7 @@ const SignUp = () => {
               </Text>
             </View>
 
-            <View style={[styles.container, { zIndex: 1 }]}>
-              <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Select company"
-                autoScroll={true}
-                textStyle={{ color: Colors.text_Color, fontSize: 12 }}
-                style={[
-                  { color: Colors.text_Color, borderColor: 'transparent' },
-                  { backgroundColor: open ? '#1A4578' : 'transparent' },
-                ]}
-                containerStyle={{ width: 238, color: 'white', zIndex: 1 }}
-                dropDownContainerStyle={{
-                  backgroundColor: '#1A4578',
-                  borderColor: 'transparent',
-                  paddingVertical: 5,
-                  zIndex: 999,
-                }}
-                TickIconComponent={() => (
-                  <FontAwesome6 name="check" color={Colors.text_Color} />
-                )}
-                arrowIconStyle={{ tintColor: Colors.text_Color }}
-              />
-            </View>
+
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
                 style={styles.input}
@@ -244,6 +220,34 @@ const SignUp = () => {
                 onChangeText={text => handleInputChange('mobileNo', text)}
                 keyboardType="numeric"
                 maxLength={12}
+              />
+            </View>
+            <View style={[styles.container, { zIndex: 1 }]}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                placeholder="Select company"
+                autoScroll={true}
+                textStyle={{ color: Colors.text_Color, fontSize: 12 }}
+                style={[
+                  { color: Colors.text_Color, borderColor: 'transparent' },
+                  { backgroundColor: open ? '#1A4578' : 'transparent' },
+                ]}
+                containerStyle={{ width: 238, color: 'white', zIndex: 1 }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#1A4578',
+                  borderColor: 'transparent',
+                  paddingVertical: 5,
+                  zIndex: 999,
+                }}
+                TickIconComponent={() => (
+                  <FontAwesome6 name="check" color={Colors.text_Color} />
+                )}
+                arrowIconStyle={{ tintColor: Colors.text_Color }}
               />
             </View>
             <View style={styles.container}>
@@ -305,6 +309,7 @@ const SignUp = () => {
             </TouchableOpacity>
           </View>
           <CustomButton
+
             onPress={() => handleSignUp()}
             ContainerStyle={{
               paddingVertical: 15,
@@ -319,7 +324,9 @@ const SignUp = () => {
               fontSize: 16,
               fontFamily: '200',
             }}
-            title="Proceed"
+            title={loading ? 'Loading...' : "Proceed"}
+            disabled={loading}
+
           />
           <TouchableOpacity
             style={styles.signin}

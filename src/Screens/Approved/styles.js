@@ -9,7 +9,7 @@ let deviceWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
     height: '100%',
   },
@@ -86,12 +86,12 @@ export const styles = StyleSheet.create({
     height: 80,
     justifyContent: 'center',
     alignSelf: 'center',
-    borderColor:Colors.flatlist_color,
-    borderRadius:20,
+    borderColor: Colors.flatlist_color,
+    borderRadius: 20,
   },
-  scan_text:{
-    color:Colors.flatlist_color,
-    fontSize:17,
+  scan_text: {
+    color: Colors.flatlist_color,
+    fontSize: 17,
 
   },
 
