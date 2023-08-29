@@ -142,10 +142,15 @@ const SignUp = () => {
         const data = await response.json();
         console.log("12432eds:: ", data);
         if (response?.status === 201) {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'SignIn' }],
-          });
+          Alert.alert('Message', 'Your registration will be completed within 24 hours.', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('signup response:: ', response);
+
+              },
+            },
+          ]);
         } else if (response?.status !== 201) {
           Alert.alert(data?.message);
         }
@@ -257,7 +262,7 @@ const SignUp = () => {
                 placeholder="Dealer Code"
                 value={dealerCode}
                 onChangeText={(text) => setDealerCode(text)}
-                keyboardType="default"
+                keyboardType="numeric"
                 maxLength={7}
               />
             </View>
