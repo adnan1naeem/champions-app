@@ -79,12 +79,9 @@ const Signin = () => {
         }
       } else {
         const responseData = await response?.json();
-        console.log("responce hh:: ", responseData);
         if (responseData) {
-          const Token = responseData?.token;
           const cnic = responseData?.cnic;
-          await AsyncStorage.setItem('TOKEN', Token);
-          await AsyncStorage.setItem('CNIC', cnic);
+          console.log(responseData);
           await AsyncStorage.setItem('USER', JSON.stringify(responseData));
           navigation.replace('Home');
         } else {
@@ -187,7 +184,7 @@ const Signin = () => {
                 {isChecked ?
                   <Icon
                     name='checkbox'
-                    size={24}
+                    size={20}
                     color={Colors.text_Color}
                   /> :
                   <MaterialIcons name="check-box-outline-blank" size={20}

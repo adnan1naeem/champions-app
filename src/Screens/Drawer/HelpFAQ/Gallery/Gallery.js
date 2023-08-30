@@ -45,7 +45,7 @@ const Gallery = () => {
                             style={{ alignItems: 'center', padding: 5 }}>
                             <MaterialCommunityIcons
                                 name="book-open-page-variant-outline"
-                                size={26}
+                                size={29}
                                 color={Colors.text_Color}
                             />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
@@ -57,7 +57,7 @@ const Gallery = () => {
                             style={{ alignItems: 'center', padding: 5 }}>
                             <MaterialCommunityIcons
                                 name="video-image"
-                                size={26}
+                                size={29}
                                 color={Colors.text_Color}
                             />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
@@ -67,7 +67,7 @@ const Gallery = () => {
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Blogs')}
                             style={{ alignItems: 'center', padding: 5 }}>
-                            <Entypo name="new-message" size={26} color={Colors.text_Color} />
+                            <Entypo name="new-message" size={29} color={Colors.text_Color} />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
                                 Blogs
                             </Text>
@@ -85,7 +85,7 @@ const Gallery = () => {
                             style={{ paddingLeft: 15, alignItems: 'center', padding: 5 }}>
                             <MaterialIcon
                                 name="menu-book"
-                                size={26}
+                                size={29}
                                 color={Colors.text_Color}
                             />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
@@ -102,7 +102,7 @@ const Gallery = () => {
                             }}>
                             <MaterialCommunityIcons
                                 name="book-check-outline"
-                                size={26}
+                                size={29}
                                 color={Colors.text_Color}
                             />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>

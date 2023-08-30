@@ -1,7 +1,7 @@
 
 
 // import typography from "native-base/lib/typescript/theme/base/typography";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Colors } from "../../../Utils/Colors";
 let deviceWidth = Dimensions.get("window").width;
 
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         height: 100,
         width: "85%",
         alignSelf: 'center',
-        marginTop: "10%",
+        marginTop: Platform.OS === 'ios' ? 70 : 35,
     },
     startScreen_text: {
         color: Colors.text_Color,
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         paddingBottom: "10%",
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: "20%",
+        marginTop: 50,
         borderRadius: 40,
         marginBottom: 15,
         alignSelf: "center",

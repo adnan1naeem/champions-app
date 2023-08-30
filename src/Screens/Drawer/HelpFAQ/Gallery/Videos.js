@@ -7,7 +7,7 @@ import {
     View,
     FlatList,
 } from 'react-native';
-
+import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../../../../Utils/Colors';
@@ -90,21 +90,12 @@ const ProductManuals = () => {
                 <Header />
                 <BackButton navigation={navigation} />
             </View>
-            <Image
-                source={require('../../../../Assets/Image/Video.png')}
-                style={{
-                    height: 50,
-                    width: 50,
-                    resizeMode: 'contain',
-                    alignSelf: 'center',
-                    tintColor: Colors.White,
-                }}
-            />
+            <Entypo name="video-image" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
             <Text
                 style={{
                     textAlign: 'center',
                     paddingTop: 5,
-                    fontSize: 10,
+                    fontSize: 18,
                     color: Colors.text_Color,
                 }}>
                 Videos

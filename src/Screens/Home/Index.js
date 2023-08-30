@@ -83,9 +83,9 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const Cnic_Number = await AsyncStorage.getItem('CNIC');
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
       const payload = {
-        cnic: Cnic_Number,
+        cnic: user?.cnic,
         start_date: endDate,
         end_date: startDate,
         divCode:
@@ -246,10 +246,7 @@ const Home = () => {
             <View
               style={[
                 styles.modalContainer,
-                {
-                  start: '10%',
-                  top: 128,
-                },
+               
               ]}>
               <View style={styles.modalContent}>
                 <FlatList
@@ -261,7 +258,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-          <View style={{ alignItems: 'center', marginVertical: 10 }}>
+          <View style={{ alignItems: 'center', marginVertical: 5 }}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
@@ -286,7 +283,8 @@ const Home = () => {
             style={{
               width: '48%',
               marginTop: 10,
-              height: 170,
+              height: 160,
+              marginBottom: -20,
               alignSelf: 'center',
             }}
             resizeMode="contain"

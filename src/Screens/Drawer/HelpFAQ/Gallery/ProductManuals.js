@@ -30,8 +30,8 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Image source={require('../../../../Assets/Image/Product.png')} style={{ height: 80, width: 80, resizeMode: 'contain', alignSelf: 'center', }} />
-                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 10, color: Colors.text_Color }}>Product Manuals</Text>
+                <Entypo name="book-open-page-variant-outline" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
+                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 18, color: Colors.text_Color }}>Product Manuals</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40 }]}>
 

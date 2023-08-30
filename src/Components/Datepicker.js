@@ -19,21 +19,26 @@ const Datepicker = ({ onDateSelect }) => {
   const [showEndPicker, setShowEndPicker] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [dateContainer, setDateContainer] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("Date");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   const options = [
-    { label: '1 week', value: '1 weekly' },
-    { label: '2 week', value: '2 week' },
-    { label: '1 month', value: '1 month' },
-    { label: '1 year', value: '1 year' },
-    { label: 'Custom', value: 'custom' },
+    { label: 'Default', value: 'Default' },
+    { label: '1 Week', value: '1 Week' },
+    { label: '2 Week', value: '2 Week' },
+    { label: '1 Month', value: '1 Month' },
+    { label: '1 Year', value: '1 Year' },
+    { label: 'Custom', value: 'Custom' },
   ];
 
   const handleOptionSelect = value => {
     setSelectedOption(value);
-    if (value === '1 weekly') {
+    if (value === 'Default') {
+      setModalVisible(false);
+      setSelectedOption("Date");
+      return;
+    }else if (value === '1 Week') {
       const today = new Date();
       const oneWeekLater = new Date(today);
       oneWeekLater.setDate(today?.getDate() - 7);
@@ -42,7 +47,7 @@ const Datepicker = ({ onDateSelect }) => {
       setModalVisible(false);
       setDateContainer(true);
       return;
-    } else if (value === '2 week') {
+    } else if (value === '2 Week') {
       const today = new Date();
       const twoWeeksLater = new Date(today);
       twoWeeksLater.setDate(today?.getDate() - 14);
@@ -51,7 +56,7 @@ const Datepicker = ({ onDateSelect }) => {
       setModalVisible(false);
       setDateContainer(true);
       return;
-    } else if (value === '1 month') {
+    } else if (value === '1 Month') {
       const today = new Date();
       const oneMonthAgo = moment(today)?.subtract(1, 'months')?.toDate();
       setStartDate(today);
@@ -59,7 +64,7 @@ const Datepicker = ({ onDateSelect }) => {
       setModalVisible(false);
       setDateContainer(true);
       return;
-    } else if (value === '1 year') {
+    } else if (value === '1 Year') {
       const today = new Date();
       const oneYearAgo = moment(today)?.subtract(1, 'years')?.toDate();
       setStartDate(today);
@@ -67,7 +72,7 @@ const Datepicker = ({ onDateSelect }) => {
       setModalVisible(false);
       setDateContainer(true);
       return;
-    } else if (value === 'custom') {
+    } else if (value === 'Custom') {
       setDateContainer(true);
       setModalVisible(false);
       return;
@@ -133,7 +138,7 @@ const Datepicker = ({ onDateSelect }) => {
             color: Colors.text_Color,
             fontSize: 12,
           }}>
-          Date
+          {selectedOption}
         </Text>
         <Entypo
           name={!isModalVisible ? 'chevron-down' : 'chevron-up'}
@@ -153,19 +158,24 @@ const Datepicker = ({ onDateSelect }) => {
               paddingVertical: 15,
               alignSelf: 'center',
               borderRadius: 10,
-              height: 150,
               position: 'absolute',
               top: 125,
-              right: 40,
-              paddingHorizontal: 30,
+              right: 28,
+              paddingHorizontal: 20,
             }}>
             <FlatList
               data={options}
-              renderItem={({ item }) => (
+              renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => handleOptionSelect(item.value)}
-                  style={styles.optionItem}>
-                  <Text style={styles.optionText}>{item.label}</Text>
+                  style={{padding:2, flexDirection:'row'}}>
+                  <Text style={{}}>{item.label}</Text>
+                  {selectedOption === "Date" && index === 0 || selectedOption === item?.value ? (
+                    <Entypo
+                      name="check"
+                      style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
+                    />
+                  ): null}
                 </TouchableOpacity>
               )}
               keyExtractor={item => item.value}

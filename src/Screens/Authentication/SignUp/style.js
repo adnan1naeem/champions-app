@@ -1,7 +1,7 @@
 
 
 // import typography from "native-base/lib/typescript/theme/base/typography";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { Colors } from "../../../Utils/Colors";
 let deviceWidth = Dimensions.get("window").width;
 
@@ -22,7 +22,9 @@ export const styles = StyleSheet.create({
     logo: {
         height: 100,
         width: "85%",
+        marginTop: Platform.OS === 'ios' ? 45 : 15,
         alignSelf: 'center',
+        marginBottom: 10
         // marginVertical: 10
     },
     Login_view: {

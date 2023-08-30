@@ -181,9 +181,6 @@ const SignUp = () => {
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
-          <BackButton navigation={navigation} />
-        </View>
         <Image
           style={styles.logo}
           source={require('../../../Assets/Image/login_image.png')}

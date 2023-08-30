@@ -33,9 +33,9 @@ const Scan = ({ navigation }) => {
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await QRCodeScanner.requestCameraPermission();
-      const cnic = await AsyncStorage.getItem('CNIC');
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
       setMobile(mobile);
-      setCnic(cnic);
+      setCnic(user?.cnic);
       setHasPermission(status === 'granted');
     };
     getBarCodeScannerPermissions();
@@ -70,7 +70,7 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmitForScan = async (barCode) => {
-    const Cnic_Number = await AsyncStorage.getItem('CNIC');
+    const user = JSON.parse(await AsyncStorage.getItem("USER"));
     try {
       setLoading(true);
       console.log(barCode);
@@ -82,7 +82,7 @@ const Scan = ({ navigation }) => {
         },
         body: JSON.stringify({
           code: barCode,
-          cnic: Cnic_Number,
+          cnic: user?.cnic,
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
@@ -112,7 +112,7 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const Cnic_Number = await AsyncStorage.getItem('CNIC');
+    const user = JSON.parse(await AsyncStorage.getItem("USER"));
     try {
       setLoading(true);
       console.log(barCode);
@@ -124,7 +124,7 @@ const Scan = ({ navigation }) => {
         },
         body: JSON.stringify({
           code: barCode,
-          cnic: Cnic_Number,
+          cnic: user?.user,
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);

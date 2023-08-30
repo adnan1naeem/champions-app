@@ -27,7 +27,7 @@ const SearchCate = ({ route }) => {
 
   useEffect(() => {
     (async () => {
-      const Cnic_Number = await AsyncStorage.getItem("CNIC")
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
       try {
         const config = {
           method: 'POST',
@@ -38,7 +38,7 @@ const SearchCate = ({ route }) => {
             start_date: '',
             end_date: '',
             divCode: '',
-            cnic: Cnic_Number,
+            cnic: user?.cnic,
           }),
         };
         const response = await fetch(`${API_BASE_URL}/BatchListing`, config);

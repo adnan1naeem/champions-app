@@ -7,6 +7,7 @@ import {
     ScrollView,
 } from "react-native";
 import React, { useState } from "react";
+import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../../../Utils/Colors";
@@ -26,8 +27,8 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Image source={require('../../../../Assets/Image/Catalogue.png')} style={{ height: 70, width: 70, resizeMode: 'contain', alignSelf: 'center', zIndex: 1, marginTop: -35, }} />
-                <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.text_Color, marginTop: -20, fontWeight: 'bold' }}>Policy</Text>
+                <Entypo name="video-image" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
+                <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color, fontWeight: 'bold' }}>Policy</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40, paddingHorizontal: 20 }]}>
                     <Text style={styles.privacyDetailText}>Privacy Policy</Text>

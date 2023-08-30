@@ -63,8 +63,8 @@ export const styles = StyleSheet.create({
   scan_button: {
     alignItems: 'center',
     borderWidth: 2,
-    width: 70,
-    height: 70,
+    width: 65,
+    height: 55,
     justifyContent: 'center',
     alignSelf: 'center',
     borderColor: Colors.text_Color,
@@ -87,17 +87,16 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     position: "absolute",
-    start: "10%",
-    top: '17%',
+    start: 15,
+    top: 128,
     backgroundColor: Colors.White,
-    width: 200,
+    paddingHorizontal: 20,
     borderRadius: 8,
   },
   modalContent: {
     alignSelf: 'center',
-    padding: 16,
+    paddingVertical: 10,
     alignItems: 'center',
-    height: 220
   },
 });
 

@@ -7,20 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SplashScreen = () => {
   const navigation = useNavigation();
 
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const getInitialRoute = async () => {
-        const accessToken = await AsyncStorage.getItem("TOKEN");
-        console.log("initial:: ", accessToken);
-        let initialRoute = "Home";
-        if (accessToken) {
-          initialRoute = "Home";
-        }
-        await AsyncStorage.setItem("INITIAL_ROUTE", initialRoute);
-        navigation.replace(initialRoute);
-      };
-      getInitialRoute();
+    const timer = setTimeout(async() => {
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
+      let initialRoute = "SignIn";
+      if (user?.token) {
+        initialRoute = "Home";
+      }
+      navigation.replace(initialRoute);
     }, 4600);
 
     return () => clearTimeout(timer);

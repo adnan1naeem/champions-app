@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./style";
+import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../../../Utils/Colors";
 import BackButton from "../../../../Components/BackButton";
@@ -26,8 +27,8 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Image source={require('../../../../Assets/Image/Blog.png')} style={{ height: 50, width: 50, resizeMode: 'contain', alignSelf: 'center', tintColor: Colors.White, }} />
-                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 10, color: Colors.text_Color }}>Blogs</Text>
+                <Entypo name="new-message" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
+                <Text style={{ textAlign: 'center', paddingTop: 5, fontSize: 18, color: Colors.text_Color }}>Blogs</Text>
                 <View style={[styles.Login_view, { paddingBottom: 40 }]}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 }}>

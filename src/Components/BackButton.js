@@ -37,8 +37,8 @@ export default BackButton
 
 const styles = StyleSheet.create({
     backButton: {
-        marginTop: 20,
-        marginBottom: 5,
+        marginTop: 10,
+        marginBottom: 0,
         marginLeft: 5,
         width: 70,
         paddingVertical: 5

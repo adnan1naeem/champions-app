@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./style";
+import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../../../Utils/Colors";
 import BackButton from "../../../../Components/BackButton";
@@ -26,8 +27,8 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Image source={require('../../../../Assets/Image/Catalogue.png')} style={{ height: 100, width: 100, resizeMode: 'contain', alignSelf: 'center' }} />
-                <Text style={{ textAlign: 'center', fontSize: 10, color: Colors.text_Color }}>Catalogue</Text>
+                <Entypo name="video-image" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
+                <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color }}>Catalogue</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40 }]}>
 

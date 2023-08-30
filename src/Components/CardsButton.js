@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: 45,
     borderBottomWidth: 2,
     borderColor: '#98B1DD',
-    marginBottom: 8,
+    marginBottom: 6,
     alignSelf: 'center'
   },
   flatList_text: {
