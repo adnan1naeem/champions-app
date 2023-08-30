@@ -7,7 +7,7 @@ import {
     ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../../../Utils/Colors";
@@ -27,7 +27,7 @@ const ProductManuals = () => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
-                <Entypo name="video-image" style={{alignSelf:'center'}} size={26} color={Colors.text_Color} />
+                <MaterialCommunityIcons name="book-check-outline" style={{ alignSelf: 'center' }} size={26} color={Colors.text_Color} />
                 <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color, fontWeight: 'bold' }}>Policy</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40, paddingHorizontal: 20 }]}>
