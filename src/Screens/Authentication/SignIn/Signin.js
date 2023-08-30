@@ -103,20 +103,6 @@ const Signin = () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}

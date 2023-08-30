@@ -56,8 +56,8 @@ export const styles = StyleSheet.create({
         lineHeight: 10
     },
     about_text: {
-        fontSize: 14,
-        fontWeight: '300',
+        fontSize: 12,
+        fontWeight: '500',
         color: Colors.text_Color,
         paddingBottom: 8,
         lineHeight: 20

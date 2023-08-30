@@ -49,18 +49,18 @@ export const styles = StyleSheet.create({
         color: Colors.text_Color
     },
     container: {
-        alignItems: 'flex-end',
+        // alignItems: 'flex-end',
         marginBottom: 10,
         paddingBottom: 5,
-        lineHeight:10
+        lineHeight: 10
     },
-    about_text:{
-        fontSize:14,
-        fontWeight:'300',
-        color:Colors.text_Color,
-        paddingBottom:8,
-        lineHeight:20
-        
+    about_text: {
+        fontSize: 12,
+        fontWeight: '500',
+        color: Colors.text_Color,
+        paddingBottom: 8,
+        lineHeight: 20
+
     },
     container1: {
         flexDirection: 'row',
@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         fontStyle: 'italic',
         fontWeight: "200",
-        fontSize:12
+        fontSize: 12
     },
     proceed_button: {
         paddingVertical: 15,

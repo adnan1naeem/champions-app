@@ -28,14 +28,14 @@ const AboutUs = ({ route }) => {
                             fontSize: 20,
                             fontWeight: '600',
                         }}>
-                        {!privacy ? 'About Us' : "Privacy Policay"}
+                        {!privacy ? 'About Us' : "Privacy Policy"}
                     </Text>
                 </View>
                 {!privacy ? (
                     <View style={styles.Login_view}>
 
                         <View
-                            style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
+                            style={{ paddingVertical: 20, marginHorizontal: 20 }}>
                             <View style={styles.container}>
                                 <Text style={styles.about_text}>
                                     At Orient Electronics we are determined to continuously enrich
@@ -82,7 +82,7 @@ const AboutUs = ({ route }) => {
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                             <View style={styles.container}>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { marginHorizontal: 14 }]}>
                                     This Application collects some Personal Data from its Users .
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -107,7 +107,7 @@ const AboutUs = ({ route }) => {
                                     may make it impossible for this Application to provide its
                                     services.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { marginRight: 3 }]}>
                                     Users are responsible for any Personal Data of third parties
                                     obtained, published or shared through this Application and
                                     confirm that they have the third party's consent to provide

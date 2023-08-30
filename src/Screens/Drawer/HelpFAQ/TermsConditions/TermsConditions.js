@@ -35,23 +35,36 @@ const TermsAndCondition = () => {
                     <View style={{ width: "85%", alignSelf: 'center', paddingVertical: 20 }}>
                         <View style={styles.container}>
                             <Text style={styles.about_text}>
-                                1.The effective date of the incentive policy is the 1st of every month till month-end.
+                                1. The effective date of the incentive policy is the 1st of every month till month-end.
                             </Text>
                             <Text style={styles.about_text}>
                                 2. Any pending cards can be scanned till the 3rd of the new month.
                             </Text>
                             <Text style={styles.about_text}>
-                                3.Warrenty cards must be submitted to the concerned
+                                3. Warrenty cards must be submitted to the concerned
                                 branch for incentive approval, no incentives will be approved without warrenty cards
                             </Text>
-                            <Text style={styles.about_text}>
+                            <Text style={[styles.about_text, { marginBottom: -4 }]}>
+                                4. Warranty cards will be rejected if any or all of the below-mentioned information is missing;
+                            </Text>
 
+                            <Text style={[styles.about_text, { marginHorizontal: 15, }]}>
+                                i. Dealer sales stamp
+                            </Text>
+                            <Text style={[styles.about_text, { marginHorizontal: 15 }]}>
+                                ii. Customer Name
+                            </Text>
+                            <Text style={[styles.about_text, { marginHorizontal: 15 }]}>
+                                iii. Customer mobile number
+                            </Text>
+                            <Text style={[styles.about_text, { marginHorizontal: 15 }]}>
+                                iv. Purchase Date
                             </Text>
                             <Text style={styles.about_text}>
-                                5.The Incentiver posting date  to Champions will be 20th of every month
+                                5. The Incentiver posting date  to Champions will be 20th of every month
                             </Text>
                             <Text style={styles.about_text}>
-                                6.Floor Saleman is liable to submit the card to branch accountant within 30 days of sales date.
+                                6. Floor Saleman is liable to submit the card to branch accountant within 30 days of sales date.
                             </Text>
                             <Text style={styles.about_text}>
                                 7.Only easypaisa account will be used for incentive payment.
