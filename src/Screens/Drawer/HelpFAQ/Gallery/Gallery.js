@@ -23,9 +23,12 @@ const Gallery = () => {
             source={require('../../../../Assets/Image/background_image.png')}
             style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
             <ScrollView>
-                <View style={{ paddingHorizontal: 10 }}>
+                <View style={{ paddingHorizontal: 10, }}>
                     <Header />
-                    <BackButton navigation={navigation} />
+                    <View style={{ width: 80, paddingVertical: 10 }}>
+                        <BackButton navigation={navigation} />
+                    </View>
+
                 </View>
                 <Text
                     style={{
@@ -95,10 +98,11 @@ const Gallery = () => {
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Policy')}
                             style={{
-                                alignItems: 'center',
+
                                 flex: 1,
                                 alignItems: 'center',
                                 padding: 5,
+                                marginRight: 18
                             }}>
                             <MaterialCommunityIcons
                                 name="book-check-outline"

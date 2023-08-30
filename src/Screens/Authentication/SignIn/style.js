@@ -76,6 +76,9 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400'
     },
+    checkboxGradient: {
+        borderRadius: 5
+    },
     input: {
         flex: 1,
         color: Colors.text_Color,

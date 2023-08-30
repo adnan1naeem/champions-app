@@ -310,7 +310,7 @@ const SignUp = () => {
                   />
                 )}
               </View>
-              <Text style={styles.label}>I Agree the Terms and Condition</Text>
+              <Text style={styles.label}>I Agree the Terms and Conditions</Text>
             </TouchableOpacity>
           </View>
           <CustomButton

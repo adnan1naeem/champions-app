@@ -88,10 +88,11 @@ export const styles = StyleSheet.create({
   modalContainer: {
     position: "absolute",
     start: 15,
-    top: 128,
-    backgroundColor: Colors.White,
-    paddingHorizontal: 20,
+    top: 110,
+    backgroundColor: "#3a85d6",
+    paddingHorizontal: 5,
     borderRadius: 8,
+    width: 140
   },
   modalContent: {
     alignSelf: 'center',

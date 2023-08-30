@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Image,
@@ -7,12 +7,12 @@ import {
   ImageBackground,
   Text,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {styles} from './style';
+import { styles } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Colors} from '../../Utils/Colors';
+import { Colors } from '../../Utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Header from '../../Components/Header/Header';
 
@@ -31,7 +31,7 @@ const DrawerScreen = () => {
       if (user) {
         let matches = user?.name?.match(/\b(\w)/g); // ['J','S','O','N']
         let acronym = matches?.join(''); // JSON
-        setAvatarName(acronym , "jkdsjdshjj");
+        setAvatarName(acronym, "jkdsjdshjj");
         setUserInfo(user);
       }
     })();
@@ -49,7 +49,7 @@ const DrawerScreen = () => {
       await AsyncStorage.removeItem('USER');
       navigation.reset({
         index: 0,
-        routes: [{name: 'SignIn'}],
+        routes: [{ name: 'SignIn' }],
       });
     } catch (error) {
       console.error('Error signing out:', error);
@@ -77,42 +77,42 @@ const DrawerScreen = () => {
               'rgb(59,90,183)',
             ]}
             style={styles.backIcon_style}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
             <Ionicons name="chevron-back" size={25} color={Colors.text_Color} />
           </LinearGradient>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('EditProfile', {userInfo: user_Info});
+            navigation.navigate('EditProfile', { userInfo: user_Info });
           }}
           style={{}}>
           <FontAwesome5
             name="user-edit"
             color={Colors.text_Color}
             size={20}
-            style={{marginTop: 12}}
+            style={{ marginTop: 12 }}
           />
         </TouchableOpacity>
       </View>
 
-      <View style={{marginLeft: 20}}>
+      <View style={{ marginLeft: 20 }}>
         <Text
-          style={{fontSize: 16, fontWeight: '500', color: Colors.text_Color}}>
+          style={{ fontSize: 16, fontWeight: '500', color: Colors.text_Color }}>
           ACCOUNT SETTINGS
         </Text>
         <Text
-          style={{fontSize: 12, fontWeight: '400', color: Colors.text_Color}}>
+          style={{ fontSize: 12, fontWeight: '400', color: Colors.text_Color }}>
           Account, Settings, More
         </Text>
       </View>
       <View style={styles.drawerContainer}>
         <View style={styles.contentContainer}>
           <View style={styles.profile_continer}>
-            <Text style={{color: Colors.text_Color, fontSize: 22}}>{avatarName}</Text>
+            <Text style={{ color: Colors.text_Color, fontSize: 22 }}>{avatarName}</Text>
           </View>
-          <View style={{marginLeft: 15, justifyContent: 'center'}}>
+          <View style={{ marginLeft: 15, justifyContent: 'center' }}>
             <Text style={styles.user_detail}>{user_Info?.name}</Text>
             <Text style={styles.user_detail}>
               {formatMobileNumber(user_Info?.mobile)}
@@ -122,7 +122,7 @@ const DrawerScreen = () => {
         </View>
       </View>
 
-      <View style={{paddingHorizontal: 30, marginTop: 50, gap: 10}}>
+      <View style={{ paddingHorizontal: 30, marginTop: 50, gap: 10 }}>
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -133,7 +133,7 @@ const DrawerScreen = () => {
           onPress={() => {
             navigation.navigate('AccountSetting');
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Image
               source={require('../../Assets/Image/Acoount_setting.png')}
               style={styles.icons}
@@ -148,8 +148,8 @@ const DrawerScreen = () => {
               'rgb(59,90,183)',
             ]}
             style={styles.forward_arrow}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -165,7 +165,7 @@ const DrawerScreen = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Image
               source={require('../../Assets/Image/help.png')}
               style={styles.icons}
@@ -181,8 +181,8 @@ const DrawerScreen = () => {
               'rgb(59,90,183)',
             ]}
             style={styles.forward_arrow}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -192,19 +192,19 @@ const DrawerScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('AboutUs', {privacy: true})}
+          onPress={() => navigation.navigate('AboutUs', { privacy: true })}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             marginTop: 10,
           }}>
-          <View style={{flexDirection: 'row', marginLeft: -6}}>
+          <View style={{ flexDirection: 'row', marginLeft: -6 }}>
             <Image
               source={require('../../Assets/Image/Policy.png')}
               style={[
                 styles.icons,
-                {width: 27, height: 27, resizeMode: 'contain'},
+                { width: 27, height: 27, resizeMode: 'contain', tintColor: Colors.text_Color },
               ]}
             />
             <Text style={styles.user_detail_cate}>Policies</Text>
@@ -217,8 +217,8 @@ const DrawerScreen = () => {
               'rgb(59,90,183)',
             ]}
             style={styles.forward_arrow}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -254,13 +254,13 @@ const DrawerScreen = () => {
               'rgb(59,90,183)',
             ]}
             style={styles.forward_arrow}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
             <Ionicons
               name="chevron-forward"
               size={20}
               color={Colors.text_Color}
-              style={{justifyContent: 'center', borderRadius: 10}}
+              style={{ justifyContent: 'center', borderRadius: 10 }}
             />
           </LinearGradient>
         </TouchableOpacity>

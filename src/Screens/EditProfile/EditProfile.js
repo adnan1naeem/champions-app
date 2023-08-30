@@ -13,10 +13,12 @@ import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Header from "../../Components/Header/Header";
 import BackButton from "../../Components/BackButton";
+import { Text } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const EditProfile = ({ route, }) => {
@@ -95,8 +97,23 @@ const EditProfile = ({ route, }) => {
       },
     ]);
   };
+  const [user_Info, setUserInfo] = useState([]);
+  const [avatarName, setAvatarName] = useState("");
+  useEffect(() => {
+    (async () => {
+      const user = JSON.parse(await AsyncStorage.getItem('USER'));
+      if (user) {
+        let matches = user?.name?.match(/\b(\w)/g); // ['J','S','O','N']
+        let acronym = matches?.join(''); // JSON
+        setAvatarName(acronym, "jkdsjdshjj");
+        setUserInfo(user);
+      }
+    })();
+  }, [avatarName]);
 
-
+  useEffect(() => {
+    console.log("hgshdhfs:: ", avatarName);
+  },)
 
   return (
     <ImageBackground
@@ -116,7 +133,19 @@ const EditProfile = ({ route, }) => {
 
           <View style={{ width: "70%", alignSelf: "center" }}>
             <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-              <Image style={{ height: 100, width: 100, borderRadius: 50 }} source={require('../../Assets/Image/amir.jpg')} resizeMode="contain" />
+              <View style={{
+                marginLeft: 10,
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                borderWidth: 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderColor: '#17b8f5',
+              }}>
+                <Text style={{ color: Colors.text_Color, fontSize: 22 }}>{avatarName}</Text>
+              </View>
+              {/* <Image style={{ height: 100, width: 100, borderRadius: 50 }} source={require('../../Assets/Image/amir.jpg')} resizeMode="contain" /> */}
             </View>
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput

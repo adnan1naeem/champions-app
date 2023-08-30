@@ -19,6 +19,8 @@ import Password from 'react-native-vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../../Constants';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [mobile, setMobile] = useState('');
@@ -98,7 +100,6 @@ const Signin = () => {
       Alert.alert('Error', errorMessage);
     }
   };
-
 
   return (
     <ImageBackground
@@ -180,17 +181,31 @@ const Signin = () => {
               style={styles.container1}
               onPress={handleCheckboxChange}
               activeOpacity={0.8}>
+
               <View style={styles.checkbox}>
                 {isChecked ?
-                  <Icon
-                    name='checkbox'
-                    size={20}
-                    color={Colors.text_Color}
-                  /> :
-                  <MaterialIcons name="check-box-outline-blank" size={20}
+                  <LinearGradient
+                    colors={[
+                      'rgb(39, 174, 229)',
+                      'rgb(41,128,201)',
+                      'rgb(50,107,194)',
+                      'rgb(59,90,183)',
+                    ]}
+                    style={styles.checkboxGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}>
+                    <Ionicons
+                      name="checkmark"
+                      size={24}
+                      color={Colors.text_Color}
+                      borderColor="transparent"
+                    />
+                  </LinearGradient> :
+                  <MaterialIcons name="check-box-outline-blank" size={24}
                     color={Colors.text_Color} />
                 }
               </View>
+
               <Text style={styles.label}>Remember me</Text>
             </TouchableOpacity>
 

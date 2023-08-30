@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         fontWeight: '400'
     },
     help_container: {
-        marginTop: "20%",
+        marginTop: "10%",
         alignItems: 'center'
     },
     header: {

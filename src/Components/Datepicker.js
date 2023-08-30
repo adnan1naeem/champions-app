@@ -38,7 +38,7 @@ const Datepicker = ({ onDateSelect }) => {
       setModalVisible(false);
       setSelectedOption("Date");
       return;
-    }else if (value === '1 Week') {
+    } else if (value === '1 Week') {
       const today = new Date();
       const oneWeekLater = new Date(today);
       oneWeekLater.setDate(today?.getDate() - 7);
@@ -154,7 +154,7 @@ const Datepicker = ({ onDateSelect }) => {
           onRequestClose={() => setModalVisible(false)}>
           <View
             style={{
-              backgroundColor: Colors.White,
+              backgroundColor: '#3a85d6',
               paddingVertical: 15,
               alignSelf: 'center',
               borderRadius: 10,
@@ -168,14 +168,14 @@ const Datepicker = ({ onDateSelect }) => {
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => handleOptionSelect(item.value)}
-                  style={{padding:2, flexDirection:'row'}}>
-                  <Text style={{}}>{item.label}</Text>
+                  style={{ padding: 2, flexDirection: 'row' }}>
+                  <Text style={{ color: Colors.text_Color }}>{item.label}</Text>
                   {selectedOption === "Date" && index === 0 || selectedOption === item?.value ? (
                     <Entypo
                       name="check"
-                      style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
+                      style={{ color: Colors.text_Color, fontSize: 16, marginLeft: 10 }}
                     />
-                  ): null}
+                  ) : null}
                 </TouchableOpacity>
               )}
               keyExtractor={item => item.value}

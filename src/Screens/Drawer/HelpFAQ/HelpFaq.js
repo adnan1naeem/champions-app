@@ -25,10 +25,12 @@ const HelpFAQ = ({ navigation }) => {
             style={styles.container}
             resizeMode="cover">
             <ScrollView>
-                <Header />
-                <BackButton navigation={navigation} />
 
-                <View style={{ marginLeft: 20, }}>
+                <Header />
+                <BackButton navigation={navigation} marginTop='0' paddingVertical='0' />
+
+
+                <View style={{ marginLeft: 20, marginTop: 5 }}>
                     <Text
                         style={{ fontSize: 16, fontWeight: '500', color: Colors.text_Color }}>
                         HELP
@@ -134,7 +136,7 @@ const HelpFAQ = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </ImageBackground>
+        </ImageBackground >
     );
 };
 

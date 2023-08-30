@@ -8,27 +8,86 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
-import {Colors} from '../../../Utils/Colors';
+import React, { useState, useRef, useEffect } from 'react';
+import { Colors } from '../../../Utils/Colors';
 import orient_icon from '../../../Assets/Image/OrientNewLogo.png';
 // import OTPInputView from '@twotalltotems/react-native-otp-input';
-import {styles} from './style';
+import { styles } from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../../Components/CustomButton';
 import OtpInput from '../OTP/OTP';
 import BackButton from '../../../Components/BackButton';
+import { API_BASE_URL } from '../../../../Constants';
 
-const PinCodeScreen = ({route}) => {
+const PinCodeScreen = ({ route }) => {
   const navigation = useNavigation();
-  const [varificationCode, setVarificationCode] = useState("");
+  const [varificationCode, setVarificationCode] = useState('');
+  const [timer, setTimer] = useState(60);
+  const [isTimerRunning, setIsTimerRunning] = useState(true);
+
+  useEffect(() => {
+    if (isTimerRunning) {
+      if (timer > 0) {
+        const interval = setInterval(() => {
+          setTimer(prevTimer => prevTimer - 1);
+        }, 1000);
+        return () => clearInterval(interval);
+      } else {
+        setIsTimerRunning(false);
+      }
+    }
+  }, [isTimerRunning, timer]);
+
+
+
+  const handleForgot = async () => {
+    setIsTimerRunning(true);
+    setTimer(60);
+    try {
+      const data = {
+        cnic: route?.params?.cnic,
+      };
+
+      const config = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
+      if (!response?.ok) {
+        if (response?.status === 404) {
+          Alert.alert('User not Exist\nPlease check your CNIC and try again.');
+          return;
+        }
+        Alert.alert('User not Exist\nPlease check your CNIC and try again.');
+        // throw new Error("Network response was not ok");
+        return;
+      }
+      const responseData = await response.json();
+      console.log('Login Response: ', response?.token);
+      if (responseData) {
+        // navigation.replace('PinCodeScreen', { cnic: route?.params?.cnic });
+      } else {
+        Alert.alert(
+          'Invalid Password',
+          'Please check your password and try again.',
+        );
+      }
+    } catch (error) {
+      console.log('Error posting data:', error?.message);
+    }
+  };
 
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{flex: 1, backgroundColor: Colors.blueBackground}}>
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{marginTop: 25, paddingHorizontal: 20}}>
+        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
           <BackButton navigation={navigation} />
         </View>
         <View style={styles.Login_main_view}>
@@ -39,7 +98,7 @@ const PinCodeScreen = ({route}) => {
           />
         </View>
         <View style={styles.Login_view}>
-          <View style={{flex: 1, alignSelf: 'center', paddingVertical: 20}}>
+          <View style={{ flex: 1, alignSelf: 'center', paddingVertical: 20 }}>
             <Text
               style={{
                 color: Colors.text_Color,
@@ -49,7 +108,7 @@ const PinCodeScreen = ({route}) => {
               {route?.params?.cnic}
             </Text>
           </View>
-          <View style={{width: '78%', alignSelf: 'center', marginVertical: 50}}>
+          <View style={{ width: '78%', alignSelf: 'center', marginVertical: 50 }}>
             <View>
               <Text
                 style={{
@@ -61,24 +120,40 @@ const PinCodeScreen = ({route}) => {
                 }}>
                 Enter your 5 digit Pin
               </Text>
-              <OtpInput onPress={(text)=>setVarificationCode(text)}/>
+              <OtpInput onPress={text => setVarificationCode(text)} />
             </View>
           </View>
 
+
           <View style={styles.otp_not_received}>
-            <Text style={styles.otp}>
-              If you have not received PIN then please
-              <TouchableOpacity style={{}}>
-                <Text style={[styles.otp, {textDecorationLine: 'underline'}]}>
-                  REGENERATE
+            {isTimerRunning && timer > 0 ? (
+              <Text style={styles.otp}>
+                If you have not received PIN then please REGENERATE After {timer} seconds
+              </Text>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  height: 20,
+                  width: 130,
+                  alignSelf: 'center'
+                }}
+                onPress={() => handleForgot()}>
+                <Text style={[styles.otp, { textDecorationLine: 'underline' }]}>
+                  REGENERATE PIN
                 </Text>
               </TouchableOpacity>
-            </Text>
+            )}
           </View>
+
           <CustomButton
-            onPress={() => navigation.navigate('ChangePassword', {cnic: route?.params?.cnic, varificationCode: varificationCode})}
+            onPress={() =>
+              navigation.navigate('ChangePassword', {
+                cnic: route?.params?.cnic,
+                varificationCode: varificationCode,
+              })
+            }
             ContainerStyle={styles.proceed_button}
-            textStyle={{color: Colors.text_Color, textAlign: 'center'}}
+            textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
             title="Proceed"
           />
         </View>

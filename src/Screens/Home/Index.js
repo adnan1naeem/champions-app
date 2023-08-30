@@ -186,13 +186,13 @@ const Home = () => {
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText, { color: Colors.black }]}>
+      <Text style={[styles.dropdownItemText, { color: Colors.text_Color }]}>
         {item?.categoryName}
       </Text>
       {selectedValue?.categoryCode === item?.categoryCode && (
         <Entypo
           name="check"
-          style={{ color: Colors.black, fontSize: 16, marginLeft: 10 }}
+          style={{ color: Colors.text_Color, fontSize: 16, marginLeft: 10 }}
         />
       )}
     </TouchableOpacity>
@@ -246,7 +246,7 @@ const Home = () => {
             <View
               style={[
                 styles.modalContainer,
-               
+
               ]}>
               <View style={styles.modalContent}>
                 <FlatList
@@ -291,26 +291,31 @@ const Home = () => {
             source={require('../../Assets/Image/Orient_icon.png')}
           />
           <CardsButton
+            disabled={paid_list?.length <= 0}
             status={'Paid Cards'}
             value={paid_list?.length}
             onPress={() => handleSubmmit('Paid Cards', paid_list)}
           />
           <CardsButton
+            disabled={approved_list?.length <= 0}
             status={'Approved Cards'}
             value={approved_list?.length}
             onPress={() => handleSubmmit('Approved Cards', approved_list)}
           />
           <CardsButton
+            disabled={verified_list?.length <= 0}
             status={'Verified Cards'}
             value={verified_list?.length}
             onPress={() => handleSubmmit('Verified Cards', verified_list)}
           />
           <CardsButton
+            disabled={pending_list?.length <= 0}
             status={'Pendig Cards'}
             value={pending_list?.length}
             onPress={() => handleSubmmit('Pendig Cards', pending_list)}
           />
           <CardsButton
+            disabled={rejected_list?.length <= 0}
             status={'Rejected Cards'}
             value={rejected_list?.length}
             onPress={() => handleSubmmit('Rejected Cards', rejected_list)}

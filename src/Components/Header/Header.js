@@ -14,28 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 const Header = ({ Logo }) => {
   const [isVisible, setisVisible] = useState(false);
-  const products = [
-    {
-      id: 1,
-      name: 'Catelogues',
-    },
-    {
-      id: 2,
-      name: 'Videos',
-    },
-    {
-      id: 3,
-      name: 'Product Manuals',
-    },
-    {
-      id: 4,
-      name: 'Tutorials',
-    },
-    {
-      id: 5,
-      name: 'Policies',
-    },
-  ];
+
   const navigation = useNavigation();
   const handleModalClose = () => {
     setisVisible(false);

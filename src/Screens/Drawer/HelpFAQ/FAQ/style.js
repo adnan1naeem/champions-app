@@ -31,14 +31,14 @@ export const styles = StyleSheet.create({
         backgroundColor: "#3F6FAD",
         marginTop: "7%",
         borderRadius: 40,
-        marginBottom:20,
+        marginBottom: 20,
         alignSelf: "center",
     },
     unlock_view: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems:"center",
+        alignItems: "center",
         width: '75%',
         height: 30,
         borderRadius: 10,
@@ -52,26 +52,29 @@ export const styles = StyleSheet.create({
     },
     container: {
         // alignItems: 'flex-end',
-        alignSelf:'center',
+        alignSelf: 'center',
         marginBottom: 10,
         paddingBottom: 5,
-        lineHeight:10
+        lineHeight: 10
     },
-    faq_Heading:{
-        fontSize:13,
-        fontWeight:'500',
-        color:Colors.text_Color,
-        paddingBottom:8,
+    faq_Heading: {
+        fontSize: 13,
+        fontWeight: '500',
+        color: Colors.text_Color,
+        paddingBottom: 8,
         // lineHeight:20
-        
+        textAlign: 'center'
+
     },
-    faq_text:{
-        fontSize:14,
-        fontWeight:'300',
-        color:Colors.text_Color,
-        paddingBottom:8,
-        lineHeight:20
-        
+    faq_text: {
+        fontSize: 14,
+        fontWeight: '300',
+        color: Colors.text_Color,
+        paddingBottom: 8,
+        lineHeight: 20,
+        textAlign: 'center'
+
+
     },
     label: {
         color: '#84ADD2',
@@ -104,7 +107,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         fontStyle: 'italic',
         fontWeight: "200",
-        fontSize:12
+        fontSize: 12
     },
     proceed_button: {
         paddingVertical: 15,

@@ -8,7 +8,7 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const timer = setTimeout(async() => {
+    const timer = setTimeout(async () => {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
       let initialRoute = "SignIn";
       if (user?.token) {

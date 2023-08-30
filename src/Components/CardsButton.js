@@ -3,10 +3,10 @@ import React from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Colors } from '../Utils/Colors'
 
-const CardsButton = ({ navigation, value, status, onPress }) => {
+const CardsButton = ({ navigation, value, status, onPress, disabled }) => {
   return (
 
-    <TouchableOpacity style={styles.flatList_container}
+    <TouchableOpacity disabled={disabled} style={styles.flatList_container}
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>

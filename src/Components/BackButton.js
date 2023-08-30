@@ -4,13 +4,19 @@ import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Colors } from '../Utils/Colors'
 
-const BackButton = ({ navigation }) => {
+const BackButton = ({ navigation, paddingVertical, marginTop }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
     return (
         <View>
-            <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
+            <TouchableOpacity onPress={handleBackPress} style={{
+                marginTop: marginTop ? marginTop : 10,
+                marginBottom: 0,
+                marginLeft: 5,
+                width: 70,
+                paddingVertical: paddingVertical ? paddingVertical : 5
+            }}>
                 <LinearGradient
                     colors={[
                         'rgb(39, 174, 229)',

@@ -59,7 +59,8 @@ export const styles = StyleSheet.create({
         fontWeight: '500',
         color: Colors.text_Color,
         paddingBottom: 8,
-        lineHeight: 20
+        lineHeight: 20,
+        textAlign: 'center'
 
     },
     container1: {
