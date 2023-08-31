@@ -111,7 +111,6 @@ const Signin = () => {
           source={require('../../../Assets/Image/login_image.png')}
           resizeMode="contain"
         />
-
         <View style={styles.Login_view}>
           <View style={styles.unlock_view}>
             <Image

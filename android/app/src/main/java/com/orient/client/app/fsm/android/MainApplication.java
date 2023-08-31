@@ -1,4 +1,4 @@
-package com.champion;
+package com.orient.client.app.fsm.android;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

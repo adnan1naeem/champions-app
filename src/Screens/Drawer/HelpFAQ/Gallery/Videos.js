@@ -15,7 +15,6 @@ import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
 
 const ProductManuals = () => {
-    const [mobile, setMobile] = useState(''); // Separate state for name
     const navigation = useNavigation();
 
     // Sample data array
@@ -51,13 +50,14 @@ const ProductManuals = () => {
             style={{
                 backgroundColor: Colors.White,
                 height: 155,
-                marginHorizontal: 6,
                 marginVertical: 5,
                 borderRadius: 5,
-                alignSelf: 'center',
+                marginHorizontal: 2,
+
             }}>
+
             <Image
-                style={{ width: 150, height: 120, borderRadius: 5 }}
+                style={{ width: 155, height: 120, }}
                 source={item.imageSource}
             />
             <Text
@@ -81,6 +81,7 @@ const ProductManuals = () => {
                 {item.views}
             </Text>
         </View>
+
     );
 
     return (
@@ -101,16 +102,26 @@ const ProductManuals = () => {
                 }}>
                 Videos
             </Text>
+
             <FlatList
                 data={data}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
                 numColumns={2}
-                contentContainerStyle={[
-                    styles.Login_view,
-                    { paddingBottom: 40, paddingTop: 30 },
-                ]}
+                contentContainerStyle={
+
+                    {
+                        paddingBottom: 40, paddingTop: 30, paddingVertical: 10,
+                        backgroundColor: '#3F6FAD',
+                        borderRadius: 40,
+                        alignSelf: 'center',
+                        marginTop: 25,
+                        paddingHorizontal: 10
+                    }
+                }
             />
+
+
         </ImageBackground>
     );
 };

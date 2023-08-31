@@ -1,4 +1,4 @@
-package com.champion;
+package com.orient.client.app.fsm.android;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

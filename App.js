@@ -4,7 +4,6 @@ import Navigation from './navigation/Navigation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar, LogBox } from 'react-native';
 import { Colors } from './src/Utils/Colors';
-import codePush from 'react-native-code-push';
 
 const App = () => {
   useEffect(() => {
@@ -19,4 +18,4 @@ const App = () => {
   );
 };
 
-export default codePush(App);
+export default App;
