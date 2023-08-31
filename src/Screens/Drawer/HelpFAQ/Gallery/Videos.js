@@ -51,9 +51,10 @@ const ProductManuals = () => {
             style={{
                 backgroundColor: Colors.White,
                 height: 155,
-                marginHorizontal: 5,
+                marginHorizontal: 6,
                 marginVertical: 5,
                 borderRadius: 5,
+                alignSelf: 'center',
             }}>
             <Image
                 style={{ width: 150, height: 120, borderRadius: 5 }}

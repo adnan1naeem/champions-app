@@ -29,13 +29,25 @@ const Scan = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [barCode, setbarCode] = useState("");
   const [cnic, setCnic] = useState();
-  const [mobile, setMobile] = useState();
+
   useEffect(() => {
+    (async () => {
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
+      setCnic(user?.cnic);
+      console.log("user23:: ", user?.cnic);
+    })();
+  }, [cnic]);
+
+
+
+
+
+  useEffect(() => {
+
+    console.log("user23323:: ", cnic);
+
     const getBarCodeScannerPermissions = async () => {
       const { status } = await QRCodeScanner.requestCameraPermission();
-      const user = JSON.parse(await AsyncStorage.getItem("USER"));
-      setMobile(mobile);
-      setCnic(user?.cnic);
       setHasPermission(status === 'granted');
     };
     getBarCodeScannerPermissions();
@@ -53,6 +65,7 @@ const Scan = ({ navigation }) => {
       alert("Selected Batch code is not valid");
     }
   };
+
 
   useEffect(() => {
     if (barCode?.length >= 10) {
@@ -74,7 +87,6 @@ const Scan = ({ navigation }) => {
     try {
       setLoading(true);
       console.log(barCode);
-
       const config = {
         method: 'POST',
         headers: {
@@ -101,8 +113,6 @@ const Scan = ({ navigation }) => {
       }
     } catch (error) {
       console.log('Error posting data:', error);
-
-
       if (error.message.includes('Network request failed')) {
         alert('Please check your SAP connection');
       } else {
@@ -124,7 +134,7 @@ const Scan = ({ navigation }) => {
         },
         body: JSON.stringify({
           code: barCode,
-          cnic: user?.user,
+          cnic: user?.cnic,
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);

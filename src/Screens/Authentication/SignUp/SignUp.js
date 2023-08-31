@@ -90,6 +90,9 @@ const SignUp = () => {
     } else if (!cnic) {
       Alert.alert('Field Required', 'Please enter cnic.');
       return;
+    } else if (cnic.length < 13) {
+      Alert.alert('CNIC', 'Please enter valid cnic.');
+      return;
     } else if (!mobile) {
       Alert.alert('Field Required', 'Please enter mobile.');
       return;
@@ -143,7 +146,10 @@ const SignUp = () => {
           alert(data?.message);
           return;
         }
-        Alert.alert("Network Error!", "Unable to connect to server, \n Please try again later");
+        Alert.alert(
+          'Network Error!',
+          'Unable to connect to server, \n Please try again later',
+        );
       } else {
         const data = await response.json();
 
@@ -264,7 +270,7 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: "100%", color: 'white', zIndex: 1 }}
+                containerStyle={{ width: '100%', color: 'white', zIndex: 1 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',

@@ -16,14 +16,8 @@ const SplashScreen = () => {
       }
       navigation.replace(initialRoute);
     }, 4600);
-
     return () => clearTimeout(timer);
   }, []);
-
-
-
-
-
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [fadeAnim2] = useState(new Animated.Value(0));

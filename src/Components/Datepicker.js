@@ -159,7 +159,7 @@ const Datepicker = ({ onDateSelect }) => {
               alignSelf: 'center',
               borderRadius: 10,
               position: 'absolute',
-              top: 125,
+              top: 100,
               right: 28,
               paddingHorizontal: 20,
             }}>

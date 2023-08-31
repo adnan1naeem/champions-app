@@ -81,7 +81,7 @@ const Gallery = () => {
                             width: '100%',
                             paddingVertical: 20,
                             flexDirection: 'row',
-                            paddingHorizontal: 25,
+                            paddingHorizontal: 30,
                         }}>
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Catelogue')}
