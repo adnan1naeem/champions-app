@@ -110,13 +110,14 @@ export const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         marginHorizontal: 40,
-        marginVertical: 5,
+        // marginVertical: 5,
     },
     forgotpassword: {
         color: '#789FC4',
         marginTop: 2,
         fontStyle: 'italic',
         fontWeight: "200",
+        zIndex: 0
 
     },
     proceed_button: {

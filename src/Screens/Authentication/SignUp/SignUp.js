@@ -18,8 +18,9 @@ import { styles } from './style';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -85,35 +86,35 @@ const SignUp = () => {
       Alert.alert('Please select a company.');
       return;
     } else if (!Name) {
-      Alert.alert('Field Required', 'Please enter name.');
+      Alert.alert('Please enter name.');
       return;
     } else if (!cnic) {
-      Alert.alert('Field Required', 'Please enter cnic.');
+      Alert.alert('Please enter cnic.');
       return;
     } else if (cnic.length < 13) {
-      Alert.alert('CNIC', 'Please enter valid cnic.');
+      Alert.alert('Please enter valid cnic.');
       return;
     } else if (!mobile) {
-      Alert.alert('Field Required', 'Please enter mobile.');
+      Alert.alert('Please enter mobile.');
       return;
     } else if (mobile?.length < 11) {
-      Alert.alert('Mobile Number', 'Please enter valid mobile number.');
+      Alert.alert('Please enter valid mobile number.');
       return;
     } else if (!dealerCode) {
-      Alert.alert('Field Required', 'Please enter dealerCode.');
+      Alert.alert('Please enter dealerCode.');
       return;
     } else if (isChecked === false) {
       Alert.alert('Agree the terms and condition.');
       return;
     } else if (!password) {
-      Alert.alert('Field Required', 'Please enter password.');
+      Alert.alert('Please enter password.');
       return;
     } else if (dealerCode.length !== 7) {
-      Alert.alert('Field Required', 'Please enter a 7-digit dealer code.');
+      Alert.alert('Please enter a 7-digit dealer code.');
       return;
     }
 
-    setLoading(true); // Start loading indicator
+    setLoading(true);
     postUserData();
   };
 
@@ -255,7 +256,7 @@ const SignUp = () => {
                 secureTextEntry
               />
             </View>
-            <View style={[styles.container, { zIndex: 1 }]}>
+            <View style={[styles.container, {}]}>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -270,13 +271,17 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: '100%', color: 'white', zIndex: 1 }}
+                containerStyle={{ width: '100%', color: 'white', }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
                   paddingVertical: 5,
-                  zIndex: 999,
+                  // zIndex: 1,
+                  zIndex: 1
+
                 }}
+                zIndex={{ zIndex: 999 }}
+                // zIndex={1}
                 TickIconComponent={() => (
                   <FontAwesome6 name="check" color={Colors.text_Color} />
                 )}
@@ -284,7 +289,7 @@ const SignUp = () => {
               />
             </View>
           </View>
-          <View style={styles.remember_view}>
+          <View style={[styles.remember_view, { zIndex: -1, }]}>
             <TouchableOpacity
               style={styles.container1}
               onPress={handleCheckboxChange}
@@ -309,11 +314,8 @@ const SignUp = () => {
                     />
                   </LinearGradient>
                 ) : (
-                  <Ionicons
-                    name="checkbox-outline"
-                    size={24}
-                    color={Colors.text_Color}
-                  />
+                  <MaterialIcons name="check-box-outline-blank" color={Colors.text_Color} size={24} />
+
                 )}
               </View>
               <Text style={styles.label}>I Agree the Terms and Conditions</Text>
@@ -344,30 +346,7 @@ const SignUp = () => {
             <Text style={styles.text}> Sign In</Text>
           </TouchableOpacity>
         </View>
-        {/* <Modal
-          animationType="Fade"
-          transparent={true}
-          backdropColor='green'
-          // backdropColor="red"
-          visible={isModalVisible}
-          onBackdropPress={() => setModalVisible(false)}
-          onRequestClose={() => setModalVisible(false)}>
-          <View
-            style={{
-              backgroundColor: '#1A4578',
-              width: '90%',
-              paddingVertical: 15,
-              alignSelf: 'center',
-              borderRadius: 10,
-            }}>
-            <FlatList
-              data={options}
-              renderItem={renderOptionItem}
-              keyExtractor={item => item.value}
-            />
-          </View>
 
-        </Modal> */}
       </ScrollView>
     </ImageBackground>
   );

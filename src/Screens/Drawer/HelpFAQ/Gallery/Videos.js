@@ -111,12 +111,12 @@ const ProductManuals = () => {
                 contentContainerStyle={
 
                     {
-                        paddingBottom: 40, paddingTop: 30, paddingVertical: 10,
+                        paddingBottom: 25, paddingTop: 22, paddingVertical: 10,
                         backgroundColor: '#3F6FAD',
                         borderRadius: 40,
                         alignSelf: 'center',
                         marginTop: 25,
-                        paddingHorizontal: 10
+                        paddingHorizontal: 5
                     }
                 }
             />

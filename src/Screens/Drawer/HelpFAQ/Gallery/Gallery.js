@@ -30,16 +30,7 @@ const Gallery = () => {
                     </View>
 
                 </View>
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 17,
-                        color: Colors.text_Color,
-                        marginTop: -20,
-                        fontWeight: 'bold',
-                    }}>
-                    Gallery
-                </Text>
+                <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color }}>Gallery</Text>
 
                 <View style={styles.Login_view}>
                     <View style={styles.container}>
@@ -92,7 +83,7 @@ const Gallery = () => {
                                 color={Colors.text_Color}
                             />
                             <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
-                                Catelogue
+                                Catalogue
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity

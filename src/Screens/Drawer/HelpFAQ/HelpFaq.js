@@ -117,7 +117,7 @@ const HelpFAQ = ({ navigation }) => {
                         />
                         <View style={styles.Text_container}>
                             <Text style={styles.cate_heading}>Gallery</Text>
-                            <Text style={styles.user_detail}>Product Catelogue</Text>
+                            <Text style={styles.user_detail}>Product Catalogue</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity

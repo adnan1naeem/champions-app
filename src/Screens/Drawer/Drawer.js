@@ -83,7 +83,7 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate('EditProfile', { userInfo: user_Info });
           }}
@@ -94,7 +94,7 @@ const DrawerScreen = () => {
             size={20}
             style={{ marginTop: 12 }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={{ marginLeft: 20 }}>

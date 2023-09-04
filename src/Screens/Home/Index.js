@@ -310,7 +310,7 @@ const Home = () => {
           />
           <CardsButton
             disabled={pending_list?.length <= 0}
-            status={'Pendig Cards'}
+            status={'Panding Cards'}
             value={pending_list?.length}
             onPress={() => handleSubmmit('Pendig Cards', pending_list)}
           />

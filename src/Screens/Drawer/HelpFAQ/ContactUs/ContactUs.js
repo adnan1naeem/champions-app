@@ -29,10 +29,11 @@ const ContactUs = ({ navigation }) => {
                         fontSize: 20,
                         fontWeight: '600',
                         textAlign: 'center',
+                        paddingTop: 5
                     }}>
                     Complaints and Issues
                 </Text>
-                <View style={styles.Login_view}>
+                <View style={[styles.Login_view, { paddingBottom: 25, }]}>
                     <View style={styles.unlock_view}>
                         <Text
                             style={{

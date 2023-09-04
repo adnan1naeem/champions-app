@@ -122,11 +122,10 @@ const Signin = () => {
                 marginRight: 15,
               }}
             />
-            <Icon
+            <Ionicons
               style={styles.Unlock_Icon}
               name="finger-print-outline"
               size={70}
-              color="black"
             />
           </View>
           <View style={{ width: '70%', alignSelf: 'center' }}>

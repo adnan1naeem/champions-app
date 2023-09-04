@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
         borderRadius: 40,
         alignSelf: 'center',
         paddingBottom: 100,
-        marginTop: 25,
+        marginTop: 30,
     },
     unlock_view: {
         display: 'flex',
