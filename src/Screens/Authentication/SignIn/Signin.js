@@ -104,7 +104,7 @@ const Signin = () => {
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
+      style={{ flex: 1, backgroundColor: Colors.blueBackground, paddingTop: 10 }}>
       <ScrollView>
         <Image
           style={styles.logo}
@@ -112,22 +112,6 @@ const Signin = () => {
           resizeMode="contain"
         />
         <View style={styles.Login_view}>
-          <View style={styles.unlock_view}>
-            <Image
-              source={require('../../../Assets/Image/face.png')}
-              style={{
-                height: 70,
-                width: 68,
-                resizeMode: 'contain',
-                marginRight: 15,
-              }}
-            />
-            <Ionicons
-              style={styles.Unlock_Icon}
-              name="finger-print-outline"
-              size={70}
-            />
-          </View>
           <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
 
