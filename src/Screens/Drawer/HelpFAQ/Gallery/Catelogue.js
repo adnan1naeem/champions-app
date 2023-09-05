@@ -16,8 +16,8 @@ import Header from "../../../../Components/Header/Header";
 const ProductManuals = () => {
     const navigation = useNavigation();
     const imageList = [
-        { id: '1', source: require('../../../../Assets/Image/Freezer.jpeg') },
-        { id: '2', source: require('../../../../Assets/Image/Dispancer.jpeg') },
+        { id: '1', source: require('../../../../Assets/Image/Freezer_image.jpeg') },
+        { id: '2', source: require('../../../../Assets/Image/Dispancer_image.jpeg') },
     ];
 
     return (

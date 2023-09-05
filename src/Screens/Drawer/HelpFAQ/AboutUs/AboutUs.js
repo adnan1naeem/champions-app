@@ -83,7 +83,7 @@ const AboutUs = ({ route }) => {
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
 
-                            <Image source={require('../../../../Assets/Image/Policy.jpeg')} style={{ height: 350, width: '97%', resizeMode: 'stretch', alignSelf: 'center', }} />
+                            <Image source={require('../../../../Assets/Image/Policy_table.jpeg')} style={{ height: 350, width: '97%', resizeMode: 'stretch', alignSelf: 'center', }} />
 
                             <View style={[styles.container, { marginTop: 20 }]}>
                                 <Text style={[styles.about_text, { marginHorizontal: 14 }]}>

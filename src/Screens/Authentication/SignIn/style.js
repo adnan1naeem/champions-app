@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         paddingBottom: "10%",
         width: '90%',
         backgroundColor: "#3F6FAD",
-        marginTop: 50,
+        marginTop: '40%',
         borderRadius: 40,
         marginBottom: 15,
         alignSelf: "center",
@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
         height: 50,
         marginBottom: 10,
         paddingBottom: 5,
+
     },
     container1: {
         flexDirection: 'row',
