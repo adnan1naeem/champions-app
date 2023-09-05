@@ -16,9 +16,6 @@ import Header from '../../../Components/Header/Header';
 import BackButton from '../../../Components/BackButton';
 // import { ScrollView } from 'react-native-gesture-handler';
 const HelpFAQ = ({ navigation }) => {
-
-
-
     return (
         <ImageBackground
             source={require('../../../Assets/Image/background_image.png')}
@@ -37,7 +34,7 @@ const HelpFAQ = ({ navigation }) => {
                     </Text>
                     <Text
                         style={{ fontSize: 12, fontWeight: '400', color: Colors.text_Color }}>
-                        Account,{' '}Setting,{' '}More
+                        Account Settings, More
                     </Text>
                 </View>
                 <View style={styles.help_container}>
@@ -56,7 +53,7 @@ const HelpFAQ = ({ navigation }) => {
                         />
                         <View style={styles.Text_container}>
                             <Text style={styles.cate_heading}>About</Text>
-                            <Text style={styles.user_detail}>Orient Champion</Text>
+                            <Text style={styles.user_detail}>Orient Champions</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -108,7 +105,7 @@ const HelpFAQ = ({ navigation }) => {
                     <TouchableOpacity
                         style={styles.card_container5}
                         onPress={() => {
-                            navigation.navigate('Gallery');
+                            navigation.navigate('Gallery', { title: "Gallery" });
                         }}>
                         <Entypo
                             name="dots-three-vertical"
@@ -130,8 +127,8 @@ const HelpFAQ = ({ navigation }) => {
                             color={'#35A7B6'}
                             style={{ alignSelf: 'flex-end', margin: 10 }}
                         />
-                        <View style={styles.Text_container}>
-                            <Text style={styles.cate_heading}>Terms & Conditions</Text>
+                        <View style={[styles.Text_container, { paddingHorizontal: 30 }]}>
+                            <Text style={[styles.cate_heading, { textAlign: 'center' }]}>Terms  {'\n'}& Conditions</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

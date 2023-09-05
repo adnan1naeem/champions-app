@@ -11,6 +11,7 @@ import { Colors } from "../../../Utils/Colors";
 import CustomButton from "../../../Components/CustomButton";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../../../Components/Header/Header";
 const Congratulation = ({ route }) => {
   const navigation = useNavigation();
   const handleSignUp = () => {
@@ -31,9 +32,12 @@ const Congratulation = ({ route }) => {
 
     >
       <ScrollView>
-        <View style={[styles.Login_main_view, { paddingTop: Platform.OS === "ios" ? 20 : 0 }]}>
-          <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
-        </View>
+        {route?.params?.keyName ?
+
+          <Header /> :
+          <View style={[styles.Login_main_view, { paddingTop: Platform.OS === "ios" ? 20 : 0 }]}>
+            <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+          </View>}
         <View style={styles.Container_view}>
 
           <View style={{ height: 150, paddingHorizontal: 25, justifyContent: 'center' }}>
@@ -50,7 +54,7 @@ const Congratulation = ({ route }) => {
               borderRadius: 15
             }}
             textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 18, fontFamily: '200' }}
-            title="Procced"
+            title="Proceed"
           />
         </View>
       </ScrollView>

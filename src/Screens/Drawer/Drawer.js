@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   Text,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,11 +16,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../Utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Header from '../../Components/Header/Header';
+import DropDownPicker from 'react-native-dropdown-picker';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const DrawerScreen = () => {
   const navigation = useNavigation();
   const [user_Info, setUserInfo] = useState([]);
-  const [avatarName, setAvatarName] = useState("");
+  const [avatarName, setAvatarName] = useState('');
 
   const handleBackPress = () => {
     navigation.goBack();
@@ -31,7 +34,7 @@ const DrawerScreen = () => {
       if (user) {
         let matches = user?.name?.match(/\b(\w)/g); // ['J','S','O','N']
         let acronym = matches?.join(''); // JSON
-        setAvatarName(acronym, "jkdsjdshjj");
+        setAvatarName(acronym, 'jkdsjdshjj');
         setUserInfo(user);
       }
     })();
@@ -54,6 +57,21 @@ const DrawerScreen = () => {
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'FSM Policy', value: 'FsmPolicy' },
+    { label: 'Privacy Policy', value: 'PrivacyPolicy' },
+  ]);
+
+  const HandlePolicy = text => {
+    if (text === 'FsmPolicy') {
+      navigation.navigate('AboutUs', { privacy: true });
+      return;
+    }
+    navigation.navigate('AboutUs', { privacy: true });
+    return;
   };
 
   return (
@@ -104,13 +122,15 @@ const DrawerScreen = () => {
         </Text>
         <Text
           style={{ fontSize: 12, fontWeight: '400', color: Colors.text_Color }}>
-          Account, Settings, More
+          Account Settings, More
         </Text>
       </View>
       <View style={styles.drawerContainer}>
         <View style={styles.contentContainer}>
           <View style={styles.profile_continer}>
-            <Text style={{ color: Colors.text_Color, fontSize: 22 }}>{avatarName}</Text>
+            <Text style={{ color: Colors.text_Color, fontSize: 22 }}>
+              {avatarName}
+            </Text>
           </View>
           <View style={{ marginLeft: 15, justifyContent: 'center' }}>
             <Text style={styles.user_detail}>{user_Info?.name}</Text>
@@ -191,41 +211,69 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AboutUs', { privacy: true })}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 10,
-          }}>
-          <View style={{ flexDirection: 'row', marginLeft: -6 }}>
-            <Image
-              source={require('../../Assets/Image/Policy.png')}
-              style={[
-                styles.icons,
-                { width: 27, height: 27, resizeMode: 'contain', tintColor: Colors.text_Color },
-              ]}
-            />
-            <Text style={styles.user_detail_cate}>Policies</Text>
-          </View>
-          <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            source={require('../../Assets/Image/Policy.png')}
+            style={[
+              styles.icons,
+              {
+                width: 27,
+                height: 27,
+                resizeMode: 'contain',
+                tintColor: Colors.text_Color,
+              },
             ]}
-            style={styles.forward_arrow}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}>
-            <Ionicons
-              name="chevron-forward"
-              size={20}
-              color={Colors.text_Color}
-            />
-          </LinearGradient>
-        </TouchableOpacity>
+          />
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            onChangeValue={text => HandlePolicy(text)}
+            placeholder="Policies"
+            autoScroll={true}
+            textStyle={[styles.user_detail_cate, { paddingLeft: 0 }]}
+            style={[
+              { color: Colors.text_Color, borderColor: 'transparent' },
+              { backgroundColor: open ? '#1A4578' : 'transparent' },
+            ]}
+            containerStyle={{ width: '95%', color: 'white' }}
+            dropDownContainerStyle={{
+              backgroundColor: '#1A4578',
+              borderColor: 'transparent',
+              paddingVertical: 5,
+              zIndex: 1,
+            }}
+            ArrowDownIconComponent={({ style }) => (
+              <>
+                <LinearGradient
+                  colors={[
+                    'rgb(39, 174, 229)',
+                    'rgb(41,128,201)',
+                    'rgb(50,107,194)',
+                    'rgb(59,90,183)',
+                  ]}
+                  style={styles.forward_arrow}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={Colors.text_Color}
+                  />
+                </LinearGradient>
+              </>
+            )}
+            TickIconComponent={() => (
+              <FontAwesome6 name="check" color={Colors.text_Color} />
+            )}
+            arrowIconStyle={{ tintColor: Colors.text_Color }}
+          />
+        </View>
+
+
         <TouchableOpacity
           onPress={() => SignOut()}
           style={{
@@ -233,6 +281,7 @@ const DrawerScreen = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             marginVertical: 10,
+            zIndex: -1,
           }}>
           <View
             style={{
@@ -242,7 +291,7 @@ const DrawerScreen = () => {
             }}>
             <Image
               source={require('../../Assets/Image/signout.png')}
-              style={styles.icons}
+              style={[styles.icons, { marginLeft: 10 }]}
             />
             <Text style={styles.user_detail_cate}>Sign Out</Text>
           </View>

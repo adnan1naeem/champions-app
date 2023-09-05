@@ -5,17 +5,22 @@ import {
   ScrollView,
   FlatList,
   ImageBackground,
+  ActivityIndicator,
+
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { styles } from './styles';
 import Header from '../../../Components/Header/Header';
 import LinearGradient from 'react-native-linear-gradient';
 import BackButton from '../../../Components/BackButton';
 import { Colors } from '../../../Utils/Colors';
 
+
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
   let batchlisting = route?.params?.list;
+
+
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
@@ -47,19 +52,23 @@ const PaidCategory = ({ route, navigation }) => {
   );
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: Colors.blueBackground,
-      }}>
-      <ImageBackground
-        source={require('../../../Assets/Image/background_image.png')}
-        style={styles.container}
-        resizeMode="cover">
+
+
+    <ImageBackground
+      source={require('../../../Assets/Image/background_image.png')}
+      style={styles.container}
+      resizeMode="cover">
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}>
+
+
         <View style={{ paddingHorizontal: 10 }}>
           <Header value={true} />
           <BackButton navigation={navigation} />
         </View>
+
 
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={styles.part}>{title?.toUpperCase()}</Text>
@@ -71,9 +80,9 @@ const PaidCategory = ({ route, navigation }) => {
             renderItem={renderItem}
             keyExtractor={item => item?.id}
           />
-        </View>
-      </ImageBackground>
-    </ScrollView>
+        </View></ScrollView>
+    </ImageBackground>
+
   );
 };
 

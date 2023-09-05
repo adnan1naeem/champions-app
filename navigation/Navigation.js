@@ -35,6 +35,8 @@ import Videos from "../src/Screens/Drawer/HelpFAQ/Gallery/Videos";
 import Blogs from "../src/Screens/Drawer/HelpFAQ/Gallery/Blogs";
 import Catelogue from "../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue";
 import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
+import Catalouge_PDF from "../src/Screens/Drawer/HelpFAQ/Gallery/Catalouge_PDF";
+import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
 
 const Stack = createNativeStackNavigator();
 
@@ -256,6 +258,20 @@ const RootNavigator = ({ navigation }) => {
       <Stack.Screen
         name="Policy"
         component={Policy}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Catalouge_PDF"
+        component={Catalouge_PDF}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ProductFaq"
+        component={ProductFaq}
         options={{
           headerShown: false,
         }}

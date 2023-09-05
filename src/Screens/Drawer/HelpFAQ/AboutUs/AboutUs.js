@@ -44,6 +44,13 @@ const AboutUs = ({ route }) => {
                                     enhance lifestyles of our customers and bringing maximum
                                     comfort and convenience into their lives.
                                 </Text>
+                                <Text style={styles.about_text}>
+                                    Orient is well known for its innovative product portfolio
+                                    based on extensive research and consumer insights. It is the
+                                    first Pakistani brand which is providing full range of the
+                                    most innovative, affordable and durable products to its valued
+                                    customers.
+                                </Text>
 
                                 <Text style={styles.about_text}>
                                     As one of Pakistan’s fastest growing consumer electronics
@@ -60,20 +67,14 @@ const AboutUs = ({ route }) => {
                                 <Text style={styles.about_text}>
                                     Orient Electronics, located in Lahore, is a part of Orient
                                     Group of Companies which is considered as one of the fastest
-                                    growing business entites in Pakistan. The Group has a
+                                    growing business entities in Pakistan. The Group has a
                                     diversified business portfolio in the fields of Consumer
                                     Electronics, Software Development, Technology Solutions,
                                     E-commerce, Porcelain Tiles Manufacturing, Power & Energy
                                     Generation, Hospitality, Healthcare, Apparel, Motors and
                                     Metals.
                                 </Text>
-                                <Text style={styles.about_text}>
-                                    Orient is well known for its innovative product portfolio
-                                    based on extensive research and consumer insights. It is the
-                                    first Pakistani brand which is providing full range of the
-                                    most innovative, affordable and durable products to its valued
-                                    customers.
-                                </Text>
+
                             </View>
                         </View>
                     </View>
@@ -81,7 +82,10 @@ const AboutUs = ({ route }) => {
                     <View style={styles.Login_view}>
                         <View
                             style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
-                            <View style={styles.container}>
+
+                            <Image source={require('../../../../Assets/Image/Policy.jpeg')} style={{ height: 350, width: '97%', resizeMode: 'stretch', alignSelf: 'center', }} />
+
+                            <View style={[styles.container, { marginTop: 20 }]}>
                                 <Text style={[styles.about_text, { marginHorizontal: 14 }]}>
                                     This Application collects some Personal Data from its Users .
                                 </Text>

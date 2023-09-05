@@ -87,16 +87,10 @@ const PinCodeScreen = ({ route }) => {
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+        <View style={{ marginTop: 35, marginHorizontal: 15 }}>
           <BackButton navigation={navigation} />
         </View>
-        <View style={styles.Login_main_view}>
-          <Image
-            style={styles.logo}
-            source={require('../../../Assets/Image/login_image.png')}
-            resizeMode="contain"
-          />
-        </View>
+        <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         <View style={styles.Login_view}>
           <View style={{ flex: 1, alignSelf: 'center', paddingVertical: 20 }}>
             <Text

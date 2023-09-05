@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
 
     logo: {
         height: 100,
-        width: "85%",
+        width: '80%',
         alignSelf: 'center',
         // marginTop: "5%",
+        paddingTop: 5
     },
     startScreen_text: {
         color: Colors.text_Color,

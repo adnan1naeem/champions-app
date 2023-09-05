@@ -23,9 +23,12 @@ const SearchCate = ({ route }) => {
   const [searchBatchlisting, setSearchBatchlisting] = useState([]);
   const [matchingRows, setMatchingRows] = useState([]);
   const [title, setTitle] = useState('');
+  const [SearchedList, setSearchedList] = useState(true);
+
 
 
   useEffect(() => {
+
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
       try {
@@ -45,6 +48,7 @@ const SearchCate = ({ route }) => {
         if (response) {
           const data = await response.json();
           setSearchBatchlisting(data?.batchList);
+          // console.log("data?.batchList:: ", data?.batchList);
           setbatchlisting(data?.batchList);
         } else {
           console.log('Failed to fetch data:', response.statusText);
@@ -60,7 +64,10 @@ const SearchCate = ({ route }) => {
     const filteredRows = batchlisting?.filter(item =>
       item?.batchCode?.toLowerCase().includes(text?.toLowerCase()),
     );
+    console.log("filteredRowsfilteredRows::: ", filteredRows);
     setSearchBatchlisting(filteredRows);
+    setSearchedList(text === '');
+
   };
 
   const renderItem = ({ item }) => (
@@ -89,6 +96,70 @@ const SearchCate = ({ route }) => {
           </View>
         </LinearGradient>
       </TouchableOpacity>
+    </View>
+  );
+
+
+  const SearchRenderItem = ({ item }) => (
+    <View style={{ alignItems: 'center' }}>
+      <LinearGradient
+        colors={[
+          'rgb(39, 174, 229)',
+          'rgb(41,128,201)',
+          'rgb(50,107,194)',
+          'rgb(59,90,183)',
+        ]}
+        style={[styles.gradient_container, styles.flatList_container]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}>
+        <Text style={styles.flatList_text}>CARD NUMBER</Text>
+        <Text style={styles.flatList_text_detail}>{item?.batchCode}</Text>
+      </LinearGradient>
+      <LinearGradient
+        colors={[
+          'rgb(39, 174, 229)',
+          'rgb(41,128,201)',
+          'rgb(50,107,194)',
+          'rgb(59,90,183)',
+        ]}
+        style={[styles.gradient_container, styles.flatList_container]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}>
+        <Text style={styles.flatList_text} >PRODUCT</Text>
+        <Text style={styles.flatList_text_detail}>{item?.name}</Text>
+      </LinearGradient>
+
+      <LinearGradient
+        colors={[
+          'rgb(39, 174, 229)',
+          'rgb(41,128,201)',
+          'rgb(50,107,194)',
+          'rgb(59,90,183)',
+        ]}
+        style={[styles.gradient_container, styles.flatList_container]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+          <Text style={styles.flatList_text} >AMOUNT</Text>
+          <Text style={styles.flatList_text_detail}>{item?.incentiveAmount}</Text>
+        </View>
+
+      </LinearGradient>
+      <LinearGradient
+        colors={[
+          'rgb(39, 174, 229)',
+          'rgb(41,128,201)',
+          'rgb(50,107,194)',
+          'rgb(59,90,183)',
+        ]}
+        style={[styles.gradient_container, styles.flatList_container]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+          <Text style={styles.flatList_text} >STATUS</Text>
+          <Text style={styles.flatList_text_detail}>{item?.batchPostStatus}</Text>
+        </View>
+      </LinearGradient>
     </View>
   );
 
@@ -139,13 +210,23 @@ const SearchCate = ({ route }) => {
           </TouchableOpacity>
         </View>
         <View>
-          <FlatList
-            data={searchBatchlisting}
-            contentContainerStyle={{ paddingVertical: 50, gap: 10 }}
-            renderItem={renderItem}
-            keyExtractor={item => item?._id?.toString()}
-          />
+          {SearchedList ? (
+            <FlatList
+              data={searchBatchlisting}
+              contentContainerStyle={{ gap: 10, paddingVertical: 30 }}
+              renderItem={renderItem}
+              keyExtractor={item => item?._id?.toString()}
+            />
+          ) : (
+            <FlatList
+              data={searchBatchlisting}
+              contentContainerStyle={{ paddingVertical: 50, gap: 10 }}
+              renderItem={SearchRenderItem}
+              keyExtractor={item => item?._id?.toString()}
+            />
+          )}
         </View>
+
       </ImageBackground>
     </ScrollView>
   );

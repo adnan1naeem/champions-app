@@ -14,9 +14,10 @@ export const styles = StyleSheet.create({
     },
     logo: {
         height: 100,
-        width: "85%",
+        width: '80%',
         alignSelf: 'center',
-        marginTop: Platform.OS === 'ios' ? 70 : 35,
+        // marginTop: "5%",
+        paddingTop: 5
     },
     startScreen_text: {
         color: Colors.text_Color,

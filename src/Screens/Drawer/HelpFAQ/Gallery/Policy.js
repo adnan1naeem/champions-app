@@ -5,8 +5,9 @@ import {
     View,
     ImageBackground,
     ScrollView,
+    Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
@@ -28,7 +29,7 @@ const ProductManuals = () => {
                     <BackButton navigation={navigation} />
                 </View>
                 <MaterialCommunityIcons name="book-check-outline" style={{ alignSelf: 'center' }} size={26} color={Colors.text_Color} />
-                <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color, fontWeight: 'bold' }}>Policy</Text>
+                <Text style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color, fontWeight: 'bold' }}>Privacy Policy</Text>
 
                 <View style={[styles.Login_view, { paddingBottom: 40, paddingHorizontal: 20 }]}>
                     <Text style={styles.privacyDetailText}>Privacy Policy</Text>

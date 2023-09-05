@@ -37,12 +37,12 @@ const AccountSetting = () => {
 
             <View style={{ marginLeft: 20, marginTop: 20 }}>
                 <Text style={styles.Text}>ACCOUNT SETTINGS</Text>
-                <Text style={styles.Text_detail}>Account,{' '}Setting,{' '}More</Text>
+                <Text style={styles.Text_detail}>Account Settings, More</Text>
             </View>
             <View style={{ paddingHorizontal: 20, marginTop: 30, gap: 5 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={require('../../../Assets/Image/Acoount_setting.png')} style={styles.icons} />
-                    <Text style={styles.user_detail}>Account Setting</Text>
+                    <Text style={styles.user_detail}>Account Settings</Text>
                 </View>
                 <View style={{ paddingHorizontal: 40 }}>
                     <Text style={styles.Text_detail}>Account Information</Text>
@@ -54,7 +54,7 @@ const AccountSetting = () => {
                     <Text style={styles.user_detail}>General</Text>
                 </View>
                 <View style={styles.toggle_container}>
-                    <Text style={styles.Text_detail}>Notification</Text>
+                    <Text style={styles.Text_detail}>Notifications</Text>
                     <LinearGradient
                         colors={['rgb(62, 97, 173)', 'rgb(16,169,228)',]}
                         style={styles.toggle}

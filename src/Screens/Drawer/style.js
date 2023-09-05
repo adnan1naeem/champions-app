@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         fontWeight: '400'
     },
     user_detail_cate: {
-        paddingLeft: 15,
+        paddingLeft: 20,
         fontSize: 14,
         fontWeight: '200',
         color: Colors.text_Color

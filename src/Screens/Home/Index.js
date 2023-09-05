@@ -7,9 +7,11 @@ import {
   ImageBackground,
   FlatList,
   Alert,
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
@@ -64,6 +66,19 @@ const Home = () => {
       name: 'LED',
     },
   ];
+
+
+
+
+  const scrollViewRef = useRef(null);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   const handleModalClose = () => {
     setisVisible(false);
@@ -136,14 +151,14 @@ const Home = () => {
           0,
         );
 
-        setPending_list(pendingBatches);
-        setRejected_list(rejectedBatches);
-        setVerified_list(verifiedBatches);
-        setPaid_list(paidBatches);
-        setApproved_list(approvedBatches);
-        setapproved_ammount(total_approvedIncentiveAmount);
-        setPaid_ammount(total_PaidIncentiveAmount);
-        setpending_ammount(total_pendingIncentiveAmount);
+        setPending_list(pendingBatches.reverse());
+        setRejected_list(rejectedBatches.reverse());
+        setVerified_list(verifiedBatches.reverse());
+        setPaid_list(paidBatches.reverse());
+        setApproved_list(approvedBatches.reverse());
+        setapproved_ammount(total_approvedIncentiveAmount?.reverse());
+        setPaid_ammount(total_PaidIncentiveAmount.reverse());
+        setpending_ammount(total_pendingIncentiveAmount.reverse());
       } catch (error) {
         console.error('Error:', error);
       }
@@ -204,7 +219,19 @@ const Home = () => {
       style={styles.container}
       resizeMode="cover">
       <View style={{ paddingHorizontal: 10 }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          ref={scrollViewRef}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}>
+          {refreshing && (
+            <ActivityIndicator
+              style={{ marginTop: 40 }}
+              size="large"
+              color={Colors.Half_white}
+            />
+          )}
           <Header value={true} />
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>
@@ -312,7 +339,7 @@ const Home = () => {
             disabled={pending_list?.length <= 0}
             status={'Panding Cards'}
             value={pending_list?.length}
-            onPress={() => handleSubmmit('Pendig Cards', pending_list)}
+            onPress={() => handleSubmmit('Pending Cards', pending_list)}
           />
           <CardsButton
             disabled={rejected_list?.length <= 0}

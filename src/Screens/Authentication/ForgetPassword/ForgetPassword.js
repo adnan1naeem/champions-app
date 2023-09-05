@@ -69,11 +69,11 @@ const ForgetPassword = () => {
             style={{ flex: 1, backgroundColor: Colors.blueBackground }}
         >
             <ScrollView>
-                <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
+
+                <View style={{ marginTop: 35, marginHorizontal: 15 }}>
                     <BackButton navigation={navigation} />
                 </View>
                 <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
-
                 <View style={styles.Login_view}>
                     <View style={styles.unlock_view}>
                         <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: 200 }}>

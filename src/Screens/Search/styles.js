@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   itemText: {
     color: Colors.text_Color,
     fontSize: 16,
-    paddingVertical:10
+    paddingVertical: 10
   },
   flatList_container: {
     width: '90%',
@@ -73,33 +73,35 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
-  gradient_container:{
+  gradient_container: {
     width: '100%',
     height: '100%',
     borderRadius: 20,
     justifyContent: 'center',
   },
-  text_container:{ flex: 1, 
+  text_container: {
+    flex: 1,
     alignItems: 'flex-end',
-   marginRight: "6%",
-  justifyContent:'center' },
+    marginRight: "6%",
+    justifyContent: 'center'
+  },
   flatList_text: {
     marginLeft: 20,
     color: Colors.flatlist_color,
     fontSize: 20,
-    fontWeight:'600',
+    fontWeight: '600',
   },
   flatList_text_qty: {
     marginLeft: 20,
     color: Colors.flatlist_color,
     fontSize: 20,
-    fontWeight:'400',
+    fontWeight: '400',
   },
   flatList_text_detail: {
     marginLeft: 20,
     color: Colors.flatlist_color,
     fontSize: 16,
-    fontWeight:'400',
+    fontWeight: '400',
   },
   scan_button: {
     alignItems: 'center',
@@ -108,26 +110,26 @@ export const styles = StyleSheet.create({
     height: 80,
     justifyContent: 'center',
     alignSelf: 'center',
-    borderColor:Colors.flatlist_color,
-    borderRadius:20,
+    borderColor: Colors.flatlist_color,
+    borderRadius: 20,
   },
-  scan_text:{
-    color:Colors.flatlist_color,
-    fontSize:17,
+  scan_text: {
+    color: Colors.flatlist_color,
+    fontSize: 17,
   },
   gradient: {
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 3,
-    backgroundColor:'transparent'
+    backgroundColor: 'transparent'
   },
   input: {
     padding: 10,
-    borderWidth:1.5,
-    borderRadius:10,
-    fontSize:18,
+    borderWidth: 1.5,
+    borderRadius: 10,
+    fontSize: 18,
     // backgroundImage: `linear-gradient(to right, ${borderGradientColors.join(', ')})`,
-    width:"60%"
+    width: "60%"
   },
 
 });

@@ -14,35 +14,35 @@ import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
 
+import WebView from 'react-native-webview'
 const ProductManuals = () => {
     const navigation = useNavigation();
 
-    // Sample data array
     const data = [
         {
             id: '1',
-            imageSource: require('../../../../Assets/Image/ezgifcom.gif'),
+            imageSource: 'https://www.youtube.com/watch?v=6QtAcaTGOnY',
             title: 'Oriant T3 Dc Invertor Air Conditioner',
             views: '901K views - 9 months ago',
         },
         {
             id: '2',
-            imageSource: require('../../../../Assets/Image/oriant.gif'),
+            imageSource: 'https://www.youtube.com/watch?v=GutiOP4sWNM',
             title: 'Oriant T3 Dc Invertor Air Conditioner',
             views: '901K views - 9 months ago',
         },
-        {
-            id: '3',
-            imageSource: require('../../../../Assets/Image/onfo.gif'),
-            title: 'Oriant T3 Dc Invertor Air Conditioner',
-            views: '901K views - 9 months ago',
-        },
-        {
-            id: '4',
-            imageSource: require('../../../../Assets/Image/ezgifcom.gif'),
-            title: 'Oriant T3 Dc Invertor Air Conditioner',
-            views: '901K views - 9 months ago',
-        },
+        // {
+        //     id: '3',
+        //     imageSource: 'https://www.youtube.com/watch?v=GutiOP4sWNM',
+        //     title: 'Oriant T3 Dc Invertor Air Conditioner',
+        //     views: '901K views - 9 months ago',
+        // },
+        // {
+        //     id: '4',
+        //     imageSource: 'https://www.youtube.com/watch?v=GutiOP4sWNM',
+        //     title: 'Oriant T3 Dc Invertor Air Conditioner',
+        //     views: '901K views - 9 months ago',
+        // },
     ];
 
     const renderItem = ({ item }) => (
@@ -55,18 +55,16 @@ const ProductManuals = () => {
                 marginHorizontal: 2,
 
             }}>
-
-            <Image
-                style={{ width: 155, height: 120, }}
-                source={item.imageSource}
-            />
+            <WebView source={{
+                uri: item?.imageSource
+            }} style={{ height: 230, }} mediaPlaybackRequiresUserAction={true} />
             <Text
                 style={{
                     color: Colors.black,
                     fontSize: 8,
                     fontWeight: 'bold',
-                    textAlign: 'center',
                     paddingTop: 5,
+                    paddingHorizontal: 5
                 }}>
                 {item.title}
             </Text>
@@ -107,7 +105,7 @@ const ProductManuals = () => {
                 data={data}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
-                numColumns={2}
+                numColumns={1}
                 contentContainerStyle={
 
                     {
@@ -116,7 +114,9 @@ const ProductManuals = () => {
                         borderRadius: 40,
                         alignSelf: 'center',
                         marginTop: 25,
-                        paddingHorizontal: 5
+                        paddingHorizontal: 10,
+                        width: '90%'
+
                     }
                 }
             />

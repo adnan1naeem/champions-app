@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     card_container3: {
         height: "100%",
         width: "45%",
-        backgroundColor: '#E3C445',
+        backgroundColor: '#a87110',
         borderRadius: 20
     },
     card_container4: {
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
         marginTop: 45,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 });
 

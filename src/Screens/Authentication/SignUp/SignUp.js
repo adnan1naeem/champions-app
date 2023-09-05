@@ -256,7 +256,7 @@ const SignUp = () => {
                 secureTextEntry
               />
             </View>
-            <View style={[styles.container, {}]}>
+            <View style={styles.container}>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -276,12 +276,9 @@ const SignUp = () => {
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
                   paddingVertical: 5,
-                  // zIndex: 1,
-                  zIndex: 1
 
                 }}
-                zIndex={{ zIndex: 999 }}
-                // zIndex={1}
+
                 TickIconComponent={() => (
                   <FontAwesome6 name="check" color={Colors.text_Color} />
                 )}
@@ -289,7 +286,7 @@ const SignUp = () => {
               />
             </View>
           </View>
-          <View style={[styles.remember_view, { zIndex: -1, }]}>
+          <View style={[styles.remember_view,]}>
             <TouchableOpacity
               style={styles.container1}
               onPress={handleCheckboxChange}

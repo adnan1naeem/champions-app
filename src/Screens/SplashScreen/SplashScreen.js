@@ -10,7 +10,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
-      let initialRoute = "SignIn";
+      let initialRoute = "Home";
       if (user?.token) {
         initialRoute = "Home";
       }

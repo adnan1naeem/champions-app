@@ -20,11 +20,11 @@ export const styles = StyleSheet.create({
         fontWeight: '300',
     },
     logo: {
-        height: 100,
+        height: 150,
         width: "85%",
         marginTop: Platform.OS === 'ios' ? 45 : 15,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
         // marginVertical: 10
     },
     Login_view: {
@@ -111,6 +111,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         marginHorizontal: 40,
         // marginVertical: 5,
+        zIndex: Platform.OS === 'ios' ? -1 : 0
     },
     forgotpassword: {
         color: '#789FC4',

@@ -75,17 +75,14 @@ android {
 
     namespace "com.fsmia"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.fsmia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-<<<<<<< Updated upstream
-        versionCode 4
-        versionName "1.1.2"
-=======
         versionCode 2
         versionName "1.0"
->>>>>>> Stashed changes
         missingDimensionStrategy 'react-native-camera', 'general'
+        
     }
     aaptOptions {
         cruncherEnabled = false
