@@ -222,7 +222,7 @@ const Home = () => {
         <ScrollView
           ref={scrollViewRef}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl tintColor="#fff" color={'red'} refreshing={refreshing} onRefresh={onRefresh} />
           }
           showsVerticalScrollIndicator={false}>
           <Header value={true} />
