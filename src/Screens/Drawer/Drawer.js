@@ -217,6 +217,7 @@ const DrawerScreen = () => {
             style={[
               styles.icons,
               {
+                marginLeft: -5,
                 width: 27,
                 height: 27,
                 resizeMode: 'contain',
@@ -239,7 +240,7 @@ const DrawerScreen = () => {
               { color: Colors.text_Color, borderColor: 'transparent' },
               { backgroundColor: open ? '#1A4578' : 'transparent' },
             ]}
-            containerStyle={{ width: '95%', color: 'white' }}
+            containerStyle={{ width: '97%', color: 'white' }}
             dropDownContainerStyle={{
               backgroundColor: '#1A4578',
               borderColor: 'transparent',
@@ -291,7 +292,7 @@ const DrawerScreen = () => {
             }}>
             <Image
               source={require('../../Assets/Image/signout.png')}
-              style={[styles.icons, { marginLeft: 10 }]}
+              style={[styles.icons]}
             />
             <Text style={styles.user_detail_cate}>Sign Out</Text>
           </View>

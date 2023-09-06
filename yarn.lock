@@ -6949,6 +6949,11 @@ react-native-video@^5.2.1:
     prop-types "^15.7.2"
     shaka-player "^2.5.9"
 
+react-native-view-pdf@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-view-pdf/-/react-native-view-pdf-0.14.0.tgz#e8fc6fa038a9c5911b037261b153b94641f0eac9"
+  integrity sha512-tW5zamLE0vYIgoEjASLOOCPmW3x1MfJM13GgKar5nPjltU6gWzgpviILmiqeuJB+H7aTCh/UrT81GoYlO0Oedg==
+
 react-native-web@~0.18.10:
   version "0.18.12"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.18.12.tgz#d4bb3a783ece2514ba0508d7805b09c0a98f5a8e"

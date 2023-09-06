@@ -3,7 +3,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  FlatList,
   ImageBackground,
   TextInput,
 } from 'react-native';
@@ -17,15 +16,11 @@ import { API_BASE_URL } from '../../../Constants';
 import BackButton from '../../Components/BackButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SearchCate = ({ route }) => {
+const SearchCate = () => {
   const navigation = useNavigation();
   const [batchlisting, setbatchlisting] = useState([]);
-  const [searchBatchlisting, setSearchBatchlisting] = useState([]);
-  const [matchingRows, setMatchingRows] = useState([]);
+  const [searchBatchlisting, setSearchBatchlisting] = useState();
   const [title, setTitle] = useState('');
-  const [SearchedList, setSearchedList] = useState(true);
-
-
 
   useEffect(() => {
 
@@ -47,8 +42,6 @@ const SearchCate = ({ route }) => {
         const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
         if (response) {
           const data = await response.json();
-          setSearchBatchlisting(data?.batchList);
-          // console.log("data?.batchList:: ", data?.batchList);
           setbatchlisting(data?.batchList);
         } else {
           console.log('Failed to fetch data:', response.statusText);
@@ -59,18 +52,15 @@ const SearchCate = ({ route }) => {
     })();
   }, []);
 
-  const handleSearch = text => {
-    setTitle(text);
-    const filteredRows = batchlisting?.filter(item =>
-      item?.batchCode?.toLowerCase().includes(text?.toLowerCase()),
+  const handleSearch = () => {
+    const filteredRows = batchlisting?.find(item =>
+      item?.batchCode?.toLowerCase() === title?.toLowerCase()
     );
     setSearchBatchlisting(filteredRows);
-    setSearchedList(text === '');
-
   };
 
 
-  const SearchRenderItem = ({ item }) => (
+  const SearchRenderItem = (item) => (
     <View style={{ alignItems: 'center' }}>
       <LinearGradient
         colors={[
@@ -98,7 +88,6 @@ const SearchCate = ({ route }) => {
         <Text style={styles.flatList_text} >PRODUCT</Text>
         <Text style={styles.flatList_text_detail}>{item?.name}</Text>
       </LinearGradient>
-
       <LinearGradient
         colors={[
           'rgb(39, 174, 229)',
@@ -162,10 +151,11 @@ const SearchCate = ({ route }) => {
                 },
               ]}
               placeholder="Search"
+              value={title}
               placeholderTextColor={Colors.text_Color}
-              onChangeText={text => handleSearch(text)}
+              onChangeText={text => setTitle(text)}
             />
-            <TouchableOpacity style={{ width: '25%', paddingVertical: 15 }}>
+            <TouchableOpacity style={{ width: '25%', paddingVertical: 15 }} onPress={() => handleSearch()}>
               <LinearGradient
                 colors={['rgb(39, 174, 229)', 'rgb(59,90,183)']}
                 style={{
@@ -180,19 +170,9 @@ const SearchCate = ({ route }) => {
               </LinearGradient>
             </TouchableOpacity>
           </View>
-          <View>
-            {!SearchedList &&
-              <FlatList
-                data={searchBatchlisting}
-                contentContainerStyle={{ paddingVertical: 50, gap: 10 }}
-                renderItem={SearchRenderItem}
-                keyExtractor={item => item?._id?.toString()}
-              />
-            }
-
-
-          </View>
-
+          {searchBatchlisting ?
+            SearchRenderItem(searchBatchlisting) : null
+          }
         </ScrollView>
       </ImageBackground>
     </View>

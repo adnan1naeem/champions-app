@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, ImageBackground, Text, Switch } from 'react-native';
+import {
+    View,
+    Image,
+    TouchableOpacity,
+    StyleSheet,
+    ImageBackground,
+    Text,
+    Switch,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { color } from 'react-native-elements/dist/helpers';
 import { styles } from './Style';
@@ -13,7 +21,8 @@ const AccountSetting = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const [FingerToggle, setFingerToggle] = useState(false);
-    const AuthenticationToggle = () => setFingerToggle(previousState => !previousState);
+    const AuthenticationToggle = () =>
+        setFingerToggle(previousState => !previousState);
     const handleBackPress = () => {
         // Handle back button press
         navigation.goBack();
@@ -30,8 +39,7 @@ const AccountSetting = () => {
         <ImageBackground
             source={require('../../../Assets/Image/background_image.png')}
             style={styles.container}
-            resizeMode="cover"
-        >
+            resizeMode="cover">
             <Header />
             <BackButton navigation={navigation} />
 
@@ -39,24 +47,40 @@ const AccountSetting = () => {
                 <Text style={styles.Text}>ACCOUNT SETTINGS</Text>
                 <Text style={styles.Text_detail}>Account Settings, More</Text>
             </View>
-            <View style={{ paddingHorizontal: 20, marginTop: 30, gap: 5 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../../Assets/Image/Acoount_setting.png')} style={styles.icons} />
+            <View style={{ marginTop: 30, gap: 5 }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        alignItems: 'center',
+                    }}>
+                    <Image
+                        source={require('../../../Assets/Image/Acoount_setting.png')}
+                        style={styles.icons}
+                    />
                     <Text style={styles.user_detail}>Account Settings</Text>
                 </View>
-                <View style={{ paddingHorizontal: 40 }}>
+                <View style={{ paddingHorizontal: 20 }}>
                     <Text style={styles.Text_detail}>Account Information</Text>
                 </View>
             </View>
             <View style={styles.type_container}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../../Assets/Image/Acoount_setting.png')} style={styles.icons} />
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        alignItems: 'center',
+                    }}>
+                    <Image
+                        source={require('../../../Assets/Image/Acoount_setting.png')}
+                        style={styles.icons}
+                    />
                     <Text style={styles.user_detail}>General</Text>
                 </View>
                 <View style={styles.toggle_container}>
                     <Text style={styles.Text_detail}>Notifications</Text>
                     <LinearGradient
-                        colors={['rgb(62, 97, 173)', 'rgb(16,169,228)',]}
+                        colors={['rgb(62, 97, 173)', 'rgb(16,169,228)']}
                         style={styles.toggle}
                         start={{ x: 0, y: 0 }} // Start from the left side
                         end={{ x: 0, y: 1 }} // End at the right side
@@ -69,13 +93,12 @@ const AccountSetting = () => {
                             onValueChange={toggleSwitch}
                             value={isEnabled}
                         />
-
                     </LinearGradient>
                 </View>
                 <View style={styles.toggle_container}>
                     <Text style={styles.Text_detail}>Finger Print, Face ID,</Text>
                     <LinearGradient
-                        colors={['rgb(62, 97, 173)', 'rgb(16,169,228)',]}
+                        colors={['rgb(62, 97, 173)', 'rgb(16,169,228)']}
                         style={styles.toggle}
                         start={{ x: 0, y: 0 }} // Start from the left side
                         end={{ x: 0, y: 1 }} // End at the right side
@@ -94,6 +117,5 @@ const AccountSetting = () => {
         </ImageBackground>
     );
 };
-
 
 export default AccountSetting;

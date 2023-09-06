@@ -225,13 +225,6 @@ const Home = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           showsVerticalScrollIndicator={false}>
-          {refreshing && (
-            <ActivityIndicator
-              style={{ marginTop: 40 }}
-              size="large"
-              color={Colors.Half_white}
-            />
-          )}
           <Header value={true} />
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>

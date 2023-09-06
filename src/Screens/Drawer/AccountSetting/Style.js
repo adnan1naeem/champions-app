@@ -43,7 +43,6 @@ export const styles = StyleSheet.create({
         fontWeight: '400'
     },
     type_container: {
-        paddingHorizontal: 20,
         marginTop: 30,
         gap: 20
     },
@@ -58,7 +57,7 @@ export const styles = StyleSheet.create({
     },
     Text_detail: {
         color: '#D3D3D3',
-        paddingLeft: 10,
+        paddingLeft: 25,
         fontSize: 13,
         fontWeight: "200"
 

@@ -47,14 +47,14 @@ const ContactUs = ({ navigation }) => {
 
                     <View
                         style={{
+                            width: "100%",
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            paddingHorizontal: 20,
                             paddingVertical: 15,
                         }}>
                         <TouchableOpacity
                             onPress={() => Linking.openURL('tel:0300 – 0 567 343')}
-                            style={{ alignItems: 'center' }}>
+                            style={{ alignItems: 'center', width: "50%", }}>
                             <Ionicons
                                 name="call-outline"
                                 size={26}
@@ -68,21 +68,22 @@ const ContactUs = ({ navigation }) => {
                             onPress={() =>
                                 Linking.openURL('mailto: help.champions@orient.com.pk')
                             }
-                            style={{ alignItems: 'center' }}>
+                            style={{ alignItems: 'center', width: "50%", }}>
                             <Ionicons
                                 name="mail-outline"
                                 size={26}
                                 color={Colors.text_Color}
-                                style={{ marginLeft: 34 }}
                             />
-                            <Text style={{ color: Colors.text_Color, fontSize: 11 }}>
+                            <Text style={{ textAlign: 'center', color: Colors.text_Color, fontSize: 11 }}>
                                 help.champions@orient.com.pk
                             </Text>
                         </TouchableOpacity>
                     </View>
+
                     <View style={styles.unlock_view}>
                         <Text
                             style={{
+                                width: "100%",
                                 color: Colors.text_Color,
                                 fontSize: 16,
                                 fontWeight: '600',
@@ -91,10 +92,10 @@ const ContactUs = ({ navigation }) => {
                             For Product Functionality
                         </Text>
                     </View>
-                    <View style={{ paddingHorizontal: 40, gap: 20, marginTop: 20 }}>
+                    <View style={{ gap: 20, marginTop: 20 }}>
                         <View style={styles.ContainerView}>
                             <TouchableOpacity
-                                style={{ alignItems: 'center' }}
+                                style={{ alignItems: 'center', width: "50%" }}
                                 onPress={() => Linking.openURL('tel: 042 111 635 635')}>
                                 <Ionicons
                                     name="call-outline"
@@ -106,7 +107,7 @@ const ContactUs = ({ navigation }) => {
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={{ alignItems: 'center' }}
+                                style={{ alignItems: 'center', width: "50%" }}
                                 onPress={() => Linking.openURL('tel:0800 – 11 635')}>
                                 <Ionicons
                                     name="call-outline"
@@ -123,7 +124,7 @@ const ContactUs = ({ navigation }) => {
                                 onPress={() =>
                                     Linking.openURL('whatsapp://send?phone=0312 – 9 635 635')
                                 }
-                                style={{ alignItems: 'center' }}>
+                                style={{ alignItems: 'center', width: "50%" }}>
                                 <Ionicons
                                     name="logo-whatsapp"
                                     size={26}
@@ -136,18 +137,18 @@ const ContactUs = ({ navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => Linking.openURL('mailto: care@orient.com.pk')}
-                                style={{ marginLeft: 55 }}>
+                                style={{ width: "50%" }}>
                                 <Ionicons
                                     name="mail-outline"
                                     size={26}
                                     color={Colors.text_Color}
-                                    style={{ textAlign: 'center', marginLeft: 40 }}
+                                    style={{ textAlign: 'center' }}
                                 />
                                 <Text
                                     style={{
                                         color: Colors.text_Color,
                                         fontSize: 10,
-                                        marginLeft: 50,
+                                        textAlign: 'center'
                                     }}>
                                     care@orient.com.pk
                                 </Text>
@@ -169,14 +170,14 @@ const ContactUs = ({ navigation }) => {
                     <View
                         style={{
                             flex: 1,
+                            width: "100%",
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            paddingHorizontal: 40,
                             paddingBottom: 20,
                         }}>
                         <TouchableOpacity
                             onPress={() => Linking.openURL('tel: 042 – 3810 74 05')}
-                            style={{ alignItems: 'center', alignSelf: 'center' }}>
+                            style={{ alignItems: 'center', alignSelf: 'center', width: "50%" }}>
                             <Ionicons
                                 name="call-outline"
                                 size={26}
@@ -190,18 +191,16 @@ const ContactUs = ({ navigation }) => {
                             onPress={() =>
                                 Linking.openURL('mailto:onlinesales@orient.com.pk')
                             }
-                            style={{ alignItems: 'center' }}>
+                            style={{ alignItems: 'center', width: "50%" }}>
                             <Ionicons
                                 name="mail-outline"
                                 size={26}
                                 color={Colors.text_Color}
-                                style={{ marginLeft: 90 }}
                             />
                             <Text
                                 style={{
                                     color: Colors.text_Color,
                                     fontSize: 10,
-                                    marginLeft: 80,
                                 }}>
                                 onlinesales@orient.com.pk
                             </Text>
