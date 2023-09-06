@@ -36,9 +36,14 @@ const Congratulation = ({ route }) => {
 
           <Header /> :
           <View style={[styles.Login_main_view, { paddingTop: Platform.OS === "ios" ? 20 : 0 }]}>
-            <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+            <Image style={{
+              height: 100,
+              width: '80%',
+              alignSelf: 'center',
+              paddingTop: 5
+            }} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
           </View>}
-        <View style={styles.Container_view}>
+        <View style={[styles.Container_view, { marginTop: '44%' }]}>
 
           <View style={{ height: 150, paddingHorizontal: 25, justifyContent: 'center' }}>
             <Text style={styles.contact_text_2}>

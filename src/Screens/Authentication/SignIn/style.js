@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         height: 100,
         width: '80%',
         alignSelf: 'center',
-        // marginTop: "5%",
+        marginTop: Platform.OS === 'ios' ? "10%" : 0,
         paddingTop: 5
     },
     startScreen_text: {

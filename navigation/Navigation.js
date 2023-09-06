@@ -37,6 +37,7 @@ import Catelogue from "../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue";
 import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
 import Catalouge_PDF from "../src/Screens/Drawer/HelpFAQ/Gallery/Catalouge_PDF";
 import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
+import Fsm_Policy from "../src/Screens/Drawer/Fsm_Policy";
 
 const Stack = createNativeStackNavigator();
 
@@ -272,6 +273,13 @@ const RootNavigator = ({ navigation }) => {
       <Stack.Screen
         name="ProductFaq"
         component={ProductFaq}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Fsm_Policy"
+        component={Fsm_Policy}
         options={{
           headerShown: false,
         }}

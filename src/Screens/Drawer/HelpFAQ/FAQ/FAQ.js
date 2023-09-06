@@ -7,25 +7,22 @@ import {
     ImageBackground,
     ScrollView,
     FlatList,
-} from "react-native";
-import React, { useState } from "react";
-import { Colors } from "../../../../Utils/Colors";
-import CustomButton from "../../../../Components/CustomButton";
-import { styles } from "./style";
-import { useNavigation } from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Header from "../../../../Components/Header/Header";
-import BackButton from "../../../../Components/BackButton";
+} from 'react-native';
+import React, { useState } from 'react';
+import { Colors } from '../../../../Utils/Colors';
+import CustomButton from '../../../../Components/CustomButton';
+import { styles } from './style';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Header from '../../../../Components/Header/Header';
+import BackButton from '../../../../Components/BackButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-
 const FAQ = () => {
-
     const navigation = useNavigation();
     const data = [
-
         {
             id: '2',
             icon: require('../../../../Assets/Image/WashingMachine.png'),
@@ -58,36 +55,28 @@ const FAQ = () => {
             onPress: 'Water Dispenser',
         },
         {
-            // id: '1',
-            // icon: require('../../../../Assets/Image/AirCondition.png'),
-            // text: 'Air Conditioners',
-            // onPress: 'Air Conditioners',
-            id: '11',
-            icon: '',
-            text: ' ',
-            onPress: ' ',
+            id: '1',
+            icon: require('../../../../Assets/Image/AirCondition.png'),
+            text: 'Air Conditioners',
+            onPress: 'Air Conditioners',
 
         },
-
-
     ];
 
     const CustomListItem = ({ item, navigation }) => {
-
         const HandleNavigate = () => {
-            if (item?.id === '11') {
-                return
-            }
-            else {
-                navigation.navigate('ProductFaq', { FAQs: item?.onPress })
-            }
-        }
+            navigation.navigate('ProductFaq', { FAQs: item?.onPress });
+        };
 
         return (
             <TouchableOpacity
                 onPress={HandleNavigate}
                 style={{ alignItems: 'center', flex: 1, paddingVertical: 15 }}>
-                <Image tintColor={Colors.text_Color} source={item.icon} style={{ height: 30, width: 30 }} />
+                <Image
+                    tintColor={Colors.text_Color}
+                    source={item.icon}
+                    style={{ height: 30, width: 30 }}
+                />
                 <Text style={{ color: Colors.text_Color, fontSize: 10 }}>
                     {item.text}
                 </Text>
@@ -95,28 +84,23 @@ const FAQ = () => {
         );
     };
 
-
     return (
         <ImageBackground
             source={require('../../../../Assets/Image/background_image.png')}
-            style={{ flex: 1, backgroundColor: Colors.blueBackground }}
-        >
+            style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
             <ScrollView>
                 <View style={{ paddingHorizontal: 10 }}>
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
 
-
                 <View style={styles.unlock_view}>
-                    <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: "600" }}>
+                    <Text
+                        style={{ color: Colors.text_Color, fontSize: 20, fontWeight: '600' }}>
                         FAQs
                     </Text>
-
                 </View>
                 <View style={styles.Login_view}>
-
-
                     <FlatList
                         data={data}
                         keyExtractor={item => item.id}
@@ -126,8 +110,6 @@ const FAQ = () => {
                         )}
                     />
                 </View>
-
-
             </ScrollView>
         </ImageBackground>
     );

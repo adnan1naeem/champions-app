@@ -25,8 +25,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#3F6FAD',
         borderRadius: 40,
         alignSelf: 'center',
-        paddingBottom: 100,
-        marginTop: 30,
+        paddingBottom: 20,
+        marginTop: 50,
     },
     unlock_view: {
         display: 'flex',
@@ -39,10 +39,12 @@ export const styles = StyleSheet.create({
         // Add the borderColor property
     },
     privacyDetailText: {
-        fontSize: 12,
+        fontSize: 13,
         textAlign: 'center',
         color: Colors.text_Color,
-        paddingVertical: 2
+        paddingVertical: 2,
+        paddingHorizontal: 3,
+        paddingTop: 15
     },
     Unlock_Icon: {
         color: Colors.text_Color,

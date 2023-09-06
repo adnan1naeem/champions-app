@@ -120,12 +120,17 @@ const ChangePassword = ({ route }) => {
         </View>
         <View style={styles.Login_main_view}>
           <Image
-            style={styles.logo}
+            style={{
+              height: 100,
+              width: '80%',
+              alignSelf: 'center',
+              paddingTop: 5
+            }}
             source={require('../../../Assets/Image/login_image.png')}
             resizeMode="contain"
           />
         </View>
-        <View style={styles.Login_view}>
+        <View style={[styles.Login_view, { marginTop: '33%' }]}>
           <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
               <TextInput

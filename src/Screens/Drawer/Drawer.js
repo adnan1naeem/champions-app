@@ -32,8 +32,8 @@ const DrawerScreen = () => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
       if (user) {
-        let matches = user?.name?.match(/\b(\w)/g); // ['J','S','O','N']
-        let acronym = matches?.join(''); // JSON
+        let matches = user?.name?.match(/\b(\w)/g);
+        let acronym = matches?.join('');
         setAvatarName(acronym, 'jkdsjdshjj');
         setUserInfo(user);
       }
@@ -67,10 +67,10 @@ const DrawerScreen = () => {
 
   const HandlePolicy = text => {
     if (text === 'FsmPolicy') {
-      navigation.navigate('AboutUs', { privacy: true });
+      navigation.navigate('Fsm_Policy', { privacy: true, });
       return;
     }
-    navigation.navigate('AboutUs', { privacy: true });
+    navigation.navigate('Fsm_Policy');
     return;
   };
 

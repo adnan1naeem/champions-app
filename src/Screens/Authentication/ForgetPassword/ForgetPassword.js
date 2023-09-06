@@ -74,7 +74,7 @@ const ForgetPassword = () => {
                     <BackButton navigation={navigation} />
                 </View>
                 <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
-                <View style={styles.Login_view}>
+                <View style={[styles.Login_view, { marginTop: '33%' }]}>
                     <View style={styles.unlock_view}>
                         <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: 200 }}>
                             Enter CNIC

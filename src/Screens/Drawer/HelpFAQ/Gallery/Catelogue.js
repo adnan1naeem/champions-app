@@ -40,13 +40,13 @@ const ProductManuals = () => {
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => navigation.navigate('Catalouge_PDF', { ID: item?.id })}>
                                 <Image
-                                    style={{ width: 155, resizeMode: 'stretch', height: 200, marginVertical: 5, marginHorizontal: 5 }}
+                                    style={{ width: '95%', resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
                                     source={item.source}
                                 />
                             </TouchableOpacity>
 
                         )}
-                        numColumns={2}
+                        numColumns={1}
                     />
                 </View>
             </ScrollView>

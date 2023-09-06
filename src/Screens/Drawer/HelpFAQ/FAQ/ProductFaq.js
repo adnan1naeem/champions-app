@@ -51,7 +51,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Orient offers Inverter & non-Inverter refrigerators both in
                                     Glass Door and Metallic Door finishes.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q3. Why food stays fresh for longer hours in Orient
                                     Refrigerator?
                                 </Text>
@@ -79,7 +79,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     brands in the market ensuring less than 1 unit a day
                                     electricity consumption.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q6. What is the approximate electricity consumption of Orient
                                     Refrigerators?
                                 </Text>
@@ -108,7 +108,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     move across the refrigerator compartment and thus no need for
                                     a fan to circulate cooling.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q9. What is the function of Anti-Fungal Detachable Gasket in
                                     Orient Refrigerators?
                                 </Text>
@@ -136,7 +136,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Quad-Core Processor gives you the next level of TV smoothness
                                     and gaming experience due to its fast speed.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q3. Are Orient LEDs 4K UHD?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -162,7 +162,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Orient Full Screen Display LEDs provide the best viewing
                                     experience with better and brighter screen resolution.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q6. Do Orient LED TVs have user-friendly interface for kids?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -189,7 +189,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     and an uninterrupted gaming experience along with wireless
                                     gamepad compatibility.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q9. Do Orient LED TVs feature Audio Connect?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -222,7 +222,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     colors with accuracy and the pictures you see on an Orient LED
                                     TV looks almost as beautiful as the world around you.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q12. What sort of sound quality does Orient offer?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -250,7 +250,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Orient Microwave Oven Grill is equipped with Child Safety Lock
                                     so that children are safe if they try to
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q3. Is Orient Microwave safe to use in homes with children?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -279,7 +279,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     fitted with the latest technology, Magnetron, which makes it
                                     long lasting and ensures best performance for decades.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q6. What is the purpose of cooking-end signal?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -302,7 +302,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Orient Microwave Oven with its Digital Control Panel ensures
                                     most advanced settings and 0% error in the usage.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q9. Does it use a lot of electricity?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -341,7 +341,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     The fastest cooling technology featuring in Orient Dispensers
                                     give ice cold water in fastest possible cooling cycles.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q3. How is the water cooling any different in Orient
                                     dispensers?
                                 </Text>
@@ -369,7 +369,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     metallic door dispensers, tallest water dispenser with added
                                     space and so much more.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q6. What is the function of three taps in the dispenser?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -420,7 +420,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Duty/Blanket/Delicate/Quick Wash) and 8 Water levels to choose
                                     from for complete ease and comfort of the washing process.
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q3. Are these machines fabric friendly?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -448,7 +448,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     is very gentle to each type of fabric during any of the super
                                     wash functions.{' '}
                                 </Text>
-                                <Text style={styles.about_text}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
                                     Q6. Is there a 2in1 detergent box in Orient automatic
                                     machines?{' '}
                                 </Text>
@@ -519,7 +519,141 @@ const ProductFaq = ({ route, navigation }) => {
                                 </Text>
                             </View>
                         ) : (
-                            <Text>Loading.....</Text>
+                            <View style={styles.container}>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    Why Orient Air-conditioners are the best choice?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient air-conditioners are technologically advanced coupled
+                                    with state of the art features including T3 Optimized
+                                    Inverter, Optimized Compressor Drive, Low Voltage Operation,
+                                    Eco Gear Technology, Japanese Compressor to name a few.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is EComfort?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient smart Air-conditioners are wifi enabled and can be
+                                    operated and controlled with Mevris – Orient’s proprietry
+                                    mobile application. Mevris offers unique CPAD system to
+                                    operate, control and further increase efficiencies of Orient
+                                    Air-conditioners.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What are different types of air-conditioners which Orient
+                                    offers?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient offers wall mounted commonly known as split
+                                    air-conditioners as well as Floor Standing air-conditioners
+                                    both in DC Inverter and non-inverter technologies.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What are the sizes of Air-conditioners?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient offers split air-conditioners in 1 ton, 1.5 ton and 2
+                                    tons whereas Floor Standing are in 2 ton and 4 ton.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is T3 Technology?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 Technology means T3 Tropicalized Inverter and any T3
+                                    IoT DC Inverter AC performs best even at high ambient
+                                    temperature of 60 degree Celsius.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is Auto Pilot feature and how much energy it can save?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter with Auto Pilot feature provides a
+                                    choice of 5 different cooling control profiles to ensure up to
+                                    80% energy savings.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is Eco Gear Technology?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient Air-Conditioners also come with great Eco Gear
+                                    Technology which gives option to run air-conditioner on any of
+                                    the preset power saving system.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    Does Orient air-conditioner perform best at low voltage as
+                                    well?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioner operates on as low
+                                    as 70 Volts without compromising on its cooling performance.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is Auto Clean Sterilization System?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners are equipped with
+                                    built-in Auto Clean Sterilization System which automatically
+                                    senses dust and also cleans its evaporator automatically to
+                                    enhance its cooling and saves maximum electricity cost.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    How fast it can start cooling?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners are the fastest
+                                    air-conditioners due to unique optimized Compressor Drive
+                                    feature. It can assure Fast Cooling in 30 seconds and Fast
+                                    Heating in just 60 seconds.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    What is built-in Energy Meter?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners have built-in
+                                    energy meter which helps to easily monitor live consumption of
+                                    electricity.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    How durable and long lasting is PCB Kit?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners is equipped with
+                                    new and improved Japanese PCB Kit for better protection from
+                                    moisture for longer life and durability.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    Can Orient air-conditioner be used in winter also?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioner with its dual
+                                    heating and cooling functions is geared to provide maximum
+                                    comfort in all seasons and weather conditions with greater
+                                    electricity savings.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    Are Orient Air-Conditioners rust proof?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners come with
+                                    protective Gold Fin Anti-Rust coating which prevents from
+                                    corrosion caused by moisture.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    Can Orient Air-Conditioners clean air?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners keep all odors away
+                                    and ensure to remove bacteria and germs to provide clean and
+                                    fresh air.
+                                </Text>
+                                <Text style={[styles.about_text, { fontSize: 15 }]}>
+                                    How noisy are Orient air-conditioners?
+                                </Text>
+                                <Text style={styles.about_text}>
+                                    Orient T3 IoT DC Inverter air-conditioners make minimum noise
+                                    while ensuring maximum performance.
+                                </Text>
+                            </View>
                         )}
                     </View>
                 </View>

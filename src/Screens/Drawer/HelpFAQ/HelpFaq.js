@@ -67,7 +67,7 @@ const HelpFAQ = ({ navigation }) => {
                             style={{ alignSelf: 'flex-end', margin: 10 }}
                         />
                         <View style={styles.Text_container}>
-                            <Text style={styles.cate_heading}>FAQ</Text>
+                            <Text style={styles.cate_heading}>FAQs</Text>
                             <Text style={styles.user_detail}>Questions/Ans</Text>
                         </View>
                     </TouchableOpacity>
@@ -114,7 +114,6 @@ const HelpFAQ = ({ navigation }) => {
                         />
                         <View style={styles.Text_container}>
                             <Text style={styles.cate_heading}>Gallery</Text>
-                            <Text style={styles.user_detail}>Product Catalogue</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -127,7 +126,7 @@ const HelpFAQ = ({ navigation }) => {
                             color={'#35A7B6'}
                             style={{ alignSelf: 'flex-end', margin: 10 }}
                         />
-                        <View style={[styles.Text_container, { paddingHorizontal: 30 }]}>
+                        <View style={[styles.Text_container, { paddingHorizontal: 25 }]}>
                             <Text style={[styles.cate_heading, { textAlign: 'center' }]}>Terms  {'\n'}& Conditions</Text>
                         </View>
                     </TouchableOpacity>
