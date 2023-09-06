@@ -12,7 +12,7 @@ const SplashScreen = () => {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
       let initialRoute = "SignIn";
       if (user?.token) {
-        initialRoute = "SignIn";
+        initialRoute = "Home";
       }
       navigation.replace(initialRoute);
     }, 4600);
