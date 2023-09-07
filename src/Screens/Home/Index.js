@@ -156,9 +156,9 @@ const Home = () => {
         setVerified_list(verifiedBatches.reverse());
         setPaid_list(paidBatches.reverse());
         setApproved_list(approvedBatches.reverse());
-        setapproved_ammount(total_approvedIncentiveAmount?.reverse());
-        setPaid_ammount(total_PaidIncentiveAmount.reverse());
-        setpending_ammount(total_pendingIncentiveAmount.reverse());
+        setapproved_ammount(total_approvedIncentiveAmount);
+        setPaid_ammount(total_PaidIncentiveAmount);
+        setpending_ammount(total_pendingIncentiveAmount);
       } catch (error) {
         console.error('Error:', error);
       }

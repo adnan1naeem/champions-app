@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
         borderRadius: 40,
         alignSelf: 'center',
         paddingBottom: 20,
-        marginTop: 50,
+        marginTop: 35,
     },
     unlock_view: {
         display: 'flex',

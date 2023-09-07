@@ -66,12 +66,11 @@ const DrawerScreen = () => {
   ]);
 
   const HandlePolicy = text => {
-    if (text === 'FsmPolicy') {
+    if (text?.value === 'FsmPolicy') {
       navigation.navigate('Fsm_Policy', { privacy: true, });
       return;
     }
     navigation.navigate('Fsm_Policy');
-    return;
   };
 
   return (
@@ -211,7 +210,7 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', zIndex: 1,marginEnd:2 }}>
           <Image
             source={require('../../Assets/Image/Policy.png')}
             style={[
@@ -232,7 +231,7 @@ const DrawerScreen = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            onChangeValue={text => HandlePolicy(text)}
+            onSelectItem={(text)=>HandlePolicy(text)}
             placeholder="Policies"
             autoScroll={true}
             textStyle={[styles.user_detail_cate, { paddingLeft: 0 }]}
@@ -248,7 +247,6 @@ const DrawerScreen = () => {
               zIndex: 1,
             }}
             ArrowDownIconComponent={({ style }) => (
-              <>
                 <LinearGradient
                   colors={[
                     'rgb(39, 174, 229)',
@@ -265,7 +263,6 @@ const DrawerScreen = () => {
                     color={Colors.text_Color}
                   />
                 </LinearGradient>
-              </>
             )}
             TickIconComponent={() => (
               <FontAwesome6 name="check" color={Colors.text_Color} />
@@ -278,9 +275,8 @@ const DrawerScreen = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
+            marginEnd:2,
             justifyContent: 'space-between',
-            marginVertical: 10,
-            zIndex: -1,
           }}>
           <View
             style={{

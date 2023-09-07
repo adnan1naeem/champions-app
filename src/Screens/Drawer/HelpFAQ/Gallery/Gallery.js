@@ -115,7 +115,7 @@ const Gallery = ({ route }) => {
             <ScrollView>
                 <View style={{ paddingHorizontal: 10 }}>
                     <Header />
-                    <View style={{ width: 80, paddingVertical: 10 }}>
+                    <View style={{ width: 80, paddingVertical: 5 }}>
                         <BackButton navigation={navigation} />
                     </View>
                 </View>

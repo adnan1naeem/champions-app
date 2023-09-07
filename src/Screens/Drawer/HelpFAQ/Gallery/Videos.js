@@ -16,7 +16,6 @@ import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
 
-import WebView from 'react-native-webview';
 const Videos = () => {
     const navigation = useNavigation();
 
@@ -88,7 +87,7 @@ const Videos = () => {
                         textAlign: 'center',
                         paddingTop: 5,
                         fontSize: 18,
-                        paddingBottom: 30,
+                        paddingBottom: 35,
                         color: Colors.text_Color,
                     }}>
                     Videos

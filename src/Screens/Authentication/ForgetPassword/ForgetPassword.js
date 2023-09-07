@@ -70,7 +70,7 @@ const ForgetPassword = () => {
         >
             <ScrollView>
 
-                <Image style={[styles.logo, { marginTop: 35, }]} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+                <Image style={[styles.logo, { marginTop: 15, }]} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
 
                 <View style={{ marginHorizontal: 15 }}>
                     <BackButton navigation={navigation} />

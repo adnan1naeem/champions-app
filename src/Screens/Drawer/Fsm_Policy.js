@@ -1,8 +1,7 @@
 import { Image, Text, View, ImageBackground, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { styles } from '../Drawer/HelpFAQ/AboutUs/style';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../Components/Header/Header';
 import BackButton from '../../Components/BackButton';
 import { Colors } from '../../Utils/Colors';
@@ -36,11 +35,11 @@ const Fsm_Policy = ({ route }) => {
                         style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                         {privacy ? (
                             <Image
-                                source={require('../../Assets/Image/Policy_table.jpeg')}
+                            resizeMode='stretch'
+                                source={require('../../Assets/Image/Policy_table.png')}
                                 style={{
-                                    height: 450,
-                                    width: '96%',
-                                    resizeMode: 'stretch',
+                                    height: 120,
+                                    width: '100%',
                                     alignSelf: 'center',
                                 }}
                             />
@@ -100,23 +99,20 @@ const Fsm_Policy = ({ route }) => {
                                     The Data is kept for the time necessary to provide the service
                                     requested by the User, or stated by the purposes outlined in this
                                     document, and the User can always request that the Data Controller
-                                    suspend or remove the data.{' '}
+                                    suspend or remove the data.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The Data concerning the User is collected to allow the Owner to
                                     provide its services, as well as for the Contacting the User and
-                                    doing Analytics.{' '}
+                                    doing Analytics.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The User's Data may be used for legal purposes by the Data
                                     Controller, in Court or in the stages leading to possible legal
                                     action arising from improper use of this Application or the related
                                     services.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The User declares to be aware that the Data Controller may be
                                     required to reveal personal data upon request of public authorities.{' '}
                                 </Text>
@@ -173,12 +169,10 @@ const Fsm_Policy = ({ route }) => {
                                     are binding on you.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     This agreement and any applicable privacy policy are the entire
                                     agreement between you and the app publisher.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The laws of Islamic Republic of Pakistan govern the interpretation
                                     of these terms, claims for breach of them, and all other claims
                                     (including consumer protection, unfair competition, and tort
@@ -186,7 +180,6 @@ const Fsm_Policy = ({ route }) => {
                                     describes certain legal rights.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The app and the service accessed via the app are provided “as is”
                                     “with all faults” and “as available”. You bear the risk as to its
                                     quality and performance. The app publisher gives no express
@@ -198,7 +191,6 @@ const Fsm_Policy = ({ route }) => {
                                 </Text>
 
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     To the extent not prohibited by law, if you have any basis for
                                     recovering damages, you can recover from the app publisher only
                                     direct damages up to the amount you paid for the app or PKR 1.00,
@@ -218,7 +210,6 @@ const Fsm_Policy = ({ route }) => {
                                     damages.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     The User declares to be aware that the Data Controller may be
                                     required to reveal personal data upon request of public authorities.{' '}
                                 </Text>
@@ -274,7 +265,6 @@ const Fsm_Policy = ({ route }) => {
                                     personal identification number.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     Usage data is the information collected automatically from this
                                     Application (or third party services employed in this Application.
                                     The user is the individual using this Application, which must
@@ -282,13 +272,11 @@ const Fsm_Policy = ({ route }) => {
                                     and or Personal Data refers.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     These terms are an agreement between you and Orient Electronics for
                                     the use of Orient Champions App on the platform. If you do not
                                     accept these terms, you have no right to and must not use the app.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     By accepting these terms, you represent that you are at least 18
                                     years old or have reached the age of majority where you live, if
                                     that is more than 18 years of age. If you are under 18 or have not
@@ -297,13 +285,11 @@ const Fsm_Policy = ({ route }) => {
                                 </Text>
 
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     If you comply with these terms, you have the right that you may use
                                     the app for the sole purpose of interacting with the publisher of
                                     the app. The app publisher reserves all other rights.
                                 </Text>
                                 <Text style={styles.about_text}>
-                                    {' '}
                                     There are certain restrictions and you don’t have to work around any
                                     technical limitations of the app, Modify, reverse engineer or
                                     otherwise alter the app (except to the extent this is authorized

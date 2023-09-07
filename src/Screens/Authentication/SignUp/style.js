@@ -67,6 +67,7 @@ export const styles = StyleSheet.create({
         borderBottomColor: Colors.text_Color,
         borderBottomWidth: 1,
         height: 50,
+        zIndex: 1,
         marginBottom: 10,
     },
     container1: {
