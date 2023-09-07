@@ -11,16 +11,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { styles } from './styles';
+import {styles} from './styles';
 import Header from '../../Components/Header/Header';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
-import { Colors } from '../../Utils/Colors';
-import { API_BASE_URL } from '../../../Constants';
+import {Colors} from '../../Utils/Colors';
+import {API_BASE_URL} from '../../../Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
@@ -67,15 +67,13 @@ const Home = () => {
     },
   ];
 
-
-
-
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
+      getBatchListing();
       setRefreshing(false);
     }, 1000);
   }, []);
@@ -97,74 +95,71 @@ const Home = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const user = JSON.parse(await AsyncStorage.getItem("USER"));
-      const payload = {
-        cnic: user?.cnic,
-        start_date: endDate,
-        end_date: startDate,
-        divCode:
-          selectedValue?.categoryCode === '0'
-            ? ''
-            : selectedValue?.categoryCode,
-      };
-
-      console.log(JSON.stringify(payload, null, 2));
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/BatchListing`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        const paidBatches = data?.batchList?.filter(
-          batch => batch?.batchPostStatus === 'paid',
-        );
-        const total_PaidIncentiveAmount = paidBatches?.reduce(
-          (sum, batch) => sum + batch?.incentiveAmount,
-          0,
-        );
-        const approvedBatches = data?.batchList?.filter(
-          batch => batch?.batchPostStatus === 'approved',
-        );
-        const total_approvedIncentiveAmount = approvedBatches?.reduce(
-          (sum, batch) => sum + batch?.incentiveAmount,
-          0,
-        );
-        const verifiedBatches = data?.batchList?.filter(
-          batch => batch?.batchPostStatus === 'verified',
-        );
-        const rejectedBatches = data?.batchList?.filter(
-          batch => batch?.batchPostStatus === 'rejected',
-        );
-        const pendingBatches = data?.batchList?.filter(
-          batch => batch?.batchPostStatus === 'pending',
-        );
-        const total_pendingIncentiveAmount = pendingBatches?.reduce(
-          (sum, batch) => sum + batch?.incentiveAmount,
-          0,
-        );
-
-        setPending_list(pendingBatches.reverse());
-        setRejected_list(rejectedBatches.reverse());
-        setVerified_list(verifiedBatches.reverse());
-        setPaid_list(paidBatches.reverse());
-        setApproved_list(approvedBatches.reverse());
-        setapproved_ammount(total_approvedIncentiveAmount);
-        setPaid_ammount(total_PaidIncentiveAmount);
-        setpending_ammount(total_pendingIncentiveAmount);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    })();
+    getBatchListing();
   }, [startDate, endDate, selectedValue]);
 
+  const getBatchListing = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('USER'));
+    const payload = {
+      cnic: user?.cnic,
+      start_date: endDate,
+      end_date: startDate,
+      divCode:
+        selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/BatchListing`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      const paidBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus === 'paid',
+      );
+      const total_PaidIncentiveAmount = paidBatches?.reduce(
+        (sum, batch) => sum + batch?.incentiveAmount,
+        0,
+      );
+      const approvedBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus === 'approved',
+      );
+      const total_approvedIncentiveAmount = approvedBatches?.reduce(
+        (sum, batch) => sum + batch?.incentiveAmount,
+        0,
+      );
+      const verifiedBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus === 'verified',
+      );
+      const rejectedBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus === 'rejected',
+      );
+      const pendingBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus === 'pending',
+      );
+      const total_pendingIncentiveAmount = pendingBatches?.reduce(
+        (sum, batch) => sum + batch?.incentiveAmount,
+        0,
+      );
+
+      setPending_list(pendingBatches.reverse());
+      setRejected_list(rejectedBatches.reverse());
+      setVerified_list(verifiedBatches.reverse());
+      setPaid_list(paidBatches.reverse());
+      setApproved_list(approvedBatches.reverse());
+      setapproved_ammount(total_approvedIncentiveAmount);
+      setPaid_ammount(total_PaidIncentiveAmount);
+      setpending_ammount(total_pendingIncentiveAmount);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   useEffect(() => {
     (async () => {
       const payload = {
@@ -194,20 +189,20 @@ const Home = () => {
     })();
   }, []);
 
-  const renderDropdownItem = ({ item }) => (
+  const renderDropdownItem = ({item}) => (
     <TouchableOpacity
       onPress={() => {
         setSelectedValue(item);
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText, { color: Colors.text_Color }]}>
+      <Text style={[styles.dropdownItemText, {color: Colors.text_Color}]}>
         {item?.categoryName}
       </Text>
       {selectedValue?.categoryCode === item?.categoryCode && (
         <Entypo
           name="check"
-          style={{ color: Colors.text_Color, fontSize: 16, marginLeft: 10 }}
+          style={{color: Colors.text_Color, fontSize: 16, marginLeft: 10}}
         />
       )}
     </TouchableOpacity>
@@ -218,36 +213,41 @@ const Home = () => {
       source={require('../../Assets/Image/background_image.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={{paddingHorizontal: 10}}>
         <ScrollView
           ref={scrollViewRef}
           refreshControl={
-            <RefreshControl tintColor="#fff" color={'red'} refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              tintColor="#fff"
+              color={'red'}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
           }
           showsVerticalScrollIndicator={false}>
           <Header value={true} />
           <View style={styles.filter_view}>
-            <View style={{ marginTop: 15 }}>
+            <View style={{marginTop: 15}}>
               {selectedValue?._id ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: Colors.text_Color }}>
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{color: Colors.text_Color}}>
                     {selectedValue?.categoryName}
                   </Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                    style={{color: Colors.text_Color, fontSize: 20}}
                   />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={styles.dropdownItemText}>All</Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{ color: Colors.text_Color, fontSize: 20 }}
+                    style={{color: Colors.text_Color, fontSize: 20}}
                   />
                 </TouchableOpacity>
               )}
@@ -263,11 +263,7 @@ const Home = () => {
             visible={modalVisible}
             onBackdropPress={() => setModalVisible(false)}
             onRequestClose={() => setModalVisible(false)}>
-            <View
-              style={[
-                styles.modalContainer,
-
-              ]}>
+            <View style={[styles.modalContainer]}>
               <View style={styles.modalContent}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
@@ -278,7 +274,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-          <View style={{ alignItems: 'center', marginVertical: 5 }}>
+          <View style={{alignItems: 'center', marginVertical: 5}}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
@@ -289,7 +285,7 @@ const Home = () => {
               paddingHorizontal: 50,
               marginTop: 5,
             }}>
-            <View style={{ alignSelf: 'center' }}>
+            <View style={{alignSelf: 'center'}}>
               <Text style={styles.performance}>RS. {Paid_ammount}</Text>
               <Text style={styles.part}>Total Paid</Text>
             </View>
@@ -330,7 +326,7 @@ const Home = () => {
           />
           <CardsButton
             disabled={pending_list?.length <= 0}
-            status={'Panding Cards'}
+            status={'Pending Cards'}
             value={pending_list?.length}
             onPress={() => handleSubmmit('Pending Cards', pending_list)}
           />
@@ -356,7 +352,7 @@ const Home = () => {
           </TouchableOpacity>
 
           <Modal visible={isVisible} transparent animationType="fade">
-            <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
+            <TouchableOpacity style={{flex: 1}} onPress={handleModalClose} />
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 {products.map(product => (

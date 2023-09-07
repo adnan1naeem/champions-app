@@ -42,7 +42,7 @@ const ProductManuals = () => {
                                 onPress={() => Linking.openURL(item?.onpress)}>
 
                                 <Image
-                                    style={{ width: '97%', resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
+                                    style={{ width: '97%', borderRadius: 15, resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
                                     source={item.source}
                                 />
                             </TouchableOpacity>

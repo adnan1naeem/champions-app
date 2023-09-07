@@ -106,13 +106,14 @@ const Videos = () => {
                             style={{
                                 backgroundColor: Colors.White,
                                 marginVertical: 5,
-                                borderRadius: 5,
+                                borderRadius: 15,
                                 marginHorizontal: 2,
                             }}
                         >
                             <Image
+                            resizeMode='stretch'
                                 source={item?.imageSource}
-                                style={{ height: 180, width: '100%' }}
+                                style={{ height: 180, width: '100%', borderTopLeftRadius: 15,borderTopRightRadius: 15 }}
                             />
                             <Text
                                 style={{
