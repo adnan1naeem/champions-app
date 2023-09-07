@@ -521,7 +521,7 @@ const ProductFaq = ({ route, navigation }) => {
                         ) : (
                             <View style={styles.container}>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    Why Orient Air-conditioners are the best choice?
+                                    Q1. Why Orient Air-conditioners are the best choice?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient air-conditioners are technologically advanced coupled
@@ -530,7 +530,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Eco Gear Technology, Japanese Compressor to name a few.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is EComfort?
+                                Q2. What is EComfort?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient smart Air-conditioners are wifi enabled and can be
@@ -540,7 +540,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Air-conditioners.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What are different types of air-conditioners which Orient
+                                Q3. What are different types of air-conditioners which Orient
                                     offers?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -549,14 +549,14 @@ const ProductFaq = ({ route, navigation }) => {
                                     both in DC Inverter and non-inverter technologies.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What are the sizes of Air-conditioners?
+                                Q4. What are the sizes of Air-conditioners?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient offers split air-conditioners in 1 ton, 1.5 ton and 2
                                     tons whereas Floor Standing are in 2 ton and 4 ton.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is T3 Technology?
+                                Q5. What is T3 Technology?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 Technology means T3 Tropicalized Inverter and any T3
@@ -564,7 +564,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     temperature of 60 degree Celsius.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is Auto Pilot feature and how much energy it can save?
+                                Q6. What is Auto Pilot feature and how much energy it can save?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter with Auto Pilot feature provides a
@@ -572,7 +572,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     80% energy savings.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is Eco Gear Technology?
+                                    Q7. What is Eco Gear Technology?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient Air-Conditioners also come with great Eco Gear
@@ -580,7 +580,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     the preset power saving system.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    Does Orient air-conditioner perform best at low voltage as
+                                Q8. Does Orient air-conditioner perform best at low voltage as
                                     well?
                                 </Text>
                                 <Text style={styles.about_text}>
@@ -588,7 +588,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     as 70 Volts without compromising on its cooling performance.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is Auto Clean Sterilization System?
+                                Q9. What is Auto Clean Sterilization System?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners are equipped with
@@ -597,7 +597,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     enhance its cooling and saves maximum electricity cost.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    How fast it can start cooling?
+                                Q10. How fast it can start cooling?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners are the fastest
@@ -606,7 +606,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     Heating in just 60 seconds.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    What is built-in Energy Meter?
+                                Q11. What is built-in Energy Meter?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners have built-in
@@ -614,7 +614,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     electricity.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    How durable and long lasting is PCB Kit?
+                                Q12. How durable and long lasting is PCB Kit?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners is equipped with
@@ -622,7 +622,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     moisture for longer life and durability.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    Can Orient air-conditioner be used in winter also?
+                                Q13. Can Orient air-conditioner be used in winter also?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioner with its dual
@@ -631,7 +631,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     electricity savings.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    Are Orient Air-Conditioners rust proof?
+                                Q14. Are Orient Air-Conditioners rust proof?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners come with
@@ -639,7 +639,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     corrosion caused by moisture.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    Can Orient Air-Conditioners clean air?
+                                Q15. Can Orient Air-Conditioners clean air?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners keep all odors away
@@ -647,7 +647,7 @@ const ProductFaq = ({ route, navigation }) => {
                                     fresh air.
                                 </Text>
                                 <Text style={[styles.about_text, { fontSize: 15 }]}>
-                                    How noisy are Orient air-conditioners?
+                                Q16. How noisy are Orient air-conditioners?
                                 </Text>
                                 <Text style={styles.about_text}>
                                     Orient T3 IoT DC Inverter air-conditioners make minimum noise

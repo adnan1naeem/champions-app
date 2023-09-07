@@ -8,13 +8,22 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
+    input:{
+        padding: 2,
+        borderWidth: 1.5,
+        borderRadius: 10,
+        fontSize: 18,
+        alignSelf: 'center',
+        // backgroundImage: `linear-gradient(to right, ${borderGradientColors.join(', ')})`,
+        width: "30%"
+    },
     ListHeaderStyle: {
         paddingBottom: 35,
         paddingTop: 28,
         backgroundColor: '#3F6FAD',
         borderRadius: 40,
         alignSelf: 'center',
-        paddingHorizontal: 10,
+        paddingHorizontal: 30,
         width: '90%',
     },
     logo: {

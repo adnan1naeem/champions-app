@@ -75,6 +75,12 @@ const Gallery = ({ route }) => {
             text: 'You Tube',
             onPress: 'https://www.youtube.com/@OrientElectronicsOfficial',
         },
+        {
+            id: '11',
+            icon: 'web',
+            text: 'https://orient.com.pk',
+            onPress: 'https://orient.com.pk/',
+        },
     ];
 
     const CustomListItem = ({ item, navigation }) => {

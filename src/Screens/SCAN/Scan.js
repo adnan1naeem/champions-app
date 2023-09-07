@@ -101,7 +101,7 @@ const Scan = ({ navigation }) => {
       console.log("reeeessw:: ", response);
       const data = await response.json();
       if (response.status === 201) {
-        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hour's" });
+        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
         if (data?.error === 'Invalid batch length. Batch character length must be 10') {
           alert('Invalid Batch Code. Batch character length must be 10');
@@ -141,7 +141,7 @@ const Scan = ({ navigation }) => {
       console.log("reeeessw:: ", response);
       const data = await response.json();
       if (response.status === 201) {
-        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hour's" });
+        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
         if (data?.error === 'Invalid batch length. Batch character length must be 10') {
           alert('Invalid Batch Code. Batch character length must be 10');

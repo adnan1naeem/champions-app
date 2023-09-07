@@ -36,13 +36,12 @@ const ProductManuals = () => {
                     <FlatList
                         data={imageList}
                         keyExtractor={(item) => item.id}
-                        contentContainerStyle={{ marginHorizontal: 10, paddingTop: 10 }}
+                        contentContainerStyle={{ marginHorizontal: 25, paddingTop: 10 }}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => Linking.openURL(item?.onpress)}>
-
                                 <Image
-                                    style={{ width: '97%', borderRadius: 15, resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
+                                    style={{ width: '95%', borderRadius: 15, resizeMode: 'stretch', height: 270, marginVertical: 5, marginHorizontal: 5 }}
                                     source={item.source}
                                 />
                             </TouchableOpacity>
