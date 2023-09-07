@@ -7,6 +7,7 @@ import {
     View,
     FlatList,
     Linking,
+    ScrollView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from './style';
@@ -64,77 +65,72 @@ const Videos = () => {
         },
     ];
 
-    const renderItem = ({ item }) => (
-        <View>
-            <TouchableOpacity
-                onPress={() => {
-                    Linking.openURL(item?.onpress);
-                }}
-                style={{
-                    backgroundColor: Colors.White,
-
-                    marginVertical: 5,
-                    borderRadius: 5,
-                    marginHorizontal: 2,
-                }}>
-                <Image
-                    source={item?.imageSource}
-                    style={{ height: 180, width: '100%' }}
-                />
-                <Text
-                    style={{
-                        color: Colors.black,
-                        fontSize: 13,
-                        paddingHorizontal: 5,
-                        paddingVertical: 10,
-                        paddingHorizontal: 10,
-                    }}>
-                    {item.title}
-                </Text>
-            </TouchableOpacity>
-        </View>
-    );
 
     return (
         <ImageBackground
             source={require('../../../../Assets/Image/background_image.png')}
             style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
-            <View style={{ paddingHorizontal: 10 }}>
-                <Header />
-                <BackButton navigation={navigation} />
-            </View>
-            <MaterialCommunityIcons
-                name="video-image"
-                style={{ alignSelf: 'center' }}
-                size={26}
-                color={Colors.text_Color}
-            />
-            <Text
-                style={{
-                    textAlign: 'center',
-                    paddingTop: 5,
-                    fontSize: 18,
-                    paddingBottom: 30,
-                    color: Colors.text_Color,
-                }}>
-                Videos
-            </Text>
+            <ScrollView>
 
-            <FlatList
-                data={data}
-                keyExtractor={item => item.id}
-                renderItem={renderItem}
-                numColumns={1}
-                contentContainerStyle={{
-                    paddingBottom: 35,
-                    paddingTop: 28,
-                    backgroundColor: '#3F6FAD',
-                    borderRadius: 40,
-                    alignSelf: 'center',
-                    paddingHorizontal: 10,
-                    width: '90%',
-                }}
-            />
+
+                <View style={{ paddingHorizontal: 10 }}>
+                    <Header />
+                    <BackButton navigation={navigation} />
+                </View>
+                <MaterialCommunityIcons
+                    name="video-image"
+                    style={{ alignSelf: 'center' }}
+                    size={26}
+                    color={Colors.text_Color}
+                />
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        paddingTop: 5,
+                        fontSize: 18,
+                        paddingBottom: 30,
+                        color: Colors.text_Color,
+                    }}>
+                    Videos
+                </Text>
+
+                <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    numColumns={1}
+                    style={styles.ListHeaderStyle}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                Linking.openURL(item?.onpress);
+                            }}
+                            style={{
+                                backgroundColor: Colors.White,
+                                marginVertical: 5,
+                                borderRadius: 5,
+                                marginHorizontal: 2,
+                            }}
+                        >
+                            <Image
+                                source={item?.imageSource}
+                                style={{ height: 180, width: '100%' }}
+                            />
+                            <Text
+                                style={{
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 10,
+                                }}
+                            >
+                                {item.title}
+                            </Text>
+                        </TouchableOpacity>
+
+                    )}
+
+                />
+            </ScrollView>
         </ImageBackground>
     );
 };

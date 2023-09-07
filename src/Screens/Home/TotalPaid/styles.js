@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
   },
   flatList_container: {
     width: '90%',
-    height: 60,
+    // height: 60,
     borderRadius: 20,
     borderColor: '#98B1DD',
     justifyContent: 'center',
@@ -76,15 +76,16 @@ export const styles = StyleSheet.create({
   },
   gradient_container: {
     width: '100%',
-    height: '100%',
+    // height: '100%',
     borderRadius: 20,
     justifyContent: 'center',
   },
   text_container: {
     flex: 1,
-    alignItems: 'flex-end',
-    marginRight: "6%",
-    justifyContent: 'center'
+    // alignItems: 'flex-end',
+    // marginRight: "2%",
+    justifyContent: 'center',
+    textAlign: 'right'
   },
   flatList_text: {
     marginLeft: 20,

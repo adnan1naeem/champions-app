@@ -6,7 +6,6 @@ import {
   FlatList,
   ImageBackground,
   ActivityIndicator,
-
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { styles } from './styles';
@@ -15,12 +14,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import BackButton from '../../../Components/BackButton';
 import { Colors } from '../../../Utils/Colors';
 
-
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);
   let batchlisting = route?.params?.list;
-
-
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
@@ -36,13 +32,17 @@ const PaidCategory = ({ route, navigation }) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}>
           <View style={{ flexDirection: 'row' }}>
-            <View>
-              <Text style={styles.flatList_text}>{item?.batchCode}</Text>
-              <Text style={styles.flatList_text_detail}>{item.name}</Text>
+            <View style={{ width: '75%' }}>
+              <Text style={[styles.flatList_text, { paddingVertical: 5 }]}>
+                {item?.batchCode}
+              </Text>
+              <Text style={[styles.flatList_text_detail, { paddingVertical: 5 }]}>
+                {item.name}{' '}
+              </Text>
             </View>
-            <View style={styles.text_container}>
+            <View style={[styles.text_container, { width: '25%' }]}>
               <Text style={styles.flatList_text_qty}>
-                {item?.incentiveAmount} rs
+                {item?.incentiveAmount} Rs
               </Text>
             </View>
           </View>
@@ -52,8 +52,6 @@ const PaidCategory = ({ route, navigation }) => {
   );
 
   return (
-
-
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={styles.container}
@@ -62,13 +60,10 @@ const PaidCategory = ({ route, navigation }) => {
         contentContainerStyle={{
           flexGrow: 1,
         }}>
-
-
         <View style={{ paddingHorizontal: 10 }}>
           <Header value={true} />
           <BackButton navigation={navigation} />
         </View>
-
 
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={styles.part}>{title?.toUpperCase()}</Text>
@@ -80,9 +75,9 @@ const PaidCategory = ({ route, navigation }) => {
             renderItem={renderItem}
             keyExtractor={item => item?.id}
           />
-        </View></ScrollView>
+        </View>
+      </ScrollView>
     </ImageBackground>
-
   );
 };
 

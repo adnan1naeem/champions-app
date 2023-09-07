@@ -66,7 +66,7 @@ const Gallery = ({ route }) => {
         {
             id: '9',
             icon: 'linkedin',
-            text: 'linkedin',
+            text: 'LinkedIn',
             onPress: 'https://www.linkedin.com/company/orient-electronics/',
         },
         {

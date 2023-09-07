@@ -70,10 +70,11 @@ const ForgetPassword = () => {
         >
             <ScrollView>
 
-                <View style={{ marginTop: 35, marginHorizontal: 15 }}>
+                <Image style={[styles.logo, { marginTop: 35, }]} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
+
+                <View style={{ marginHorizontal: 15 }}>
                     <BackButton navigation={navigation} />
                 </View>
-                <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
                 <View style={[styles.Login_view, { marginTop: '33%' }]}>
                     <View style={styles.unlock_view}>
                         <Text style={{ color: Colors.text_Color, fontSize: 20, fontWeight: 200 }}>

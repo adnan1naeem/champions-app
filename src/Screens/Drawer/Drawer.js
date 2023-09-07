@@ -273,8 +273,6 @@ const DrawerScreen = () => {
             arrowIconStyle={{ tintColor: Colors.text_Color }}
           />
         </View>
-
-
         <TouchableOpacity
           onPress={() => SignOut()}
           style={{

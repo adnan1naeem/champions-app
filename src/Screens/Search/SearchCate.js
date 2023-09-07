@@ -59,6 +59,9 @@ const SearchCate = () => {
     setSearchBatchlisting(filteredRows);
   };
 
+  const capitalizeFirstLetter = (text) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  };
 
   const SearchRenderItem = (item) => (
     <View style={{ alignItems: 'center' }}>
@@ -116,7 +119,7 @@ const SearchCate = () => {
         end={{ x: 1, y: 0 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
           <Text style={styles.flatList_text} >STATUS</Text>
-          <Text style={[styles.flatList_text_detail, { paddingHorizontal: 10 }]}>{item?.batchPostStatus}</Text>
+          <Text style={[styles.flatList_text_detail, { paddingHorizontal: 10 }]}>{capitalizeFirstLetter(item?.batchPostStatus)}</Text>
         </View>
       </LinearGradient>
     </View>

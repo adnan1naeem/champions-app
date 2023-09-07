@@ -115,10 +115,8 @@ const ChangePassword = ({ route }) => {
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
       <ScrollView>
-        <View style={{ marginTop: 25, paddingHorizontal: 20 }}>
-          <BackButton navigation={navigation} />
-        </View>
-        <View style={styles.Login_main_view}>
+
+        <View style={[styles.Login_main_view, { marginTop: 35, }]}>
           <Image
             style={{
               height: 100,
@@ -129,6 +127,9 @@ const ChangePassword = ({ route }) => {
             source={require('../../../Assets/Image/login_image.png')}
             resizeMode="contain"
           />
+        </View>
+        <View style={{ paddingHorizontal: 20 }}>
+          <BackButton navigation={navigation} />
         </View>
         <View style={[styles.Login_view, { marginTop: '33%' }]}>
           <View style={{ width: '70%', alignSelf: 'center' }}>

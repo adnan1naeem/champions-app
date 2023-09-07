@@ -8,6 +8,15 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
+    ListHeaderStyle: {
+        paddingBottom: 35,
+        paddingTop: 28,
+        backgroundColor: '#3F6FAD',
+        borderRadius: 40,
+        alignSelf: 'center',
+        paddingHorizontal: 10,
+        width: '90%',
+    },
     logo: {
         height: 100,
         width: '85%',

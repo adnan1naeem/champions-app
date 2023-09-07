@@ -35,7 +35,7 @@ const Congratulation = ({ route }) => {
         {route?.params?.keyName ?
 
           <Header /> :
-          <View style={[styles.Login_main_view, { paddingTop: Platform.OS === "ios" ? 20 : 0 }]}>
+          <View style={[styles.Login_main_view, { paddingTop: Platform.OS === "ios" ? 35 : 0 }]}>
             <Image style={{
               height: 100,
               width: '80%',

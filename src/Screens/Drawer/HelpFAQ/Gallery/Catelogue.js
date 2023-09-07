@@ -39,11 +39,10 @@ const ProductManuals = () => {
                         contentContainerStyle={{ marginHorizontal: 10, paddingTop: 10 }}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => Linking.openURL(item?.onpress)}
-                            // onPress={() => navigation.navigate('Catalouge_PDF', { ID: item?.id })}
-                            >
+                                onPress={() => Linking.openURL(item?.onpress)}>
+
                                 <Image
-                                    style={{ width: '95%', resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
+                                    style={{ width: '97%', resizeMode: 'stretch', height: 300, marginVertical: 5, marginHorizontal: 5 }}
                                     source={item.source}
                                 />
                             </TouchableOpacity>
