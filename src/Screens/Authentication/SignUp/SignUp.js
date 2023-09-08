@@ -148,6 +148,7 @@ const SignUp = () => {
         } else if (response?.status === 402) {
           const data = await response.json();
           Alert.alert(data?.message);
+          return;
         }
 
         Alert.alert(
