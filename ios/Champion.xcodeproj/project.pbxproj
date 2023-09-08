@@ -14,6 +14,7 @@
 		4ACDA78B261E3EF22B360E89 /* libPods-Champion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1AB77BFFDE352C39CC4F76 /* libPods-Champion.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A1DF50DEABCD0B9AF1684129 /* libPods-Champion-ChampionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 544849BD8F6277226FF3B968 /* libPods-Champion-ChampionTests.a */; };
+		FAAC42C12AAAF05800C33BF4 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAAC42C02AAAF05800C33BF4 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Champion/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BC4E4292D04BF5353BE98991 /* Pods-Champion-ChampionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Champion-ChampionTests.release.xcconfig"; path = "Target Support Files/Pods-Champion-ChampionTests/Pods-Champion-ChampionTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FAAC42C02AAAF05800C33BF4 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FAAC42C02AAAF05800C33BF4 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* Champion */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChampionTests */,
@@ -242,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAAC42C12AAAF05800C33BF4 /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

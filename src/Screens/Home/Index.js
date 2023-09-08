@@ -11,16 +11,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {styles} from './styles';
+import { styles } from './styles';
 import Header from '../../Components/Header/Header';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
-import {Colors} from '../../Utils/Colors';
-import {API_BASE_URL} from '../../../Constants';
+import { Colors } from '../../Utils/Colors';
+import { API_BASE_URL } from '../../../Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
@@ -189,20 +189,20 @@ const Home = () => {
     })();
   }, []);
 
-  const renderDropdownItem = ({item}) => (
+  const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
         setSelectedValue(item);
         setModalVisible(false);
       }}
       style={styles.dropdownItem}>
-      <Text style={[styles.dropdownItemText, {color: Colors.text_Color}]}>
+      <Text style={[styles.dropdownItemText, { color: Colors.text_Color }]}>
         {item?.categoryName}
       </Text>
       {selectedValue?.categoryCode === item?.categoryCode && (
         <Entypo
           name="check"
-          style={{color: Colors.text_Color, fontSize: 16, marginLeft: 10}}
+          style={{ color: Colors.text_Color, fontSize: 16, marginLeft: 10 }}
         />
       )}
     </TouchableOpacity>
@@ -213,7 +213,7 @@ const Home = () => {
       source={require('../../Assets/Image/background_image.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{ paddingHorizontal: 10 }}>
         <ScrollView
           ref={scrollViewRef}
           refreshControl={
@@ -227,27 +227,27 @@ const Home = () => {
           showsVerticalScrollIndicator={false}>
           <Header value={true} />
           <View style={styles.filter_view}>
-            <View style={{marginTop: 15}}>
+            <View style={{ marginTop: 15 }}>
               {selectedValue?._id ? (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{color: Colors.text_Color}}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.text_Color }}>
                     {selectedValue?.categoryName}
                   </Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{color: Colors.text_Color, fontSize: 20}}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
                   />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={styles.dropdownItemText}>All</Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
-                    style={{color: Colors.text_Color, fontSize: 20}}
+                    style={{ color: Colors.text_Color, fontSize: 20 }}
                   />
                 </TouchableOpacity>
               )}
@@ -274,7 +274,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-          <View style={{alignItems: 'center', marginVertical: 5}}>
+          <View style={{ alignItems: 'center', marginVertical: 5 }}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
           </View>
@@ -285,7 +285,7 @@ const Home = () => {
               paddingHorizontal: 50,
               marginTop: 5,
             }}>
-            <View style={{alignSelf: 'center'}}>
+            <View style={{ alignSelf: 'center' }}>
               <Text style={styles.performance}>RS. {Paid_ammount}</Text>
               <Text style={styles.part}>Total Paid</Text>
             </View>
@@ -296,13 +296,7 @@ const Home = () => {
           </View>
 
           <Image
-            style={{
-              width: '48%',
-              marginTop: 10,
-              height: 160,
-              marginBottom: -20,
-              alignSelf: 'center',
-            }}
+            style={styles.Chamiopm_Logo}
             resizeMode="contain"
             source={require('../../Assets/Image/Orient_icon.png')}
           />
@@ -352,7 +346,7 @@ const Home = () => {
           </TouchableOpacity>
 
           <Modal visible={isVisible} transparent animationType="fade">
-            <TouchableOpacity style={{flex: 1}} onPress={handleModalClose} />
+            <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 {products.map(product => (

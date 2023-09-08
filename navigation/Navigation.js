@@ -38,6 +38,8 @@ import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
 import Catalouge_PDF from "../src/Screens/Drawer/HelpFAQ/Gallery/Catalouge_PDF";
 import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
 import Fsm_Policy from "../src/Screens/Drawer/Fsm_Policy";
+import RejectedDetail from "../src/Screens/Home/TotalPaid/RejectedDetail";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -284,6 +286,14 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="RejectedDetail"
+        component={RejectedDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+
     </Stack.Navigator>
   );
 };

@@ -20,7 +20,10 @@ const PaidCategory = ({ route, navigation }) => {
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
-      <TouchableOpacity style={styles.flatList_container} disabled={true}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('RejectedDetail', { item: item })}
+        style={styles.flatList_container}
+        disabled={!(route?.params?.status === 'Rejected Cards')}>
         <LinearGradient
           colors={[
             'rgb(39, 174, 229)',

@@ -1,185 +1,141 @@
-// import React, { useState } from 'react';
-// import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-// import { Calendar } from 'react-native-calendars';
-
-// const DateRangePicker = () => {
-//   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-//   const [selectedStartDate, setSelectedStartDate] = useState(null);
-//   const [selectedEndDate, setSelectedEndDate] = useState(null);
-
-//   const onDayPress = (day) => {
-//     if (!selectedStartDate || selectedEndDate) {
-//       setSelectedStartDate(day.dateString);
-//       setSelectedEndDate(null);
-//     } else if (selectedStartDate && !selectedEndDate) {
-//       if (new Date(day.dateString) >= new Date(selectedStartDate)) {
-//         setSelectedEndDate(day.dateString);
-//       } else {
-//         setSelectedEndDate(null);
-//         setSelectedStartDate(day.dateString);
-//       }
-//     }
-//   };
-
-//   const markedDates = {};
-//   if (selectedStartDate) {
-//     markedDates[selectedStartDate] = { selected: true, color: 'green' };
-//   }
-//   if (selectedEndDate) {
-//     markedDates[selectedEndDate] = { selected: true, color: 'green' };
-//   }
-
-//   const toggleDatePicker = () => {
-//     setIsDatePickerVisible(!isDatePickerVisible);
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <TouchableOpacity onPress={toggleDatePicker} style={styles.button}>
-//         <Text style={styles.buttonText}>
-//           {isDatePickerVisible ? 'Close Date Picker' : 'Open Date Picker'}
-//         </Text>
-//       </TouchableOpacity>
-//       {isDatePickerVisible && (
-//         <>
-//           <Calendar
-       
-//             markingType={'period'}
-//             markedDates={markedDates}
-//             theme={{
-//               selectedDayBackgroundColor: 'yellow',
-//               selectedDayTextColor: 'white',
-//               calendarBackground: 'white',
-//               textSectionTitleColor: 'orange',
-//               todayTextColor: 'green',
-              
-//             }}
-//             onDayPress={onDayPress} />
-            
-
-
-//           <View style={styles.dateRange}>
-//             <Text>Start Date: {selectedStartDate}</Text>
-//             <Text>End Date: {selectedEndDate}</Text>
-//           </View>
-//         </>
-//       )}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 20,
-//   },
-//   button: {
-//     backgroundColor: 'blue',
-//     padding: 10,
-//     borderRadius: 5,
-//     marginBottom: 10,
-//   },
-//   buttonText: {
-//     color: 'white',
-//     textAlign: 'center',
-//   },
-//   dateRange: {
-//     marginTop: 20,
-//   },
-//   selectedDateContainerStyle: {
-//     height: 35,
-//     width: "100%",
-//     backgroundColor: "blue",
-//   },
-//   selectedDateStyle: {
-//     fontWeight: "bold",
-//     color: "white",
-//     backgroundColor: 'red'
-//   },
-// });
-
-// export default DateRangePicker;
-
-
+import {
+  Image,
+  View,
+  TextInput,
+  ImageBackground,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text, Button } from "react-native";
-import DatePicker from "react-native-neat-date-picker";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import moment from "moment";
-import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
+import { useEffect } from "react";
+import axios from "axios";
+import { Text } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from "./Components/CustomButton";
 
-const Calender = () => {
- 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [start_date, set_start_date] = useState();
-  const [end_date, set_end_date] = useState();
+const EditProfile = ({ route, }) => {
+  const [Name, setName] = useState("");
+  const [mobile, setmobile] = useState("");
+  const [Address, setAddress] = useState("");
+  const [image, setImage] = useState(null); const navigation = useNavigation();
+  const [imageSource, setImageSource] = useState(null);
+  const [nameError, setNameError] = useState(false);
+  const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
 
-  const openDatePicker = () => {
-    setShowDatePicker(true);
+
+
+
+  // const updateUserProfile = async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `http://16.24.45.175:8000/updateUserProfile/${current_Userid}`,
+  //       {
+  //         name: Name,
+  //         mobile: mobile,
+  //         address: Address,
+  //       }
+  //     );
+  //     console.log("Update response:", response);
+
+  //   } catch (error) {
+  //     console.log("Error updating profile:", error);
+  //   }
+  // };
+
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+
+
+  const options = {
+    mediaType: 'photo',
+    quality: 1,
+    includeBase64: false,
   };
-  const onCancel = () => {
-    setShowDatePicker(false);
+  const Cameraopen = async () => {
+    try {
+      const result = await launchCamera(options);
+      if (!result?.didCancel && !result?.error) {
+        console.log('Selected image URI:', result);
+      }
+    } catch (error) {
+      console.error('Error selecting image:', error);
+    }
+
   };
-  const onConfirm = (output) => {
-    const { startDateString, endDateString } = output;
-    set_start_date(startDateString);
-    set_end_date(endDateString);
-    console.log(startDateString);
-    console.log(endDateString);
-    setShowDatePicker(false);
+
+  const Gallery = async () => {
+    try {
+      const result = await launchImageLibrary(options);
+      if (!result?.didCancel && !result?.error) {
+        console.log('Selected image URI:', result);
+      }
+    } catch (error) {
+      console.error('Error selecting image:', error);
+    }
+
   };
-  const colorOptions = {
-    headerColor: 'blue',
-    weekDaysColor: 'black',
-    confirmButtonColor: 'green',
-    selectedDateBackgroundColor: 'pink',
+
+  const Select = () => {
+    Alert.alert('Alert Title', 'My Alert Msg', [
+      {
+        text: 'Camera',
+        onPress: () => Cameraopen(),
+      },
+      {
+        text: 'Gallery',
+        onPress: () => Gallery(),
+        style: 'cancel',
+      },
+    ]);
   };
+  const [user_Info, setUserInfo] = useState([]);
+  const [avatarName, setAvatarName] = useState("");
+  useEffect(() => {
+    (async () => {
+      const user = JSON.parse(await AsyncStorage.getItem('USER'));
+      if (user) {
+        let matches = user?.name?.match(/\b(\w)/g);
+        let acronym = matches?.join('');
+        setAvatarName(acronym, "jkdsjdshjj");
+        setUserInfo(user);
+      }
+    })();
+  }, [avatarName]);
+
+  useEffect(() => {
+    console.log("hgshdhfs:: ", avatarName);
+  },)
 
   return (
+
     <View>
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          backgroundColor:'blue',
-          marginTop: 8,
-            width: 170,
-          padding: 10,
-          justifyContent: "space-between" ,
-          alignItems: "center",
-          borderRadius: 5,
-          marginRight: 15,
-        }}
-        onPress={openDatePicker}
-      >
-        <View>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 15,
-            }}
-          >
-            {moment(start_date).format("MMM DD -")}
-            {moment(end_date).format(" MMM DD")}
-          </Text>
-        </View>
-   
-          <Icon
-            name="keyboard-arrow-down"
-            type="material"
-            size={22}
-            color={'white'}
-          />
-        
+
+      <TouchableOpacity onPress={() => Select()}>
+        {imageSource && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </TouchableOpacity>
-      <DatePicker
-        isVisible={showDatePicker}
-        mode={"range"}
-        onCancel={onCancel}
-        onConfirm={onConfirm}
-        colorOptions={colorOptions}
+
+      <CustomButton
+        // onPress={() => updateUserProfile()}
+        ContainerStyle={{
+          paddingVertical: 15,
+          justifyContent: "center",
+          alignSelf: "center",
+          width: "80%",
+          borderRadius: 15
+        }}
+        textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 16, fontFamily: '200' }}
+        title="Edit Profile"
       />
+
     </View>
+
+
   );
 };
 
-export default Calender;
+export default EditProfile;
+
+

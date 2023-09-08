@@ -12,8 +12,14 @@ const CustomButton = ({
   ContainerStyle,
   Notification,
   textStyle,
-  disabled
+  disabled,
+  Linear,
 }) => {
+
+  const enabledBackgroundColor = ['#17b8f5', '#619dea'];
+  const disabledBackgroundColor = ['#17b8f5', '#17b8f5'];
+  const backgroundGradientColors = disabled ? disabledBackgroundColor : enabledBackgroundColor;
+
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -29,20 +35,18 @@ const CustomButton = ({
       )}
       {loading ? (
         <LinearGradient
-          colors={['#17b8f5', '#619dea']}
+          colors={backgroundGradientColors}
           style={styles.gradient}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <ActivityIndicator style={{}} size={"small"} color={Colors.White} />
+          end={{ x: 1, y: 0 }}>
+          <ActivityIndicator style={{}} size={'small'} color={Colors.White} />
         </LinearGradient>
       ) : (
         <LinearGradient
-          colors={['#17b8f5', '#619dea']}
+          colors={backgroundGradientColors}
           style={styles.gradient}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
+          end={{ x: 1, y: 0 }}>
           <Text style={textStyle ? textStyle : styles.title}>{title}</Text>
         </LinearGradient>
       )}
@@ -56,7 +60,6 @@ const styles = StyleSheet.create({
   Container: {
     justifyContent: 'center',
     alignSelf: 'center',
-    backgroundColor: Colors.borderColor,
     paddingVertical: 20,
     width: 280,
     borderRadius: 15,

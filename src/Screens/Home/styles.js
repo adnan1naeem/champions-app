@@ -8,6 +8,13 @@ export const styles = StyleSheet.create({
     paddingVertical: 10
 
   },
+  Chamiopm_Logo: {
+    width: '48%',
+    marginTop: 10,
+    height: 160,
+    marginBottom: -20,
+    alignSelf: 'center',
+  },
   center: {
     flex: 1,
     alignItems: 'center',

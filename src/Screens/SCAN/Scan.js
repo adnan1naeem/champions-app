@@ -21,31 +21,26 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../Components/BackButton';
 import { API_BASE_URL } from '../../../Constants';
 import { all } from 'axios';
+import { ActivityIndicator } from 'react-native';
 
 const Scan = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [barCode, setbarCode] = useState("");
+  const [barCode, setbarCode] = useState('');
   const [cnic, setCnic] = useState();
 
   useEffect(() => {
     (async () => {
-      const user = JSON.parse(await AsyncStorage.getItem("USER"));
+      const user = JSON.parse(await AsyncStorage.getItem('USER'));
       setCnic(user?.cnic);
-      console.log("user23:: ", user?.cnic);
+      console.log('user23:: ', user?.cnic);
     })();
-  }, [cnic]);
-
-
-
-
+  }, [cnic,]);
 
   useEffect(() => {
-
-    console.log("user23323:: ", cnic);
-
+    console.log('user_cnic: ', cnic);
     const getBarCodeScannerPermissions = async () => {
       const { status } = await QRCodeScanner.requestCameraPermission();
       setHasPermission(status === 'granted');
@@ -54,7 +49,7 @@ const Scan = ({ navigation }) => {
   }, []);
 
   const onSuccess = e => {
-    console.log("sucess scan:: ", e?.data);
+    console.log('sucess scan:: ', e?.data);
     setbarCode(e?.data);
     setScanned(true);
     if (e?.data?.length === 10) {
@@ -62,17 +57,16 @@ const Scan = ({ navigation }) => {
     }
     setScanning(false);
     if (e?.data?.length !== 10) {
-      alert("Selected Batch code is not valid");
+      alert('Selected Batch code is not valid');
     }
   };
 
-
   useEffect(() => {
-    if (barCode?.length >= 10) {
-      handleSubmit();
-      setScanning(false);
-    }
-  }, [barCode])
+    // if (barCode?.length >= 10) {
+    //   handleSubmit();
+    //   setScanning(false);
+    // }
+  }, [barCode]);
 
   const handleScanButtonPress = () => {
     setScanning(true);
@@ -82,8 +76,8 @@ const Scan = ({ navigation }) => {
     setScanning(false);
   };
 
-  const handleSubmitForScan = async (barCode) => {
-    const user = JSON.parse(await AsyncStorage.getItem("USER"));
+  const handleSubmitForScan = async barCode => {
+    const user = JSON.parse(await AsyncStorage.getItem('USER'));
     try {
       setLoading(true);
       console.log(barCode);
@@ -98,12 +92,15 @@ const Scan = ({ navigation }) => {
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      console.log("reeeessw:: ", response);
+      console.log('reeeessw:: ', response);
       const data = await response.json();
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        if (data?.error === 'Invalid batch length. Batch character length must be 10') {
+        if (
+          data?.error ===
+          'Invalid batch length. Batch character length must be 10'
+        ) {
           alert('Invalid Batch Code. Batch character length must be 10');
         } else {
           console.log('Error:', data);
@@ -122,11 +119,11 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const user = JSON.parse(await AsyncStorage.getItem("USER"));
+
+    const user = JSON.parse(await AsyncStorage.getItem('USER'));
     try {
       setLoading(true);
       console.log(barCode);
-
       const config = {
         method: 'POST',
         headers: {
@@ -138,23 +135,25 @@ const Scan = ({ navigation }) => {
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      console.log("reeeessw:: ", response);
+      console.log('reeeessw:: ', response);
       const data = await response.json();
+      console.log("esponse.status:: ", response.status);
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        if (data?.error === 'Invalid batch length. Batch character length must be 10') {
+        if (
+          data?.error ===
+          'Invalid batch length. Batch character length must be 10'
+        ) {
           alert('Invalid Batch Code. Batch character length must be 10');
         } else {
-          console.log('Error:', data);
-          alert(data?.message);
+          console.log('Error: ', data);
+          alert((JSON.stringify(data?.error)));
         }
         setLoading(false);
       }
     } catch (error) {
       console.log('Error posting data:', error);
-
-
       if (error.message.includes('Network request failed')) {
         alert('Please check your SAP connection');
       } else {
@@ -162,7 +161,6 @@ const Scan = ({ navigation }) => {
       }
     }
   };
-
 
   return (
     <ScrollView
@@ -181,19 +179,33 @@ const Scan = ({ navigation }) => {
 
         {!scanning && (
           <View style={styles.Login_view}>
+
             <View style={styles.unlock_view}>
               <TextInput
                 value={barCode}
-                onChangeText={(text) => {
-                  let barCodeIS = text?.replaceAll(/\s/g, '')
-                  setbarCode(barCodeIS)
+                onChangeText={text => {
+                  let barCodeIS = text?.replaceAll(/\s/g, '');
+                  setbarCode(barCodeIS);
                 }}
-                maxLength={10}
                 placeholder="Enter Code Manually"
                 placeholderTextColor={Colors.text_Color}
-                style={{ paddingHorizontal: 10, fontSize: 17, color: Colors.text_Color }}
+                style={styles.manual_BatchCode}
               />
+
+
             </View>
+            <CustomButton
+              ContainerStyle={[styles.proceed_button, { alignSelf: 'center', marginTop: 0, marginBottom: 20 }]}
+              textStyle={{
+                fontSize: 15,
+                color: Colors.text_Color,
+                textAlign: 'center',
+                fontWeight: 'bold',
+              }}
+              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Submit'}
+              onPress={() => handleSubmit()}
+              disabled={loading}
+            />
 
             <View style={styles.scanner_view}>
               <View style={styles.InerView}>
@@ -221,14 +233,14 @@ const Scan = ({ navigation }) => {
                 justifyContent: 'center',
               }}>
               <CustomButton
-                disabled={loading}
+                disabled={loading || barCode.length > 0}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
                 title="QR CODE"
               />
               <CustomButton
-                disabled={loading}
+                disabled={loading || barCode.length > 0}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}

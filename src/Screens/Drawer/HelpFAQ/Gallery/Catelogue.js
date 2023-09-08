@@ -16,8 +16,8 @@ import Header from "../../../../Components/Header/Header";
 const ProductManuals = () => {
     const navigation = useNavigation();
     const imageList = [
-        { id: '1', source: require('../../../../Assets/Image/Freezer_image.jpeg'), onpress: 'https://1drv.ms/b/s!AknL1jKZuWmfgSphLHI3d0Zc-kK5?e=GwHPk0' },
-        { id: '2', source: require('../../../../Assets/Image/Dispancer_image.jpeg'), onpress: 'https://1drv.ms/b/s!AknL1jKZuWmfgStFgJuqBQVIlScK?e=rQptPl' },
+        { id: '1', source: require('../../../../Assets/Image/Reftitle.png'), onpress: 'https://1drv.ms/b/s!AknL1jKZuWmfgSphLHI3d0Zc-kK5?e=GwHPk0' },
+        { id: '2', source: require('../../../../Assets/Image/WDCatalogue.png'), onpress: 'https://1drv.ms/b/s!AknL1jKZuWmfgStFgJuqBQVIlScK?e=rQptPl' },
     ];
 
     return (

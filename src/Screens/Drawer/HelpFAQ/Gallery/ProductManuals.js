@@ -7,16 +7,11 @@ import {
     ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
-import VideoPlayer from 'react-native-video-player';
 
 const ProductManuals = () => {
     const navigation = useNavigation();

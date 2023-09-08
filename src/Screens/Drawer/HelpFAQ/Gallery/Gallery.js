@@ -20,12 +20,12 @@ import Header from '../../../../Components/Header/Header';
 const Gallery = ({ route }) => {
     const navigation = useNavigation();
     const data = [
-        {
-            id: '1',
-            icon: 'book-open-page-variant-outline',
-            text: 'Product Manuals',
-            onPress: 'ProductManuals',
-        },
+        // {
+        //     id: '1',
+        //     icon: 'book-open-page-variant-outline',
+        //     text: 'Product Manuals',
+        //     onPress: 'ProductManuals',
+        // },
         {
             id: '2',
             icon: 'video-image',
@@ -50,37 +50,56 @@ const Gallery = ({ route }) => {
             text: 'Privacy Policy',
             onPress: 'Policy',
         },
-
+        {
+            id: '6',
+            icon: 'book-check-outline',
+            text: 'FSM Policy',
+            onPress: 'https://orient.com.pk/',
+        },
         {
             id: '7',
+            icon: require('../../../../Assets/Image/help.png'),
+            text: 'Help/FAQ',
+            onPress: 'HelpFAQ',
+        },
+
+        {
+            id: '8',
             icon: 'facebook',
             text: 'Facebook',
             onPress: 'https://www.facebook.com/Orient.Pakistan',
         },
         {
-            id: '8',
+            id: '9',
             icon: 'instagram',
             text: 'Instagram',
             onPress: 'https://www.instagram.com/orient.electronics/?hl=en',
         },
         {
-            id: '9',
+            id: '10',
             icon: 'linkedin',
             text: 'LinkedIn',
             onPress: 'https://www.linkedin.com/company/orient-electronics/',
         },
         {
-            id: '10',
+            id: '11',
             icon: 'youtube',
             text: 'You Tube',
             onPress: 'https://www.youtube.com/@OrientElectronicsOfficial',
         },
         {
-            id: '11',
+            id: '12',
             icon: 'web',
             text: 'https://orient.com.pk',
             onPress: 'https://orient.com.pk/',
         },
+        {
+            id: '13',
+            icon: '',
+            text: '',
+            onPress: '',
+        },
+
     ];
 
     const CustomListItem = ({ item, navigation }) => {
@@ -100,6 +119,11 @@ const Gallery = ({ route }) => {
                     <Entypo name={item.icon} size={29} color={Colors.text_Color} />
                 ) : item.id === '4' ? (
                     <MaterialIcon name={item.icon} size={29} color={Colors.text_Color} />
+                ) : item.id === '7' ? (
+                    <Image
+                        source={item?.icon}
+                        style={{ alignSelf: 'center', height: 26, width: 26, resizeMode: 'contain', tintColor: Colors.text_Color }}
+                    />
                 ) : (
                     <MaterialCommunityIcons
                         name={item.icon}
@@ -125,6 +149,7 @@ const Gallery = ({ route }) => {
                         <BackButton navigation={navigation} />
                     </View>
                 </View>
+
                 <Text
                     style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color }}>
                     {route?.params?.title ? route?.params?.title : ' '}

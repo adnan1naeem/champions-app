@@ -1,5 +1,5 @@
 // import typography from "native-base/lib/typescript/theme/base/typography";
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from '../../Utils/Colors';
 let deviceWidth = Dimensions.get('window').width;
 
@@ -8,6 +8,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  manual_BatchCode: {
+    paddingHorizontal: 10,
+    fontSize: 17,
+    color: Colors.text_Color,
+    paddingVertical: Platform.OS === 'ios' ? 11 : null,
   },
   Login_view: {
     paddingVertical: 30,
@@ -20,16 +26,17 @@ export const styles = StyleSheet.create({
   },
   unlock_view: {
     backgroundColor: '#4279BC',
-    width: '85%',
+    width: '90%',
     height: 50,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignSelf: 'center',
     borderWidth: 1.5,
     borderLeftColor: '#3DB2DE',
     borderRightColor: '#5C91D3',
     borderTopColor: '#4CACE1',
     borderBottomColor: '#4493C9',
+    alignSelf: 'center'
+
+
   },
 
   InerView: {

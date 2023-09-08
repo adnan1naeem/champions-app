@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,8 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { API_BASE_URL } from '../../../../Constants';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -32,7 +32,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(null);
   const navigation = useNavigation();
 
   const [nameError, setNameError] = useState(false);
@@ -144,9 +143,13 @@ const SignUp = () => {
       if (!response.ok) {
         if (response?.status === 403) {
           const data = await response.json();
-          alert(data?.message);
+          Alert.alert(data?.message);
           return;
+        } else if (response?.status === 402) {
+          const data = await response.json();
+          Alert.alert(data?.message);
         }
+
         Alert.alert(
           'Network Error!',
           'Unable to connect to server, \n Please try again later',
@@ -159,7 +162,7 @@ const SignUp = () => {
             message:
               'Your registration will be completed within next 24 hours.',
           });
-        } else if (response?.status !== 201) {
+        } else if (response?.status === 402) {
           Alert.alert(data?.message);
         }
       }
@@ -271,14 +274,12 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: '100%', color: 'white', }}
+                containerStyle={{ width: '100%', color: 'white' }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
                   paddingVertical: 5,
-
                 }}
-
                 TickIconComponent={() => (
                   <FontAwesome6 name="check" color={Colors.text_Color} />
                 )}
@@ -286,7 +287,7 @@ const SignUp = () => {
               />
             </View>
           </View>
-          <View style={[styles.remember_view,]}>
+          <View style={[styles.remember_view]}>
             <TouchableOpacity
               style={styles.container1}
               onPress={handleCheckboxChange}
@@ -311,8 +312,11 @@ const SignUp = () => {
                     />
                   </LinearGradient>
                 ) : (
-                  <MaterialIcons name="check-box-outline-blank" color={Colors.text_Color} size={24} />
-
+                  <MaterialIcons
+                    name="check-box-outline-blank"
+                    color={Colors.text_Color}
+                    size={24}
+                  />
                 )}
               </View>
               <Text style={styles.label}>I Agree the Terms and Conditions</Text>
@@ -333,7 +337,7 @@ const SignUp = () => {
               fontSize: 16,
               fontFamily: '200',
             }}
-            title={loading ? 'Loading...' : 'Proceed'}
+            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
             disabled={loading}
           />
           <TouchableOpacity
@@ -343,7 +347,6 @@ const SignUp = () => {
             <Text style={styles.text}> Sign In</Text>
           </TouchableOpacity>
         </View>
-
       </ScrollView>
     </ImageBackground>
   );

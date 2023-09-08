@@ -51,9 +51,8 @@ const HelpFAQ = ({ navigation }) => {
                             color={'#7645EA'}
                             style={{ alignSelf: 'flex-end', margin: 10 }}
                         />
-                        <View style={styles.Text_container}>
-                            <Text style={styles.cate_heading}>About</Text>
-                            <Text style={styles.user_detail}>Orient Champions</Text>
+                        <View style={[styles.Text_container, { paddingHorizontal: 2 }]}>
+                            <Text style={[styles.user_detail, { textAlign: 'center' }]}>{'About \n Orient Electronics'}</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
