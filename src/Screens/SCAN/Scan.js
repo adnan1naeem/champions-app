@@ -7,7 +7,6 @@ import {
   TextInput,
   Image,
   ImageBackground,
-  StyleSheet,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -18,11 +17,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 import { Colors } from '../../Utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../Components/BackButton';
 import { API_BASE_URL } from '../../../Constants';
-import { all } from 'axios';
 import { ActivityIndicator } from 'react-native';
+import { RNCamera } from 'react-native-camera';
 
 const Scan = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -36,17 +34,15 @@ const Scan = ({ navigation }) => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
       setCnic(user?.cnic);
-      // console.log('user23:: ', user?.cnic);
     })();
   }, [cnic,]);
 
   useEffect(() => {
-    // console.log('user_cnic: ', cnic);
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await QRCodeScanner.requestCameraPermission();
-      setHasPermission(status === 'granted');
-    };
-    getBarCodeScannerPermissions();
+    // const getBarCodeScannerPermissions = async () => {
+    //   const { status } = await QRCodeScanner.requestCameraPermission();
+    //   setHasPermission(status === 'granted');
+    // };
+    // getBarCodeScannerPermissions();
   }, []);
 
   const onSuccess = e => {
@@ -54,12 +50,8 @@ const Scan = ({ navigation }) => {
     setbarCode(e?.data);
     setScanned(true);
     handleSubmitForScan(e?.data);
-    // if (e?.data?.length === 10) {
-    // }
     setScanning(false);
-    // if (e?.data?.length !== 10) {
-    //   alert('Selected Batch code is not valid');
-    // }
+
   };
 
   useEffect(() => {
@@ -97,15 +89,6 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        // if (
-        //   data?.error ===
-        //   'Invalid batch length. Batch character length must be 10'
-        // ) {
-        //   Alert.alert('Invalid Batch Code. Batch character length must be 10');
-        // } else {
-        //   console.log('Error:', data);
-        //   
-        // }
         Alert.alert(data?.message);
         setLoading(false);
       }
@@ -143,29 +126,24 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        // if (
-        //   data?.error ===
-        //   'Invalid batch length. Batch character length must be 10'
-        // ) {
-        //   alert('Invalid Batch Code. Batch character length must be 10');
-        // } else {
-        //   console.log('Error: ', data);
-        //  
-
-        // }
         Alert.alert((JSON.stringify(data?.error)));
         setLoading(false);
       }
     } catch (error) {
       console.log('Error posting data:', error);
       if (error.message === 'Network request failed') {
-        errorMessage = "Please Check Your Internet Connection"
+        Alert.alert("Please Check Your Internet Connection")
       }
       else {
         console.log('Error posting data: ', error);
-        errorMessage = 'An error occurred while connecting to the server.';
+        Alert.alert('An error occurred while connecting to the server.');
       }
     }
+  };
+  barcodeRecognized = ({ barcodes }) => {
+    console.log("Bar: ", barcodes);
+    Alert.alert(barcodes)
+    barcodes.forEach(barcode => console.warn(barcode.data))
   };
 
   return (
@@ -282,7 +260,20 @@ const Scan = ({ navigation }) => {
                 style={{ color: Colors.text_Color, fontSize: 30 }}
               />
             </TouchableOpacity>
-            <QRCodeScanner onRead={onSuccess} />
+            {/* <QRCodeScanner onRead={onSuccess} /> */}
+            <RNCamera
+              ref={ref => {
+                // this.camera = ref;
+              }}
+
+              onBarCodeRead={onSuccess}
+              onGoogleVisionBarcodesDetected={barcodeRecognized}
+              style={{
+                width: "100%",
+                height: 400
+              }}
+            >
+            </RNCamera>
           </View>
         )}
       </ImageBackground>
