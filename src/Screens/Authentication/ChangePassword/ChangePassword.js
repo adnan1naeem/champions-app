@@ -5,6 +5,7 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Colors } from '../../../Utils/Colors';
@@ -91,7 +92,6 @@ const ChangePassword = ({ route }) => {
   };
 
   const formatCnic = input => {
-    // Remove all non-numeric characters from the input
     const numericInput = input?.replace(/[^\d]/g, '');
     let formattedCnic = '';
     for (let i = 0; i < numericInput?.length; i++) {
@@ -135,6 +135,7 @@ const ChangePassword = ({ route }) => {
           <View style={{ width: '70%', alignSelf: 'center' }}>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 editable={false}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
@@ -146,6 +147,7 @@ const ChangePassword = ({ route }) => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 autoCapitalize='none'
                 placeholderTextColor={Colors.text_Color}
@@ -159,6 +161,7 @@ const ChangePassword = ({ route }) => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Re-enter New Password"
@@ -196,7 +199,7 @@ const ChangePassword = ({ route }) => {
               fontSize: 18,
               fontFamily: '200',
             }}
-            title={'Proceed'}
+            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
           />
         </View>
       </ScrollView>

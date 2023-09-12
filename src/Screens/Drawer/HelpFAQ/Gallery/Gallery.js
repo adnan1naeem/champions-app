@@ -54,7 +54,7 @@ const Gallery = ({ route }) => {
             id: '6',
             icon: 'book-check-outline',
             text: 'FSM Policy',
-            onPress: 'https://orient.com.pk/',
+            // onPress: 'https://orient.com.pk/',
         },
         {
             id: '7',
@@ -99,15 +99,19 @@ const Gallery = ({ route }) => {
             text: '',
             onPress: '',
         },
-
     ];
 
     const CustomListItem = ({ item, navigation }) => {
         const handlePress = () => {
             if (item?.onPress?.startsWith('http')) {
                 Linking.openURL(item?.onPress);
+                return;
             } else if (typeof item.onPress === 'string') {
                 navigation.navigate(item.onPress);
+                return;
+            } else if (item?.id === '6') {
+                navigation.navigate('Fsm_Policy', { privacy: true });
+                return;
             }
         };
 
@@ -122,7 +126,13 @@ const Gallery = ({ route }) => {
                 ) : item.id === '7' ? (
                     <Image
                         source={item?.icon}
-                        style={{ alignSelf: 'center', height: 26, width: 26, resizeMode: 'contain', tintColor: Colors.text_Color }}
+                        style={{
+                            alignSelf: 'center',
+                            height: 26,
+                            width: 26,
+                            resizeMode: 'contain',
+                            tintColor: Colors.text_Color,
+                        }}
                     />
                 ) : (
                     <MaterialCommunityIcons

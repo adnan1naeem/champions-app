@@ -105,11 +105,11 @@ const ConfirmPassword = () => {
 
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1,backgroundColor: Colors.blueBackground }}
+      style={{ flex: 1, backgroundColor: Colors.blueBackground }}
 
     >
       <ScrollView>
-        <View style={[styles.Login_main_view,{paddingTop: Platform.OS === 'ios' ? 20 : 0}]}>
+        <View style={[styles.Login_main_view, { paddingTop: Platform.OS === 'ios' ? 20 : 0 }]}>
           <Image style={styles.logo} source={require('../../../Assets/Image/login_image.png')} resizeMode="contain" />
         </View>
         <View style={styles.Container_view}>

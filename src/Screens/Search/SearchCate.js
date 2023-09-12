@@ -143,6 +143,7 @@ const SearchCate = () => {
 
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
+              selectionColor={Colors.text_Color}
               style={[
                 styles.input,
                 {

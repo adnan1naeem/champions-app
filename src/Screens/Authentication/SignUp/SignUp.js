@@ -168,13 +168,25 @@ const SignUp = () => {
         }
       }
     } catch (error) {
-      setLoading(false);
-      Alert.alert(
-        'Error',
-        'An error occurred while processing your request. Please try again.',
-      );
-      console.error('Error posting data: ', error?.message);
-      throw error;
+      if (error.message === 'Network request failed') {
+        Alert.alert("Please Check Your Internet Connection")
+        setLoading(false)
+      }
+      else {
+        console.log('Error posting data: ', error);
+        Alert.alert(
+          'Error',
+          'An error occurred while processing your request. Please try again.',
+        );
+        setLoading(false)
+      }
+      // setLoading(false);
+      // Alert.alert(
+      //   'Error',
+      //   'An error occurred while processing your request. Please try again.',
+      // );
+      // console.error('Error posting data: ', error?.message);
+      // throw error;
     }
   };
 
@@ -208,6 +220,7 @@ const SignUp = () => {
 
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Name"
@@ -218,6 +231,7 @@ const SignUp = () => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="CNIC/Social Security"
@@ -229,6 +243,7 @@ const SignUp = () => {
             </View>
             <View style={mobileNo ? styles?.inputError : styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Mobile No."
@@ -240,6 +255,7 @@ const SignUp = () => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Dealer Code"
@@ -251,6 +267,7 @@ const SignUp = () => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Password"

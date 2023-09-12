@@ -92,7 +92,6 @@ const Scan = ({ navigation }) => {
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      console.log('reeeessw:: ', response);
       const data = await response.json();
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
@@ -135,7 +134,6 @@ const Scan = ({ navigation }) => {
         }),
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      console.log('reeeessw:: ', response);
       const data = await response.json();
       console.log("esponse.status:: ", response.status);
       if (response.status === 201) {
@@ -149,6 +147,7 @@ const Scan = ({ navigation }) => {
         } else {
           console.log('Error: ', data);
           alert((JSON.stringify(data?.error)));
+
         }
         setLoading(false);
       }
@@ -182,6 +181,7 @@ const Scan = ({ navigation }) => {
 
             <View style={styles.unlock_view}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 value={barCode}
                 onChangeText={text => {
                   let barCodeIS = text?.replaceAll(/\s/g, '');
@@ -237,14 +237,15 @@ const Scan = ({ navigation }) => {
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
-                title="QR CODE"
+                title={loading ? <ActivityIndicator color={Colors.text_Color} /> : "QR CODE"}
+
               />
               <CustomButton
                 disabled={loading || barCode.length > 0}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
-                title="BARCODE"
+                title={loading ? <ActivityIndicator color={Colors.text_Color} /> : "BARCODE"}
               />
             </View>
           </View>

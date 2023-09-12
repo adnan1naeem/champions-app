@@ -7,6 +7,7 @@ import {
   ImageBackground,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
@@ -21,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../../Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [mobile, setMobile] = useState('');
@@ -38,8 +40,6 @@ const Signin = () => {
     }
     return number;
   };
-
-
 
 
   const handleSignIn = async () => {
@@ -91,10 +91,15 @@ const Signin = () => {
         }
       }
     } catch (error) {
-      console.log('Error posting data: ', error);
-      errorMessage = 'An error occurred while connecting to the server.';
-    }
+      if (error.message === 'Network request failed') {
+        errorMessage = "Please Check Your Internet Connection"
+      }
+      else {
+        console.log('Error posting data: ', error);
+        errorMessage = 'An error occurred while connecting to the server.';
+      }
 
+    }
     setLoading(false);
     if (errorMessage) {
       Alert.alert('Error', errorMessage);
@@ -122,6 +127,7 @@ const Signin = () => {
                 color={Colors.text_Color}
               />
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Mobile No."
@@ -140,6 +146,7 @@ const Signin = () => {
                 color={Colors.text_Color}
               />
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Password"
@@ -217,7 +224,7 @@ const Signin = () => {
               fontSize: 16,
               fontFamily: '200',
             }}
-            title={loading ? 'Loading...' : 'Login'}
+            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Login'}
           />
           <CustomButton
             onPress={() => navigation.navigate('SignUp')}

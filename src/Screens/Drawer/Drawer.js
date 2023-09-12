@@ -14,7 +14,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../Utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Header from '../../Components/Header/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -210,7 +209,7 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', zIndex: 1,marginEnd:2 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', zIndex: 1, marginEnd: 2 }}>
           <Image
             source={require('../../Assets/Image/Policy.png')}
             style={[
@@ -231,7 +230,7 @@ const DrawerScreen = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            onSelectItem={(text)=>HandlePolicy(text)}
+            onSelectItem={(text) => HandlePolicy(text)}
             placeholder="Policies"
             autoScroll={true}
             textStyle={[styles.user_detail_cate, { paddingLeft: 0 }]}
@@ -247,22 +246,22 @@ const DrawerScreen = () => {
               zIndex: 1,
             }}
             ArrowDownIconComponent={({ style }) => (
-                <LinearGradient
-                  colors={[
-                    'rgb(39, 174, 229)',
-                    'rgb(41,128,201)',
-                    'rgb(50,107,194)',
-                    'rgb(59,90,183)',
-                  ]}
-                  style={styles.forward_arrow}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={20}
-                    color={Colors.text_Color}
-                  />
-                </LinearGradient>
+              <LinearGradient
+                colors={[
+                  'rgb(39, 174, 229)',
+                  'rgb(41,128,201)',
+                  'rgb(50,107,194)',
+                  'rgb(59,90,183)',
+                ]}
+                style={styles.forward_arrow}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}>
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={Colors.text_Color}
+                />
+              </LinearGradient>
             )}
             TickIconComponent={() => (
               <FontAwesome6 name="check" color={Colors.text_Color} />
@@ -275,7 +274,7 @@ const DrawerScreen = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginEnd:2,
+            marginEnd: 2,
             justifyContent: 'space-between',
           }}>
           <View

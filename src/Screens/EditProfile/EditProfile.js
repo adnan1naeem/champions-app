@@ -149,6 +149,7 @@ const EditProfile = ({ route, }) => {
             </View>
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Name"
@@ -160,6 +161,7 @@ const EditProfile = ({ route, }) => {
             </View>
             <View style={nameError ? styles?.inputError : styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="mobile"
@@ -171,6 +173,7 @@ const EditProfile = ({ route, }) => {
             </View>
             <View style={styles.container}>
               <TextInput
+                selectionColor={Colors.text_Color}
                 style={styles.input}
                 placeholderTextColor={Colors.text_Color}
                 placeholder="Cnic"
