@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
 import BackButton from '../../Components/BackButton';
 import { Colors } from '../../Utils/Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Fsm_Policy = ({ route }) => {
     const navigation = useNavigation();
     const privacy = route?.params;
@@ -18,6 +19,12 @@ const Fsm_Policy = ({ route }) => {
                     <Header />
                     <BackButton navigation={navigation} />
                 </View>
+                <MaterialCommunityIcons
+                    name="book-check-outline"
+                    style={{ alignSelf: 'center' }}
+                    size={26}
+                    color={Colors.text_Color}
+                />
 
                 <View style={styles.unlock_view}>
                     <Text
@@ -35,7 +42,7 @@ const Fsm_Policy = ({ route }) => {
                         style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                         {privacy ? (
                             <Image
-                            resizeMode='stretch'
+                                resizeMode='stretch'
                                 source={require('../../Assets/Image/Policy_table.png')}
                                 style={{
                                     height: 120,

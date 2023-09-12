@@ -9,6 +9,7 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Header from '../../Components/Header/Header';
@@ -35,12 +36,12 @@ const Scan = ({ navigation }) => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
       setCnic(user?.cnic);
-      console.log('user23:: ', user?.cnic);
+      // console.log('user23:: ', user?.cnic);
     })();
   }, [cnic,]);
 
   useEffect(() => {
-    console.log('user_cnic: ', cnic);
+    // console.log('user_cnic: ', cnic);
     const getBarCodeScannerPermissions = async () => {
       const { status } = await QRCodeScanner.requestCameraPermission();
       setHasPermission(status === 'granted');
@@ -52,13 +53,13 @@ const Scan = ({ navigation }) => {
     console.log('sucess scan:: ', e?.data);
     setbarCode(e?.data);
     setScanned(true);
-    if (e?.data?.length === 10) {
-      handleSubmitForScan(e?.data);
-    }
+    handleSubmitForScan(e?.data);
+    // if (e?.data?.length === 10) {
+    // }
     setScanning(false);
-    if (e?.data?.length !== 10) {
-      alert('Selected Batch code is not valid');
-    }
+    // if (e?.data?.length !== 10) {
+    //   alert('Selected Batch code is not valid');
+    // }
   };
 
   useEffect(() => {
@@ -96,23 +97,26 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        if (
-          data?.error ===
-          'Invalid batch length. Batch character length must be 10'
-        ) {
-          alert('Invalid Batch Code. Batch character length must be 10');
-        } else {
-          console.log('Error:', data);
-          alert(data?.message);
-        }
+        // if (
+        //   data?.error ===
+        //   'Invalid batch length. Batch character length must be 10'
+        // ) {
+        //   Alert.alert('Invalid Batch Code. Batch character length must be 10');
+        // } else {
+        //   console.log('Error:', data);
+        //   
+        // }
+        Alert.alert(data?.message);
         setLoading(false);
       }
     } catch (error) {
       console.log('Error posting data:', error);
-      if (error.message.includes('Network request failed')) {
-        alert('Please check your SAP connection');
-      } else {
-        alert('An error occurred while connecting to the server.');
+      if (error.message === 'Network request failed') {
+        Alert.alert("Please Check Your Internet Connection")
+      }
+      else {
+        console.log('Error posting data: ', error);
+        Alert.alert('An error occurred while connecting to the server.');
       }
     }
   };
@@ -139,24 +143,27 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        if (
-          data?.error ===
-          'Invalid batch length. Batch character length must be 10'
-        ) {
-          alert('Invalid Batch Code. Batch character length must be 10');
-        } else {
-          console.log('Error: ', data);
-          alert((JSON.stringify(data?.error)));
+        // if (
+        //   data?.error ===
+        //   'Invalid batch length. Batch character length must be 10'
+        // ) {
+        //   alert('Invalid Batch Code. Batch character length must be 10');
+        // } else {
+        //   console.log('Error: ', data);
+        //  
 
-        }
+        // }
+        Alert.alert((JSON.stringify(data?.error)));
         setLoading(false);
       }
     } catch (error) {
       console.log('Error posting data:', error);
-      if (error.message.includes('Network request failed')) {
-        alert('Please check your SAP connection');
-      } else {
-        alert('An error occurred while connecting to the server.');
+      if (error.message === 'Network request failed') {
+        errorMessage = "Please Check Your Internet Connection"
+      }
+      else {
+        console.log('Error posting data: ', error);
+        errorMessage = 'An error occurred while connecting to the server.';
       }
     }
   };
