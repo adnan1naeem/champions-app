@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../../Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import NetInfo from "@react-native-community/netinfo";
+
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -29,10 +31,25 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const [Internet, setInternet] = useState()
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
   const navigation = useNavigation();
+
+
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      console.log("Is connected?", state.isConnected);
+      setInternet(state.isConnected)
+    });
+    const unsubscribe = NetInfo.addEventListener(state => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+    });
+    unsubscribe()
+
+  }, [])
 
   const formatMobileNumber = number => {
     if (number?.startsWith('0')) {
@@ -44,8 +61,10 @@ const Signin = () => {
 
   const handleSignIn = async () => {
     let errorMessage = null;
-
-    if (!mobile) {
+    if (!Internet) {
+      errorMessage = 'Please Check Your Internet Connection!.';
+    }
+    else if (!mobile) {
       errorMessage = 'Please enter mobile number.';
     } else if (!password) {
       errorMessage = 'Please enter password.';
@@ -92,7 +111,7 @@ const Signin = () => {
       }
     } catch (error) {
       if (error.message === 'Network request failed') {
-        errorMessage = "Please Check Your Internet Connection"
+        errorMessage = 'An error occurred while connecting to the server.';
       }
       else {
         console.log('Error posting data: ', error);

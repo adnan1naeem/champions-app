@@ -107,8 +107,12 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-
+    if (!barCode) {
+      Alert.alert('Please Enter BatchCode!')
+      return
+    }
     const user = JSON.parse(await AsyncStorage.getItem('USER'));
+
     try {
       setLoading(true);
       console.log(barCode);
