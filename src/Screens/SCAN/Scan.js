@@ -161,7 +161,7 @@ const Scan = ({ navigation }) => {
         resizeMode="cover">
         <View style={{ paddingHorizontal: 10 }}>
           <Header />
-          <BackButton navigation={navigation} />
+          <BackButton disabled={loading} navigation={navigation} />
         </View>
 
         {!scanning && (
