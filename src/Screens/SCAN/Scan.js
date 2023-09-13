@@ -9,6 +9,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Alert,
+  Platform
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Header from '../../Components/Header/Header';
@@ -89,6 +90,7 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
+        console.log("haris: ", data?.message);
         Alert.alert(data?.message);
         setLoading(false);
       }
@@ -126,7 +128,8 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        Alert.alert((JSON.stringify(data?.error)));
+        console.log('data:: ', data);
+        Alert.alert((JSON.stringify(data?.message)));
         setLoading(false);
       }
     } catch (error) {
@@ -260,20 +263,19 @@ const Scan = ({ navigation }) => {
                 style={{ color: Colors.text_Color, fontSize: 30 }}
               />
             </TouchableOpacity>
-            {/* <QRCodeScanner onRead={onSuccess} /> */}
-            <RNCamera
-              ref={ref => {
-                // this.camera = ref;
-              }}
-
-              onBarCodeRead={onSuccess}
-              onGoogleVisionBarcodesDetected={barcodeRecognized}
-              style={{
-                width: "100%",
-                height: 400
-              }}
-            >
-            </RNCamera>
+            {Platform.OS === 'ios' ?
+              <RNCamera
+                ref={ref => {
+                  // Ref callback logic here if needed
+                }}
+                onBarCodeRead={onSuccess}
+                onGoogleVisionBarcodesDetected={barcodeRecognized}
+                style={{
+                  width: "100%",
+                  height: 400
+                }}
+              >
+              </RNCamera> : <QRCodeScanner onRead={onSuccess} />}
           </View>
         )}
       </ImageBackground>

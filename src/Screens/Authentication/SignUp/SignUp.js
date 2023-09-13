@@ -292,11 +292,12 @@ const SignUp = () => {
                   { color: Colors.text_Color, borderColor: 'transparent' },
                   { backgroundColor: open ? '#1A4578' : 'transparent' },
                 ]}
-                containerStyle={{ width: '100%', color: 'white' }}
+                containerStyle={{ width: '110%', marginLeft: -10 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#1A4578',
                   borderColor: 'transparent',
                   paddingVertical: 5,
+
                 }}
                 TickIconComponent={() => (
                   <FontAwesome6 name="check" color={Colors.text_Color} />

@@ -82,7 +82,7 @@ const AboutUs = ({ route }) => {
                     <View
                         style={[
                             styles.Login_view,
-                            { paddingBottom: 40, paddingHorizontal: 20 },
+                            { paddingBottom: 40, paddingHorizontal: 20, paddingVertical: 20, },
                         ]}>
                         <Text style={styles.about_text}>
                             Orient Champions App is a property of Orient Electronics and it
