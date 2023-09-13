@@ -75,6 +75,9 @@ const Home = () => {
     setTimeout(() => {
       getBatchListing();
       setRefreshing(false);
+      setSelectedValue('');
+      setstartDate('');
+      setendDate('');
     }, 1000);
   }, []);
 

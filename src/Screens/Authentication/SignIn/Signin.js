@@ -40,16 +40,13 @@ const Signin = () => {
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      console.log("Is connected?", state.isConnected);
       setInternet(state.isConnected)
     });
     const unsubscribe = NetInfo.addEventListener(state => {
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
     });
     unsubscribe()
 
-  }, [])
+  }, [Internet])
 
   const formatMobileNumber = number => {
     if (number?.startsWith('0')) {
@@ -62,7 +59,7 @@ const Signin = () => {
   const handleSignIn = async () => {
     let errorMessage = null;
     if (!Internet) {
-      errorMessage = 'Please Check Your Internet Connection!.';
+      errorMessage = 'Please Check Your Internet Connection!';
     }
     else if (!mobile) {
       errorMessage = 'Please enter mobile number.';

@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
-const ProductManuals = () => {
+const Policy = () => {
     const [mobile, setMobile] = useState(''); // Separate state for name
     const navigation = useNavigation();
 
@@ -316,4 +316,4 @@ const ProductManuals = () => {
     );
 };
 
-export default ProductManuals;
+export default Policy;

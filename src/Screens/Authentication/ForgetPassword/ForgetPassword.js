@@ -78,7 +78,7 @@ const ForgetPassword = () => {
         <ImageBackground
             source={require('../../../Assets/Image/background_image.png')}
             style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
-            <ScrollView>
+            <ScrollView automaticallyAdjustKeyboardInsets={true}>
                 <Image
                     style={[styles.logo, { marginTop: 15 }]}
                     source={require('../../../Assets/Image/login_image.png')}
@@ -133,6 +133,7 @@ const ForgetPassword = () => {
                     />
                 </View>
             </ScrollView>
+
         </ImageBackground>
     );
 };

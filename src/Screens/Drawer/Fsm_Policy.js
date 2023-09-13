@@ -1,5 +1,5 @@
 import { Image, Text, View, ImageBackground, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styles } from '../Drawer/HelpFAQ/AboutUs/style';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
@@ -9,6 +9,20 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const Fsm_Policy = ({ route }) => {
     const navigation = useNavigation();
     const privacy = route?.params;
+    const [Data, setData] = useState(null);
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        fetch('http://localhost:5000/getImage')
+            .then((response) => response.json())
+            .then((json) => setData(json))
+            .catch((error) => console.error("error12:: ", error))
+            .finally(() => setLoading(false));
+    }, []);
+
+    console.log("data12:: ", Data);
+
+
 
     return (
         <ImageBackground

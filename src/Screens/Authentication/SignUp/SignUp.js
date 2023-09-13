@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CustomButton from '../../../Components/CustomButton';
 import { styles } from './style';
@@ -21,6 +21,8 @@ import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { API_BASE_URL } from '../../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import NetInfo from "@react-native-community/netinfo";
+
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -31,6 +33,7 @@ const SignUp = () => {
   const [dealerCode, setDealerCode] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [Internet, setInternet] = useState()
 
   const navigation = useNavigation();
 
@@ -79,12 +82,24 @@ const SignUp = () => {
     }
     return number;
   };
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      setInternet(state.isConnected)
+
+    });
+    const unsubscribe = NetInfo.addEventListener(state => {
+      console.log("Is connected?", state.isConnected);
+    });
+    unsubscribe()
+
+  }, [])
 
   const handleSignUp = () => {
-    if (!value) {
-      Alert.alert('Please select a company.');
-      return;
-    } else if (!Name) {
+    if (!Internet) {
+      Alert.alert('Please Check Your Internet Connection!.');
+      return
+    }
+    else if (!Name) {
       Alert.alert('Please enter name.');
       return;
     } else if (!cnic) {
@@ -110,6 +125,10 @@ const SignUp = () => {
       return;
     } else if (dealerCode.length !== 7) {
       Alert.alert('Please enter a 7-digit dealer code.');
+      return;
+    }
+    else if (!value) {
+      Alert.alert('Please select a company.');
       return;
     }
 
@@ -203,7 +222,7 @@ const SignUp = () => {
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
-      <ScrollView>
+      <ScrollView automaticallyAdjustKeyboardInsets={true}>
         <Image
           style={styles.logo}
           source={require('../../../Assets/Image/login_image.png')}
