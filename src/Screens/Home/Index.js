@@ -257,7 +257,7 @@ const Home = () => {
             </View>
 
             <View>
-              <Datepicker onDateSelect={handleDateSelect} />
+              <Datepicker refreshState={refreshing} onDateSelect={handleDateSelect} />
             </View>
           </View>
           <Modal

@@ -88,7 +88,6 @@ const SignUp = () => {
 
     });
     const unsubscribe = NetInfo.addEventListener(state => {
-      console.log("Is connected?", state.isConnected);
     });
     unsubscribe()
 

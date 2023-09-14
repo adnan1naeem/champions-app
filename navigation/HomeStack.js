@@ -25,6 +25,7 @@ import Approved from '../src/Screens/Approved/Approved'
 import HelpFAQ from '../src/Screens/Drawer/HelpFAQ/HelpFaq'
 import SearchCate from '../src/Screens/Search/SearchCate'
 import Testing from "../src/Testing";
+import RefCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue'
  
 
 const HomeStack = () => {
