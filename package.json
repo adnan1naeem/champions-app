@@ -36,7 +36,7 @@
     "react-native-neat-date-picker": "1.3.1",
     "react-native-otp-textinput": "^1.0.1",
     "react-native-paper": "^5.8.0",
-    "react-native-pdf": "^6.7.1",
+    "react-native-pdf": "^6.6.2",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-reanimated": "3.1.0",
     "react-native-rename": "^3.2.13",
@@ -46,7 +46,7 @@
     "react-native-svg-transformer": "^1.0.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.18.10",
-    "react-native-webview": "12.1.0",
+    "react-native-webview": "^13.6.0",
     "typescript": "^4.9.4"
   },
   "resolutions": {
@@ -71,6 +71,7 @@
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.76.7",
     "prettier": "^2.4.1",
+    "react-native-view-pdf": "^0.14.0",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },

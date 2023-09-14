@@ -81,6 +81,7 @@ android {
         versionCode 4
         versionName "1.1.2"
         missingDimensionStrategy 'react-native-camera', 'general'
+        multiDexEnabled true
     }
     aaptOptions {
         cruncherEnabled = false
@@ -121,7 +122,8 @@ android {
 }
 
 dependencies {
-        implementation 'com.facebook.fresco:animated-gif:2.5.0'
+ 
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

@@ -39,6 +39,8 @@ import Catalouge_PDF from "../src/Screens/Drawer/HelpFAQ/Gallery/Catalouge_PDF";
 import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
 import Fsm_Policy from "../src/Screens/Drawer/Fsm_Policy";
 import RejectedDetail from "../src/Screens/Home/TotalPaid/RejectedDetail";
+import RefCatalogue from "../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue";
+import WDCatalogue from "../src/Screens/Drawer/HelpFAQ/Gallery/WDCatalogue";
 
 
 const Stack = createNativeStackNavigator();
@@ -293,7 +295,21 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="RefCatalogue"
+        component={RefCatalogue}
+        options={{
+          headerShown: false,
+        }}
+      />
 
+      <Stack.Screen
+        name="WDCatalogue"
+        component={WDCatalogue}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
