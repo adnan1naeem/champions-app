@@ -493,11 +493,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = QW3DDL7L67;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Champion/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Champion;
+				INFOPLIST_KEY_CFBundleDisplayName = Champions;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -525,10 +525,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = QW3DDL7L67;
 				INFOPLIST_FILE = Champion/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Champion;
+				INFOPLIST_KEY_CFBundleDisplayName = Champions;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

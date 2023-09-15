@@ -66,7 +66,7 @@ const ContactUs = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL('whatsapp://send?phone=0300 - 0 567 343')
+                Linking.openURL('whatsapp://send?phone=+92300 - 0 567 343')
               }
               style={{ alignItems: 'center', width: '50%' }}>
               <Ionicons
@@ -140,7 +140,7 @@ const ContactUs = ({ navigation }) => {
             <View style={styles.ContainerView}>
               <TouchableOpacity
                 onPress={() =>
-                  Linking.openURL('whatsapp://send?phone=0312 – 9 635 635')
+                  Linking.openURL('whatsapp://send?phone=+92312 – 9 635 635')
                 }
                 style={{ alignItems: 'center', width: '50%' }}>
                 <Ionicons
@@ -207,7 +207,7 @@ const ContactUs = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL('whatsapp://send?phone=0301 – 1 005 017')
+                Linking.openURL('whatsapp://send?phone=+92301 – 1 005 017')
               }
               style={{ alignItems: 'center', width: '50%' }}>
               <Ionicons
