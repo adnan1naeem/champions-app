@@ -156,6 +156,7 @@ const SignUp = () => {
         }),
       };
 
+
       const response = await fetch(`${API_BASE_URL}/register`, config);
       setLoading(false);
 
