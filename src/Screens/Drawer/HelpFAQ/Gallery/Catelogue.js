@@ -6,9 +6,8 @@ import {
     ImageBackground,
     ScrollView,
     FlatList,
-    Linking,
 } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { styles } from './style';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -20,13 +19,13 @@ const ProductManuals = () => {
     const imageList = [
         {
             id: '1',
-            source: require('../../../../Assets/Image/Reftitle.png'),
+            source: require('../../../../Assets/Image/Ref.png'),
             onpress: 'RefCatalogue',
         },
         {
             id: '2',
-            source: require('../../../../Assets/Image/WDCatalogue.png'),
-            onpress: 'WDCatalogue',
+            source: require('../../../../Assets/Image/WD.png'),
+            onpress: 'RefCatalogue',
         },
     ];
 
@@ -56,10 +55,10 @@ const ProductManuals = () => {
                         contentContainerStyle={{ marginHorizontal: 25, paddingTop: 10 }}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => navigation.navigate(item?.onpress)}>
+                                onPress={() => navigation.navigate(item?.onpress, { index: item?.id })}>
                                 <Image
                                     style={{
-                                        width: '95%',
+                                        width: item?.id === "1" ? '95%' : '95.2%',
                                         borderRadius: 15,
                                         resizeMode: 'stretch',
                                         height: 270,

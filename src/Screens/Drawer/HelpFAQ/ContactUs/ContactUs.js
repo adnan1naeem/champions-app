@@ -66,7 +66,7 @@ const ContactUs = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL('whatsapp://send?phone=0300 056 73 43')
+                Linking.openURL('whatsapp://send?phone=0300 - 0 567 343')
               }
               style={{ alignItems: 'center', width: '50%' }}>
               <Ionicons

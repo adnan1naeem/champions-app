@@ -23,6 +23,7 @@ import { API_BASE_URL } from '../../../../Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from "@react-native-community/netinfo";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 const Signin = () => {
@@ -126,138 +127,151 @@ const Signin = () => {
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground, paddingTop: 10 }}>
-      <ScrollView>
-        <Image
-          style={styles.logo}
-          source={require('../../../Assets/Image/login_image.png')}
-          resizeMode="contain"
-        />
-        <View style={styles.Login_view}>
-          <View style={{ width: '70%', alignSelf: 'center' }}>
-            <View style={styles.container}>
+      <KeyboardAwareScrollView
+        extraHeight={Platform.OS === 'ios' ? 90 : 130}
+        extraScrollHeight={Platform.OS === 'ios' ? 90 : 130}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
 
-              <User_Icon
-                name="email"
-                style={styles.icon}
-                size={15}
-                color={Colors.text_Color}
-              />
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Mobile No."
-                marginLeft={20}
-                value={mobile}
-                onChangeText={setMobile}
-                keyboardType={'phone-pad'}
-              />
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps={'always'}
+        >
+          <Image
+            style={styles.logo}
+            source={require('../../../Assets/Image/login_image.png')}
+            resizeMode="contain"
+          />
+          <View style={styles.Login_view}>
+            <View style={{ width: '70%', alignSelf: 'center' }}>
+              <View style={styles.container}>
 
-            </View>
-            <View style={styles.container}>
-              <Password
-                name="locked"
-                style={styles.icon}
-                size={15}
-                color={Colors.text_Color}
-              />
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Password"
-                autoCapitalize="none"
-                marginLeft={20}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={isPasswordSecure}
-              />
-              <MaterialIcons
-                onPress={() => setIsPasswordSecure(!isPasswordSecure)}
-                name={isPasswordSecure ? 'visibility' : 'visibility-off'}
-                size={20}
-                color={'#D0D3E2'}
-                style={{ paddingTop: 16 }}
-              />
-            </View>
-          </View>
-          <View style={styles.remember_view}>
-            <TouchableOpacity
-              style={styles.container1}
-              onPress={handleCheckboxChange}
-              activeOpacity={0.8}>
+                <User_Icon
+                  name="email"
+                  style={styles.icon}
+                  size={15}
+                  color={Colors.text_Color}
+                />
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Mobile No."
+                  marginLeft={20}
+                  value={mobile}
+                  onChangeText={setMobile}
+                  keyboardType={'phone-pad'}
+                />
 
-              <View style={styles.checkbox}>
-                {isChecked ?
-                  <LinearGradient
-                    colors={[
-                      'rgb(39, 174, 229)',
-                      'rgb(41,128,201)',
-                      'rgb(50,107,194)',
-                      'rgb(59,90,183)',
-                    ]}
-                    style={styles.checkboxGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}>
-                    <Ionicons
-                      name="checkmark"
-                      size={24}
-                      color={Colors.text_Color}
-                      borderColor="transparent"
-                    />
-                  </LinearGradient> :
-                  <MaterialIcons name="check-box-outline-blank" size={24}
-                    color={Colors.text_Color} />
-                }
               </View>
+              <View style={styles.container}>
+                <Password
+                  name="locked"
+                  style={styles.icon}
+                  size={15}
+                  color={Colors.text_Color}
+                />
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  marginLeft={20}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={isPasswordSecure}
+                />
+                <MaterialIcons
+                  onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+                  name={isPasswordSecure ? 'visibility' : 'visibility-off'}
+                  size={20}
+                  color={'#D0D3E2'}
+                  style={{ paddingTop: 16 }}
+                />
+              </View>
+            </View>
+            <View style={styles.remember_view}>
+              <TouchableOpacity
+                style={styles.container1}
+                onPress={handleCheckboxChange}
+                activeOpacity={0.8}>
 
-              <Text style={styles.label}>Remember me</Text>
-            </TouchableOpacity>
+                <View style={styles.checkbox}>
+                  {isChecked ?
+                    <LinearGradient
+                      colors={[
+                        'rgb(39, 174, 229)',
+                        'rgb(41,128,201)',
+                        'rgb(50,107,194)',
+                        'rgb(59,90,183)',
+                      ]}
+                      style={styles.checkboxGradient}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}>
+                      <Ionicons
+                        name="checkmark"
+                        size={24}
+                        color={Colors.text_Color}
+                        borderColor="transparent"
+                      />
+                    </LinearGradient> :
+                    <MaterialIcons name="check-box-outline-blank" size={24}
+                      color={Colors.text_Color} />
+                  }
+                </View>
 
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('ForgetPassword');
-              }}>
-              <Text style={styles.forgotpassword}>Forgot Password?</Text>
-            </TouchableOpacity>
+                <Text style={styles.label}>Remember me</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('ForgetPassword');
+                }}>
+                <Text style={styles.forgotpassword}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+            <CustomButton
+              onPress={() => handleSignIn()}
+              disabled={loading}
+              ContainerStyle={{
+                paddingVertical: 15,
+                marginTop: 10,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                height: 50,
+                width: '80%',
+                borderRadius: 15,
+                opacity: loading ? 0.7 : 1,
+              }}
+              textStyle={{
+                color: Colors.text_Color,
+                textAlign: 'center',
+                fontSize: 16,
+                fontFamily: '200',
+              }}
+              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Login'}
+            />
+            <CustomButton
+              onPress={() => navigation.navigate('SignUp')}
+              ContainerStyle={{
+                paddingVertical: 15,
+                marginTop: 10,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                height: 50,
+                width: '80%',
+                borderRadius: 15,
+              }}
+              textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
+              title="SIGN UP"
+            />
           </View>
-          <CustomButton
-            onPress={() => handleSignIn()}
-            disabled={loading}
-            ContainerStyle={{
-              paddingVertical: 15,
-              marginTop: 10,
-              justifyContent: 'center',
-              alignSelf: 'center',
-              height: 50,
-              width: '80%',
-              borderRadius: 15,
-              opacity: loading ? 0.7 : 1,
-            }}
-            textStyle={{
-              color: Colors.text_Color,
-              textAlign: 'center',
-              fontSize: 16,
-              fontFamily: '200',
-            }}
-            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Login'}
-          />
-          <CustomButton
-            onPress={() => navigation.navigate('SignUp')}
-            ContainerStyle={{
-              paddingVertical: 15,
-              marginTop: 10,
-              justifyContent: 'center',
-              alignSelf: 'center',
-              height: 50,
-              width: '80%',
-              borderRadius: 15,
-            }}
-            textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
-            title="SIGN UP"
-          />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };

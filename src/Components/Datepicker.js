@@ -15,7 +15,7 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 
 
-const Datepicker = ({ onDateSelect }) => {
+const Datepicker = ({ onDateSelect, refreshState }) => {
 
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
@@ -24,6 +24,13 @@ const Datepicker = ({ onDateSelect }) => {
   const [selectedOption, setSelectedOption] = useState("Date");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+
+  useEffect(() => {
+    if (refreshState) {
+      setDateContainer(false);
+      setSelectedOption("Date");
+    }
+  }, [refreshState])
 
   const options = [
     { label: 'Default', value: 'Default' },

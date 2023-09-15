@@ -1,10 +1,10 @@
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Pdf from 'react-native-pdf';
 import { Colors } from '../../../../Utils/Colors';
 import Header from '../../../../Components/Header/Header';
 import BackButton from '../../../../Components/BackButton';
-const RefCatalogue = ({ navigation }) => {
+const RefCatalogue = ({ navigation, route }) => {
 
     return (
 
@@ -12,7 +12,7 @@ const RefCatalogue = ({ navigation }) => {
             source={require('../../../../Assets/Image/background_image.png')}
             style={{ flex: 1, backgroundColor: Colors.blueBackground, }}
         >
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
                     <Header />
                     <BackButton navigation={navigation} />
@@ -20,11 +20,8 @@ const RefCatalogue = ({ navigation }) => {
                 <>
                     <Pdf
                         trustAllCerts={false}
-                        source={require("../../../../Assets/REFCatalogue.pdf")}
-                        style={{ height: Dimensions.get('window').height, width: "100%" }}
-                        onLoadComplete={(numberOfPages, filePath) => {
-                            console.log(`number of pages: ${numberOfPages}`);
-                        }}
+                        source={route?.params?.index === '2' ? require('../../../../Assets/WDCatalogue.pdf') : require("../../../../Assets/REFCatalogue.pdf")}
+                        style={{ height: "100%", width: "100%", paddingBottom: 200 }}
                     />
                 </>
 

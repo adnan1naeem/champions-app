@@ -511,8 +511,6 @@ PODS:
     - React-Core
   - RNGestureHandler (2.12.1):
     - React-Core
-  - RNPDF (0.14.0):
-    - React
   - RNReanimated (3.1.0):
     - DoubleConversion
     - FBLazyVector
@@ -624,7 +622,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNPDF (from `../node_modules/react-native-view-pdf`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -746,8 +743,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNPDF:
-    :path: "../node_modules/react-native-view-pdf"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -820,7 +815,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNDateTimePicker: b722c23030b744763cf51d80fc22f354653f65e0
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
-  RNPDF: 8526c7210ff375c29d2461c51945e2f5480f7b60
   RNReanimated: 3ad8ad71ec4ee4395867bb1a6d8d10695cfb7809
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82

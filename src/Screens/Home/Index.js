@@ -8,7 +8,6 @@ import {
   FlatList,
   Alert,
   RefreshControl,
-  ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import React, { useEffect, useState, useRef } from 'react';
@@ -22,6 +21,8 @@ import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
 import { API_BASE_URL } from '../../../Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from "@react-native-community/netinfo";
+
 
 const Home = () => {
   const navigation = useNavigation();
@@ -69,6 +70,22 @@ const Home = () => {
 
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = React.useState(false);
+
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      if (!state.isConnected) {
+        Alert.alert('Please Check Your Internet Connection!');
+        return;
+      }
+      fetchCategoryData();
+    });
+    const unsubscribe = NetInfo.addEventListener(state => {
+    });
+    unsubscribe()
+
+  }, [])
+
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -163,34 +180,77 @@ const Home = () => {
       console.error('Error:', error);
     }
   };
-  useEffect(() => {
-    (async () => {
-      const payload = {
+
+  //   (async () => {
+  //     const payload = {
+  //       companyCode: '1000',
+  //     };
+
+  //     try {
+  //       console.log("jjs: ", Internet);
+  //       if (Internet) {
+  //         Alert.alert('Please Check Your Internet Connection!.');
+  //         return;
+  //       }
+
+  //       const response = await fetch(`${API_BASE_URL}/getCategory`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(payload),
+  //       });
+
+  //       const data = await response.json();
+  //       let dataIs = {
+  //         _id: '11111',
+  //         categoryCode: '0',
+  //         categoryName: 'All',
+  //         companyName: 'Orient Electronics Pvt. Ltd.',
+  //         companyCode: '1000',
+  //       };
+  //       Alert.alert('12');
+  //       setCategory([dataIs, ...data?.category]);
+  //     } catch (error) {
+  //       console.error('Error123:', error);
+  //       if (error instanceof TypeError && error.message === 'Network request failed') {
+  //         Alert.alert('Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
+  //       }
+  //     }
+  //   })();
+  // }, []);
+  // Define a function to fetch category data
+  const fetchCategoryData = async () => {
+    const payload = {
+      companyCode: '1000',
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/getCategory`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      let dataIs = {
+        _id: '11111',
+        categoryCode: '0',
+        categoryName: 'All',
+        companyName: 'Orient Electronics Pvt. Ltd.',
         companyCode: '1000',
       };
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/getCategory`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-        const data = await response.json();
-        let dataIs = {
-          _id: '11111',
-          categoryCode: '0',
-          categoryName: 'All',
-          companyName: 'Orient Electronics Pvt. Ltd.',
-          companyCode: '1000',
-        };
-        setCategory([dataIs, ...data?.category]);
-      } catch (error) {
-        console.error('Error:', error);
+      setCategory([dataIs, ...data?.category]);
+    } catch (error) {
+      console.error('Error123:', error);
+      if (error instanceof TypeError && error.message === 'Network request failed') {
+        Alert.alert('Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
       }
-    })();
-  }, []);
+    }
+  };
 
   const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
@@ -216,7 +276,8 @@ const Home = () => {
       source={require('../../Assets/Image/background_image.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={{ paddingHorizontal: 10, flex: 1 }}>
+        <Header value={true} />
         <ScrollView
           ref={scrollViewRef}
           refreshControl={
@@ -228,7 +289,7 @@ const Home = () => {
             />
           }
           showsVerticalScrollIndicator={false}>
-          <Header value={true} />
+
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>
               {selectedValue?._id ? (
@@ -257,7 +318,7 @@ const Home = () => {
             </View>
 
             <View>
-              <Datepicker onDateSelect={handleDateSelect} />
+              <Datepicker refreshState={refreshing} onDateSelect={handleDateSelect} />
             </View>
           </View>
           <Modal

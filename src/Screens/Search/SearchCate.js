@@ -53,6 +53,13 @@ const SearchCate = () => {
     })();
   }, []);
 
+
+  useEffect(()=>{
+    if(title === ''){
+      setActive(false);
+    }
+  },[title])
+
   const handleSearch = () => {
     if (!title) {
       Alert.alert('Please enter batchCode!');

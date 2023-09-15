@@ -15,6 +15,8 @@ import { styles } from './style';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const ChangePassword = ({ route }) => {
   const [cnic, setCnic] = useState(route?.params?.cnic);
@@ -114,95 +116,108 @@ const ChangePassword = ({ route }) => {
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
-      <ScrollView>
+      <KeyboardAwareScrollView
+        extraHeight={Platform.OS === 'ios' ? 90 : 130}
+        extraScrollHeight={Platform.OS === 'ios' ? 90 : 130}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
 
-        <View style={[styles.Login_main_view, { marginTop: 35, }]}>
-          <Image
-            style={{
-              height: 100,
-              width: '80%',
-              alignSelf: 'center',
-              paddingTop: 5
-            }}
-            source={require('../../../Assets/Image/login_image.png')}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={{ paddingHorizontal: 20 }}>
-          <BackButton navigation={navigation} />
-        </View>
-        <View style={[styles.Login_view, { marginTop: '33%' }]}>
-          <View style={{ width: '70%', alignSelf: 'center' }}>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                editable={false}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="CNIC/Social Security"
-                value={formatCnic(route?.params?.cnic?.toString())}
-                onChangeText={text => handleInputChange('cnic', text)}
-                keyboardType={'numeric'}
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                autoCapitalize='none'
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Enter Password"
-                value={password}
-                onChangeText={text => handleInputChange('password', text)}
-                keyboardType="default"
-                secureTextEntry={isPasswordSecure}
-              />
-              <MaterialIcons onPress={() => setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Re-enter New Password"
-                autoCapitalize='none'
-                value={confirmPassword}
-                onChangeText={text => setConfirmPassword(text)}
-                keyboardType="default"
-                secureTextEntry={isConfirmPasswordSecure}
-              />
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps={'always'}
+        >
 
-              <MaterialIcons onPress={() => setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
-            </View>
-            {incorrectPassword ? (
-              <Text style={{ color: 'red' }}>Password is Incorrect</Text>
-            ) : null}
-            {emptyField ? (
-              <Text style={{ color: 'red' }}>Field should not be Empty</Text>
-            ) : null}
+          <View style={[styles.Login_main_view, { marginTop: 35, }]}>
+            <Image
+              style={{
+                height: 100,
+                width: '80%',
+                alignSelf: 'center',
+                paddingTop: 5
+              }}
+              source={require('../../../Assets/Image/login_image.png')}
+              resizeMode="contain"
+            />
           </View>
-          <CustomButton
-            onPress={() => handleSignUp()}
-            disabled={loading}
-            ContainerStyle={{
-              marginTop: 50,
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '80%',
-              borderRadius: 15,
-              opacity: loading ? 0.7 : 1,
-            }}
-            loading={loading}
-            textStyle={{
-              color: Colors.text_Color,
-              textAlign: 'center',
-              fontSize: 18,
-              fontFamily: '200',
-            }}
-            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
-          />
-        </View>
-      </ScrollView>
+          <View style={{ paddingHorizontal: 20 }}>
+            <BackButton navigation={navigation} />
+          </View>
+          <View style={[styles.Login_view, { marginTop: '33%' }]}>
+            <View style={{ width: '70%', alignSelf: 'center' }}>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  editable={false}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="CNIC/Social Security"
+                  value={formatCnic(route?.params?.cnic?.toString())}
+                  onChangeText={text => handleInputChange('cnic', text)}
+                  keyboardType={'numeric'}
+                />
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  autoCapitalize='none'
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Enter Password"
+                  value={password}
+                  onChangeText={text => handleInputChange('password', text)}
+                  keyboardType="default"
+                  secureTextEntry={isPasswordSecure}
+                />
+                <MaterialIcons onPress={() => setIsPasswordSecure(!isPasswordSecure)} name={isPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Re-enter New Password"
+                  autoCapitalize='none'
+                  value={confirmPassword}
+                  onChangeText={text => setConfirmPassword(text)}
+                  keyboardType="default"
+                  secureTextEntry={isConfirmPasswordSecure}
+                />
+
+                <MaterialIcons onPress={() => setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
+              </View>
+              {incorrectPassword ? (
+                <Text style={{ color: 'red' }}>Password is Incorrect</Text>
+              ) : null}
+              {emptyField ? (
+                <Text style={{ color: 'red' }}>Field should not be Empty</Text>
+              ) : null}
+            </View>
+            <CustomButton
+              onPress={() => handleSignUp()}
+              disabled={loading}
+              ContainerStyle={{
+                marginTop: 50,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: '80%',
+                borderRadius: 15,
+                opacity: loading ? 0.7 : 1,
+              }}
+              loading={loading}
+              textStyle={{
+                color: Colors.text_Color,
+                textAlign: 'center',
+                fontSize: 18,
+                fontFamily: '200',
+              }}
+              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };

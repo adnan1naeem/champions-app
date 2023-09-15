@@ -22,6 +22,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { API_BASE_URL } from '../../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NetInfo from "@react-native-community/netinfo";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 const SignUp = () => {
@@ -88,7 +89,6 @@ const SignUp = () => {
 
     });
     const unsubscribe = NetInfo.addEventListener(state => {
-      console.log("Is connected?", state.isConnected);
     });
     unsubscribe()
 
@@ -222,170 +222,183 @@ const SignUp = () => {
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.blueBackground }}>
-      <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <Image
-          style={styles.logo}
-          source={require('../../../Assets/Image/login_image.png')}
-          resizeMode="contain"
-        />
-        <View style={styles.Login_view}>
-          <View style={{ width: '70%', alignSelf: 'center' }}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.Started}>Getting Started</Text>
-              <Text style={styles.create_account}>
-                Create an account to continue!
-              </Text>
-            </View>
+      <KeyboardAwareScrollView
+        extraHeight={Platform.OS === 'ios' ? 90 : 130}
+        extraScrollHeight={Platform.OS === 'ios' ? 90 : 130}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
 
-            <View style={nameError ? styles?.inputError : styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Name"
-                value={Name}
-                onChangeText={text => handleInputChange('name', text)}
-                keyboardType="default"
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="CNIC/Social Security"
-                value={cnic}
-                onChangeText={text => handleInputChange('cnic', text)}
-                keyboardType={'numeric'}
-                maxLength={13}
-              />
-            </View>
-            <View style={mobileNo ? styles?.inputError : styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Mobile No."
-                value={mobile}
-                onChangeText={text => handleInputChange('mobileNo', text)}
-                keyboardType="numeric"
-                maxLength={12}
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Dealer Code"
-                value={dealerCode}
-                onChangeText={text => setDealerCode(text)}
-                keyboardType="numeric"
-                maxLength={7}
-              />
-            </View>
-            <View style={styles.container}>
-              <TextInput
-                selectionColor={Colors.text_Color}
-                style={styles.input}
-                placeholderTextColor={Colors.text_Color}
-                placeholder="Password"
-                value={password}
-                onChangeText={text => handleInputChange('password', text)}
-                keyboardType="default"
-                secureTextEntry
-              />
-            </View>
-            <View style={styles.container}>
-              <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Select company"
-                autoScroll={true}
-                textStyle={{ color: Colors.text_Color, fontSize: 12 }}
-                style={[
-                  { color: Colors.text_Color, borderColor: 'transparent' },
-                  { backgroundColor: open ? '#1A4578' : 'transparent' },
-                ]}
-                containerStyle={{ width: '110%', marginLeft: -10 }}
-                dropDownContainerStyle={{
-                  backgroundColor: '#1A4578',
-                  borderColor: 'transparent',
-                  paddingVertical: 5,
-
-                }}
-                TickIconComponent={() => (
-                  <FontAwesome6 name="check" color={Colors.text_Color} />
-                )}
-                arrowIconStyle={{ tintColor: Colors.text_Color }}
-              />
-            </View>
-          </View>
-          <View style={[styles.remember_view]}>
-            <TouchableOpacity
-              style={styles.container1}
-              onPress={handleCheckboxChange}
-              activeOpacity={0.8}>
-              <View style={styles.checkbox}>
-                {isChecked ? (
-                  <LinearGradient
-                    colors={[
-                      'rgb(39, 174, 229)',
-                      'rgb(41,128,201)',
-                      'rgb(50,107,194)',
-                      'rgb(59,90,183)',
-                    ]}
-                    style={styles.checkboxGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}>
-                    <Ionicons
-                      name="checkmark"
-                      size={24}
-                      color={Colors.text_Color}
-                      borderColor="transparent"
-                    />
-                  </LinearGradient>
-                ) : (
-                  <MaterialIcons
-                    name="check-box-outline-blank"
-                    color={Colors.text_Color}
-                    size={24}
-                  />
-                )}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps={'always'}
+        >
+          <Image
+            style={styles.logo}
+            source={require('../../../Assets/Image/login_image.png')}
+            resizeMode="contain"
+          />
+          <View style={styles.Login_view}>
+            <View style={{ width: '70%', alignSelf: 'center' }}>
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.Started}>Getting Started</Text>
+                <Text style={styles.create_account}>
+                  Create an account to continue!
+                </Text>
               </View>
-              <Text style={styles.label}>I Agree the Terms and Conditions</Text>
+
+              <View style={nameError ? styles?.inputError : styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Name"
+                  value={Name}
+                  onChangeText={text => handleInputChange('name', text)}
+                  keyboardType="default"
+                />
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="CNIC/Social Security"
+                  value={cnic}
+                  onChangeText={text => handleInputChange('cnic', text)}
+                  keyboardType={'numeric'}
+                  maxLength={13}
+                />
+              </View>
+              <View style={mobileNo ? styles?.inputError : styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Mobile No."
+                  value={mobile}
+                  onChangeText={text => handleInputChange('mobileNo', text)}
+                  keyboardType="numeric"
+                  maxLength={12}
+                />
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Dealer Code"
+                  value={dealerCode}
+                  onChangeText={text => setDealerCode(text)}
+                  keyboardType="numeric"
+                  maxLength={7}
+                />
+              </View>
+              <View style={styles.container}>
+                <TextInput
+                  selectionColor={Colors.text_Color}
+                  style={styles.input}
+                  placeholderTextColor={Colors.text_Color}
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={text => handleInputChange('password', text)}
+                  keyboardType="default"
+                  secureTextEntry
+                />
+              </View>
+              <View style={styles.container}>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  placeholder="Select company"
+                  autoScroll={true}
+                  textStyle={{ color: Colors.text_Color, fontSize: 12 }}
+                  style={[
+                    { color: Colors.text_Color, borderColor: 'transparent' },
+                    { backgroundColor: open ? '#1A4578' : 'transparent' },
+                  ]}
+                  containerStyle={{ width: '110%', marginLeft: -10 }}
+                  dropDownContainerStyle={{
+                    backgroundColor: '#1A4578',
+                    borderColor: 'transparent',
+                    paddingVertical: 5,
+
+                  }}
+                  TickIconComponent={() => (
+                    <FontAwesome6 name="check" color={Colors.text_Color} />
+                  )}
+                  arrowIconStyle={{ tintColor: Colors.text_Color }}
+                />
+              </View>
+            </View>
+            <View style={[styles.remember_view]}>
+              <TouchableOpacity
+                style={styles.container1}
+                onPress={handleCheckboxChange}
+                activeOpacity={0.8}>
+                <View style={styles.checkbox}>
+                  {isChecked ? (
+                    <LinearGradient
+                      colors={[
+                        'rgb(39, 174, 229)',
+                        'rgb(41,128,201)',
+                        'rgb(50,107,194)',
+                        'rgb(59,90,183)',
+                      ]}
+                      style={styles.checkboxGradient}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}>
+                      <Ionicons
+                        name="checkmark"
+                        size={24}
+                        color={Colors.text_Color}
+                        borderColor="transparent"
+                      />
+                    </LinearGradient>
+                  ) : (
+                    <MaterialIcons
+                      name="check-box-outline-blank"
+                      color={Colors.text_Color}
+                      size={24}
+                    />
+                  )}
+                </View>
+                <Text style={styles.label}>I Agree the Terms and Conditions</Text>
+              </TouchableOpacity>
+            </View>
+            <CustomButton
+              onPress={() => handleSignUp()}
+              ContainerStyle={{
+                paddingVertical: 15,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: '80%',
+                borderRadius: 15,
+              }}
+              textStyle={{
+                color: Colors.text_Color,
+                textAlign: 'center',
+                fontSize: 16,
+                fontFamily: '200',
+              }}
+              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
+              disabled={loading}
+            />
+            <TouchableOpacity
+              style={styles.signin}
+              onPress={() => navigation.goBack()}>
+              <Text style={styles.text}>Have an Account Already?</Text>
+              <Text style={styles.text}> Sign In</Text>
             </TouchableOpacity>
           </View>
-          <CustomButton
-            onPress={() => handleSignUp()}
-            ContainerStyle={{
-              paddingVertical: 15,
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '80%',
-              borderRadius: 15,
-            }}
-            textStyle={{
-              color: Colors.text_Color,
-              textAlign: 'center',
-              fontSize: 16,
-              fontFamily: '200',
-            }}
-            title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
-            disabled={loading}
-          />
-          <TouchableOpacity
-            style={styles.signin}
-            onPress={() => navigation.goBack()}>
-            <Text style={styles.text}>Have an Account Already?</Text>
-            <Text style={styles.text}> Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };
