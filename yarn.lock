@@ -6791,6 +6791,7 @@ react-native-paper@^5.8.0:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< HEAD
 react-native-pdf@^6.6.2:
@@ -6800,6 +6801,9 @@ react-native-pdf@6.7.1:
 =======
 react-native-pdf@6.7.1:
 >>>>>>> Stashed changes
+=======
+react-native-pdf@6.7.1:
+>>>>>>> d40f12573f0f0591af02b8c42774a8b31d29ab15
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-6.7.1.tgz#198b8ec3e8f1025ceb43ddfc6bc5b422521c4411"
   integrity sha512-zszQygtNBYoUfEtP/fV7zhzGeohDlUksh2p3OzshLrxdY9mw7Tm5VXAxYq4d8HsomRJUbFlJ7rHaTU9AQL800g==

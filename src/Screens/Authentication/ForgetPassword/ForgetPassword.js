@@ -31,7 +31,7 @@ const ForgetPassword = () => {
 
   const handleForgot = async () => {
     if (mobile?.length !== 13) {
-      Alert.alert('Please enter valid cnic code');
+      alert('Please enter valid cnic code');
       return;
     }
     setLoading(true);
@@ -52,10 +52,10 @@ const ForgetPassword = () => {
       if (!response?.ok) {
         setLoading(false);
         if (response?.status === 404) {
-          Alert.alert('User not Exist\nPlease check your CNIC and try again.');
+          alert('User not Exist\nPlease check your CNIC and try again.');
           return;
         }
-        Alert.alert('User not Exist\nPlease check your CNIC and try again.');
+        alert('User not Exist\nPlease check your CNIC and try again.');
         return;
       }
       const responseData = await response.json();
@@ -77,18 +77,12 @@ const ForgetPassword = () => {
     }
   };
 
-  // const onPressTouch = () => {
-  //   ref?.scrollTo({
-  //     x: 0,
-  //     y: 250,
-  //     animated: true,
-  //   });
-  // };
-  const scrollViewRef = useRef(null);
-  const inputRef = useRef(null);
-  const scrollToInput = () => {
-    // Scroll to the input field using the scrollViewRef
-    scrollViewRef.current?.scrollToFocusedInput(inputRef.current);
+  const onPressTouch = () => {
+    ref?.scrollTo({
+      x: 0,
+      y: 250,
+      animated: true,
+    });
   };
 
   return (

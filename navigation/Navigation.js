@@ -86,6 +86,13 @@ const RootNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen
+        name="RefCatalogue"
+        component={RefCatalogue}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="WDCatalogue"
         component={WDCatalogue}
         options={{
@@ -302,13 +309,7 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="RefCatalogue"
-        component={RefCatalogue}
-        options={{
-          headerShown: false,
-        }}
-      />
+
     </Stack.Navigator>
   );
 };
