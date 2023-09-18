@@ -14,6 +14,15 @@ import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 
 const ContactUs = ({ navigation }) => {
+
+  dialCall = (number) => {
+    let phoneNumber = '';
+    if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
+    else { phoneNumber = `telprompt:${number}`; }
+    Linking.openURL(phoneNumber);
+  };
+
+
   return (
     <ImageBackground
       source={require('../../../../Assets/Image/background_image.png')}
@@ -53,7 +62,7 @@ const ContactUs = ({ navigation }) => {
               paddingVertical: 15,
             }}>
             <TouchableOpacity
-              onPress={() => Linking.openURL('tel:0300 – 0 567 343')}
+              onPress={() => dialCall('+923000567343')}
               style={{ alignItems: 'center', width: '50%' }}>
               <Ionicons
                 name="call-outline"
@@ -83,7 +92,7 @@ const ContactUs = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() =>
-              Linking.openURL('mailto: help.champions@orient.com.pk')
+              Linking.openURL('mailto:help.champions@orient.com.pk')
             }
             style={{ alignItems: 'center', width: '100%' }}>
             <Ionicons name="mail-outline" size={26} color={Colors.text_Color} />
@@ -114,7 +123,8 @@ const ContactUs = ({ navigation }) => {
             <View style={styles.ContainerView}>
               <TouchableOpacity
                 style={{ alignItems: 'center', width: '50%' }}
-                onPress={() => Linking.openURL('tel: 042 111 635 635')}>
+                onPress={() => dialCall('042111635635')}
+              >
                 <Ionicons
                   name="call-outline"
                   size={26}
@@ -126,7 +136,8 @@ const ContactUs = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ alignItems: 'center', width: '50%' }}
-                onPress={() => Linking.openURL('tel:0800 – 11 635')}>
+                onPress={() => dialCall('080011635')}
+              >
                 <Ionicons
                   name="call-outline"
                   size={26}
@@ -154,7 +165,7 @@ const ContactUs = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => Linking.openURL('mailto: care@orient.com.pk')}
+                onPress={() => Linking.openURL('mailto:care@orient.com.pk')}
                 style={{ width: '50%' }}>
                 <Ionicons
                   name="mail-outline"
@@ -194,7 +205,7 @@ const ContactUs = ({ navigation }) => {
               paddingBottom: 20,
             }}>
             <TouchableOpacity
-              onPress={() => Linking.openURL('tel: 042 – 3810 74 05')}
+              onPress={() => dialCall('04238107405')}
               style={{ alignItems: 'center', alignSelf: 'center', width: '50%' }}>
               <Ionicons
                 name="call-outline"

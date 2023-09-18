@@ -13,7 +13,6 @@ import Scan from "../src/Screens/SCAN/Scan";
 import DrawerScreen from "../src/Screens/Drawer/Drawer";
 import AccountSetting from "../src/Screens/Drawer/AccountSetting/AccountSetting";
 import PaidCategory from "../src/Screens/Home/TotalPaid/PaidCategory";
-import Approved from "../src/Screens/Approved/Approved";
 import HelpFAQ from "../src/Screens/Drawer/HelpFAQ/HelpFaq";
 import SearchCate from "../src/Screens/Search/SearchCate";
 import ForgetPassword from "../src/Screens/Authentication/ForgetPassword/ForgetPassword";
@@ -35,7 +34,6 @@ import Videos from "../src/Screens/Drawer/HelpFAQ/Gallery/Videos";
 import Blogs from "../src/Screens/Drawer/HelpFAQ/Gallery/Blogs";
 import Catelogue from "../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue";
 import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
-import Catalouge_PDF from "../src/Screens/Drawer/HelpFAQ/Gallery/Catalouge_PDF";
 import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
 import Fsm_Policy from "../src/Screens/Drawer/Fsm_Policy";
 import RejectedDetail from "../src/Screens/Home/TotalPaid/RejectedDetail";
@@ -218,13 +216,7 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Approved"
-        component={Approved}
-        options={{
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="HelpFAQ"
         component={HelpFAQ}
@@ -281,13 +273,7 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Catalouge_PDF"
-        component={Catalouge_PDF}
-        options={{
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="ProductFaq"
         component={ProductFaq}

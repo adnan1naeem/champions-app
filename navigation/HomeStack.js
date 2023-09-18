@@ -21,11 +21,9 @@ import Congratulation from '../src/Screens/Authentication/ChangePassword/Congrat
 import AccountSetting from '../src/Screens/Drawer/AccountSetting/AccountSetting'
 import DrawerScreen from '../src/Screens/Drawer/Drawer'
 import PaidCategory from '../src/Screens/Home/TotalPaid/PaidCategory'
-import Approved from '../src/Screens/Approved/Approved'
 import HelpFAQ from '../src/Screens/Drawer/HelpFAQ/HelpFaq'
 import SearchCate from '../src/Screens/Search/SearchCate'
 import Testing from "../src/Testing";
-import RefCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue'
 
 
 const HomeStack = () => {
@@ -181,13 +179,7 @@ const HomeStack = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Approved"
-        component={Approved}
-        options={{
-          headerShown: false,
-        }}
-      />
+
       <Stack.Screen
         name="HelpFAQ"
         component={HelpFAQ}

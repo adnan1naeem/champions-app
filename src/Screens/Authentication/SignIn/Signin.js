@@ -14,8 +14,6 @@ import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CustomButton from '../../../Components/CustomButton';
 import { styles } from './style';
-import Icon from 'react-native-vector-icons/Ionicons';
-import User_Icon from 'react-native-vector-icons/Zocial';
 import Password from 'react-native-vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,6 +22,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from "@react-native-community/netinfo";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 
 const Signin = () => {
@@ -89,7 +88,7 @@ const Signin = () => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch('http://16.24.45.175:8000/login', config);
+      const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
         setLoading(false);
         if (response?.status === 401) {
@@ -148,10 +147,8 @@ const Signin = () => {
           <View style={styles.Login_view}>
             <View style={{ width: '70%', alignSelf: 'center' }}>
               <View style={styles.container}>
-
-                <User_Icon
-                  name="email"
-                  style={styles.icon}
+                <Ionicons
+                  name="call-outline"
                   size={15}
                   color={Colors.text_Color}
                 />

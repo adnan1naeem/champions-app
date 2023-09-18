@@ -181,45 +181,7 @@ const Home = () => {
     }
   };
 
-  //   (async () => {
-  //     const payload = {
-  //       companyCode: '1000',
-  //     };
 
-  //     try {
-  //       console.log("jjs: ", Internet);
-  //       if (Internet) {
-  //         Alert.alert('Please Check Your Internet Connection!.');
-  //         return;
-  //       }
-
-  //       const response = await fetch(`${API_BASE_URL}/getCategory`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(payload),
-  //       });
-
-  //       const data = await response.json();
-  //       let dataIs = {
-  //         _id: '11111',
-  //         categoryCode: '0',
-  //         categoryName: 'All',
-  //         companyName: 'Orient Electronics Pvt. Ltd.',
-  //         companyCode: '1000',
-  //       };
-  //       Alert.alert('12');
-  //       setCategory([dataIs, ...data?.category]);
-  //     } catch (error) {
-  //       console.error('Error123:', error);
-  //       if (error instanceof TypeError && error.message === 'Network request failed') {
-  //         Alert.alert('Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
-  //       }
-  //     }
-  //   })();
-  // }, []);
-  // Define a function to fetch category data
   const fetchCategoryData = async () => {
     const payload = {
       companyCode: '1000',
@@ -247,7 +209,7 @@ const Home = () => {
     } catch (error) {
       console.error('Error123:', error);
       if (error instanceof TypeError && error.message === 'Network request failed') {
-        Alert.alert('Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
+        Alert.alert("Sorry..!", 'Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
       }
     }
   };
