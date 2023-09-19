@@ -17,6 +17,7 @@ import { Colors } from '../../Utils/Colors';
 import Header from '../../Components/Header/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 const DrawerScreen = () => {
   const navigation = useNavigation();
@@ -99,7 +100,7 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('EditProfile', { userInfo: user_Info });
           }}
@@ -110,7 +111,7 @@ const DrawerScreen = () => {
             size={20}
             style={{ marginTop: 12 }}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
 
       <View style={{ marginLeft: 20 }}>
