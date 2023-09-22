@@ -18,19 +18,30 @@ import Header from '../../Components/Header/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import axios from 'axios';
+import Feather from 'react-native-vector-icons/Feather'
 
 const DrawerScreen = () => {
   const navigation = useNavigation();
   const [user_Info, setUserInfo] = useState([]);
   const [avatarName, setAvatarName] = useState('');
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [CurrentUser, setCurrentUser] = useState()
+
+  const [items, setItems] = useState([
+    { label: 'FSM Policy', value: 'FsmPolicy' },
+    { label: 'Privacy Policy', value: 'PrivacyPolicy' },
+  ]);
 
   const handleBackPress = () => {
     navigation.goBack();
   };
-
   useEffect(() => {
+
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
+      setCurrentUser(user)
       if (user) {
         let matches = user?.name?.match(/\b(\w)/g);
         let acronym = matches?.join('');
@@ -58,12 +69,31 @@ const DrawerScreen = () => {
       console.error('Error signing out:', error);
     }
   };
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'FSM Policy', value: 'FsmPolicy' },
-    { label: 'Privacy Policy', value: 'PrivacyPolicy' },
-  ]);
+  const handleDeleteUser = () => {
+    axios.delete(`http://16.24.45.175:8000/deleteUser/${CurrentUser?.cnic}`)
+      .then((response) => {
+        console.log(response?.data);
+        SignOut()
+        navigation.navigate('SignIn')
+
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      });
+  };
+
+  const Delete = () => {
+    Alert.alert(
+      'Warning..!',
+      'Are you sure you want to continue?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+        { text: 'OK', onPress: () => handleDeleteUser() },
+
+      ],
+
+    )
+  }
 
   const HandlePolicy = text => {
     if (text?.value === 'FsmPolicy') {
@@ -99,7 +129,7 @@ const DrawerScreen = () => {
             <Ionicons name="chevron-back" size={25} color={Colors.text_Color} />
           </LinearGradient>
         </TouchableOpacity>
-
+        {/* 
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('EditProfile', { userInfo: user_Info });
@@ -111,7 +141,7 @@ const DrawerScreen = () => {
             size={20}
             style={{ marginTop: 12 }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={{ marginLeft: 20 }}>
@@ -260,7 +290,7 @@ const DrawerScreen = () => {
                 <Ionicons
                   name="chevron-forward"
                   size={20}
-                  color={Colors.text_Color}
+                  color={'#9297b0'}
                 />
               </LinearGradient>
             )}
@@ -270,6 +300,41 @@ const DrawerScreen = () => {
             arrowIconStyle={{ tintColor: Colors.text_Color }}
           />
         </View>
+
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+          onPress={() => Delete()}>
+          <View style={{ flexDirection: 'row' }}>
+            <Feather
+              name='delete'
+              size={15}
+              color={'#9297b0'}
+            />
+
+            <Text style={styles.user_detail_cate}>Delete Account</Text>
+          </View>
+          <LinearGradient
+            colors={[
+              'rgb(39, 174, 229)',
+              'rgb(41,128,201)',
+              'rgb(50,107,194)',
+              'rgb(59,90,183)',
+            ]}
+            style={styles.forward_arrow}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}>
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={Colors.text_Color}
+            />
+          </LinearGradient>
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => SignOut()}
           style={{
@@ -277,6 +342,7 @@ const DrawerScreen = () => {
             alignItems: 'center',
             marginEnd: 2,
             justifyContent: 'space-between',
+            marginVertical: 10
           }}>
           <View
             style={{
