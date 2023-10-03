@@ -6,19 +6,19 @@ export const postUserData = async (data, endpoint) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: 
-                Data, 
+            body:
+                Data,
         };
 
-        const response = await fetch("http://16.24.45.175:8000/resetPassword", config);
+        const response = await fetch(`${API_BASE_URL}/resetPassword`, config);
         console.log("Response status code:", response.status); // Log the status code
         console.log(response)
         const responseData = await response.json();
         console.log("Data posted successfully:", responseData);
-        if(response?.status===200){
+        if (response?.status === 200) {
             return responseData;
         }
-        else if(response.status!==200){
+        else if (response.status !== 200) {
             alert(responseData?.message)
             return;
         }

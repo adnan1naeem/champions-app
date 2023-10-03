@@ -58,7 +58,7 @@ const ChangePassword = ({ route }) => {
           };
 
           const response = await fetch(
-            'http://16.24.45.175:8000/resetPassword',
+            `${API_BASE_URL}/resetPassword`,
             config,
           );
           if (!response.ok) {

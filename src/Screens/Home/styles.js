@@ -1,12 +1,11 @@
-import { StyleSheet } from "react-native";
-import { Colors } from "../../Utils/Colors";
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../Utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.blueBackground,
     paddingVertical: 10,
-
   },
   Chamiopm_Logo: {
     width: '48%',
@@ -36,8 +35,6 @@ export const styles = StyleSheet.create({
     zIndex: 999,
     justifyContent: 'space-between',
     marginHorizontal: 25,
-
-
   },
   text: {
     color: Colors.text_Color,
@@ -47,13 +44,12 @@ export const styles = StyleSheet.create({
     color: Colors.text_Color,
     fontSize: 15,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   part: {
     color: Colors.text_Color,
     fontSize: 14,
-    letterSpacing: 1.5
-
+    letterSpacing: 1.5,
   },
   item: {
     borderWidth: 2,
@@ -77,35 +73,40 @@ export const styles = StyleSheet.create({
     borderColor: Colors.text_Color,
     borderRadius: 15,
     marginBottom: 15,
-    marginVertical: 10
+    marginVertical: 10,
   },
   scan_text: {
     color: Colors.flatlist_color,
     fontSize: 17,
-
   },
   dropdownItemText: {
     color: Colors.text_Color,
     paddingVertical: 3,
-    fontSize: 13
+    fontSize: 13,
   },
   dropdownItem: {
     flexDirection: 'row',
   },
   modalContainer: {
-    position: "absolute",
-    start: 15,
-    top: 110,
-    backgroundColor: "#3a85d6",
-    paddingHorizontal: 5,
-    borderRadius: 8,
-    width: 140
-  },
-  modalContent: {
+    backgroundColor: '#3a85d6',
+    paddingHorizontal: 15,
+    width: '98%',
+    paddingVertical: 15,
     alignSelf: 'center',
+    borderRadius: 15,
+  },
+  updateMessage: {
+    color: Colors.text_Color,
+    fontWeight: '500',
+    fontSize: 15,
+    lineHeight: 45,
+    textAlign: 'center',
+  },
+  UpdateHeading: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: Colors.text_Color,
     paddingVertical: 10,
-    alignItems: 'center',
+    fontSize: 20
   },
 });
-
-

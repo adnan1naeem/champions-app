@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301170937965",
+    "project_id": "orient-champions",
+    "storage_bucket": "orient-champions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301170937965:android:d525d266d0839780d16f64",
+        "android_client_info": {
+          "package_name": "com.orient.fsmia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZW4cF2aOpnJliR8YYPtn-0rF2CWlhR_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

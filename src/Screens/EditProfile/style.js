@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
         marginTop: "20%",
         borderRadius: 40,
         alignSelf: "center",
-        marginBottom:15
+        marginBottom: 15
     },
     unlock_view: {
         display: "flex",
@@ -82,14 +82,24 @@ export const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '200',
     },
-    inputError:{
+    inputError: {
         flexDirection: 'row',
         alignItems: 'flex-end',
         borderBottomColor: 'red',
         borderBottomWidth: 1,
         height: 50,
         marginBottom: 10,
-        
+
+    },
+    avtarContainer: {
+        marginLeft: 10,
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        borderWidth: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#17b8f5',
     },
     icon: {
         marginRight: 10,
@@ -110,7 +120,7 @@ export const styles = StyleSheet.create({
         marginTop: 2,
         fontStyle: 'italic',
         fontWeight: "200",
-       
+
     },
     proceed_button: {
         paddingVertical: 15,
@@ -136,14 +146,14 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
     },
-    text:{
-        color:Colors.Half_white,
-        fontSize:11
+    text: {
+        color: Colors.Half_white,
+        fontSize: 11
     },
-    checkboxGradient:{
-        borderRadius:5,
-        height:24,
-        width:24,
+    checkboxGradient: {
+        borderRadius: 5,
+        height: 24,
+        width: 24,
     },
 
 

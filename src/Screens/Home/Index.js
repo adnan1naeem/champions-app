@@ -8,6 +8,9 @@ import {
   FlatList,
   Alert,
   RefreshControl,
+  Platform,
+  BackHandler,
+  Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import React, { useEffect, useState, useRef } from 'react';
@@ -19,10 +22,17 @@ import { useNavigation } from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
-import { API_BASE_URL } from '../../../Constants';
+import {
+  API_BASE_URL,
+  Android_Link,
+  Ios_Link,
+  androidVersion,
+  iosVersion,
+} from '../../../Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NetInfo from "@react-native-community/netinfo";
-
+import NetInfo from '@react-native-community/netinfo';
+import checkVersion from 'react-native-store-version';
+import CustomButton from '../../Components/CustomButton';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -40,34 +50,6 @@ const Home = () => {
   const [verified_list, setVerified_list] = useState([]);
   const [rejected_list, setRejected_list] = useState([]);
   const [category, setCategory] = useState();
-
-  const products = [
-    {
-      id: 1,
-      name: 'Air Conditioner',
-    },
-    {
-      id: 2,
-      name: 'Refrigerator',
-    },
-    {
-      id: 3,
-      name: 'Water Dispenser',
-    },
-    {
-      id: 4,
-      name: 'Microwave Oven',
-    },
-    {
-      id: 5,
-      name: 'Washing Machine',
-    },
-    {
-      id: 6,
-      name: 'LED',
-    },
-  ];
-
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -79,13 +61,33 @@ const Home = () => {
       }
       fetchCategoryData();
     });
-    const unsubscribe = NetInfo.addEventListener(state => {
-    });
-    unsubscribe()
+    const unsubscribe = NetInfo.addEventListener(state => { });
+    unsubscribe();
+  }, []);
 
-  }, [])
+  useEffect(() => {
+    init();
+  }, []);
 
-
+  const init = async () => {
+    let version = Platform.OS === 'ios' ? iosVersion : androidVersion;
+    try {
+      const check = await checkVersion({
+        version,
+        iosStoreURL: Ios_Link,
+        androidStoreURL: Android_Link,
+      });
+      console.log("Build status: ", check?.result);
+      if (check?.result === 'new') {
+        handle_Update_Modal(true)
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+  const handle_Update_Modal = (status) => {
+    setisVisible(status);
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -98,9 +100,7 @@ const Home = () => {
     }, 1000);
   }, []);
 
-  const handleModalClose = () => {
-    setisVisible(false);
-  };
+
 
   const handleSubmmit = (status, list) => {
     navigation.navigate('PaidCategory', {
@@ -157,9 +157,11 @@ const Home = () => {
       const verifiedBatches = data?.batchList?.filter(
         batch => batch?.batchPostStatus === 'verified',
       );
+
       const rejectedBatches = data?.batchList?.filter(
         batch => batch?.batchPostStatus === 'rejected',
       );
+
       const pendingBatches = data?.batchList?.filter(
         batch => batch?.batchPostStatus === 'pending',
       );
@@ -180,7 +182,6 @@ const Home = () => {
       console.error('Error:', error);
     }
   };
-
 
   const fetchCategoryData = async () => {
     const payload = {
@@ -208,8 +209,14 @@ const Home = () => {
       setCategory([dataIs, ...data?.category]);
     } catch (error) {
       console.error('Error123:', error);
-      if (error instanceof TypeError && error.message === 'Network request failed') {
-        Alert.alert("Sorry..!", 'Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.');
+      if (
+        error instanceof TypeError &&
+        error.message === 'Network request failed'
+      ) {
+        Alert.alert(
+          'Sorry..!',
+          'Our server is currently undergoing scheduled maintenance to improve performance and reliability. During this time, the service may be temporarily unavailable.',
+        );
       }
     }
   };
@@ -251,7 +258,6 @@ const Home = () => {
             />
           }
           showsVerticalScrollIndicator={false}>
-
           <View style={styles.filter_view}>
             <View style={{ marginTop: 15 }}>
               {selectedValue?._id ? (
@@ -280,7 +286,10 @@ const Home = () => {
             </View>
 
             <View>
-              <Datepicker refreshState={refreshing} onDateSelect={handleDateSelect} />
+              <Datepicker
+                refreshState={refreshing}
+                onDateSelect={handleDateSelect}
+              />
             </View>
           </View>
           <Modal
@@ -371,29 +380,28 @@ const Home = () => {
             <Text style={styles.scan_text}>SCAN</Text>
           </TouchableOpacity>
 
-          <Modal visible={isVisible} transparent animationType="fade">
-            <TouchableOpacity style={{ flex: 1 }} onPress={handleModalClose} />
+          <Modal visible={isVisible} transparent animationType="slide" >
+
             <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                {products.map(product => (
-                  <View key={product.id}>
-                    <Text
-                      style={{
-                        color: Colors.text_Color,
-                        fontWeight: '500',
-                        fontSize: 11,
-                        paddingVertical: 3,
-                      }}>
-                      {product.name}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+
+              <Text style={styles.UpdateHeading}>Champions Update Available</Text>
+
+
+
+
+              <Text style={styles.updateMessage}>Please update your app !</Text>
+
+
+              <CustomButton onPress={() => {
+                BackHandler.exitApp();
+                Linking.openURL(Platform.OS === 'ios' ? Ios_Link : Android_Link);
+              }} title="Update" />
+
             </View>
           </Modal>
         </ScrollView>
       </View>
-    </ImageBackground>
+    </ImageBackground >
   );
 };
 

@@ -24,7 +24,7 @@ import TermsAndCondition from "../src/Screens/Drawer/HelpFAQ/TermsConditions/Ter
 import ContactUs from "../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs";
 import Gallery from "../src/Screens/Drawer/HelpFAQ/Gallery/Gallery";
 import FAQ from "../src/Screens/Drawer/HelpFAQ/FAQ/FAQ";
-import EditProfile from "../src/Screens/EditProfile/index";
+import EditProfile from "../src/Screens/EditProfile/Index";
 import Testing from "../src/Testing";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";

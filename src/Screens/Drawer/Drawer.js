@@ -20,6 +20,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather'
+import { API_BASE_URL } from '../../../Constants';
 
 const DrawerScreen = () => {
   const navigation = useNavigation();
@@ -28,6 +29,8 @@ const DrawerScreen = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [CurrentUser, setCurrentUser] = useState()
+  const [profile_image, setProfile_image] = useState(null);
+
 
   const [items, setItems] = useState([
     { label: 'FSM Policy', value: 'FsmPolicy' },
@@ -38,7 +41,6 @@ const DrawerScreen = () => {
     navigation.goBack();
   };
   useEffect(() => {
-
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
       setCurrentUser(user)
@@ -58,6 +60,7 @@ const DrawerScreen = () => {
     return number;
   };
 
+
   const SignOut = async () => {
     try {
       await AsyncStorage.removeItem('USER');
@@ -70,7 +73,7 @@ const DrawerScreen = () => {
     }
   };
   const handleDeleteUser = () => {
-    axios.delete(`http://16.24.45.175:8000/deleteUser/${CurrentUser?.cnic}`)
+    axios.delete(`${API_BASE_URL}/deleteUser/${CurrentUser?.cnic}`)
       .then((response) => {
         console.log(response?.data);
         SignOut()
@@ -80,6 +83,27 @@ const DrawerScreen = () => {
       .catch((error) => {
         Alert.alert(error);
       });
+  };
+
+  useEffect(() => {
+    profile_Get()
+  }, [profile_image]);
+
+  const profile_Get = async () => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/getProfile/${user_Info?.cnic}`,
+      );
+      if (response?.ok) {
+        const data = await response.json();
+        console.log(' fetch data:::  ', data?.data[0]?.image);
+        setProfile_image(data?.data[0]?.image);
+      } else {
+        console.log('Error: Unable to fetch data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const Delete = () => {
@@ -94,6 +118,7 @@ const DrawerScreen = () => {
 
     )
   }
+
 
   const HandlePolicy = text => {
     if (text?.value === 'FsmPolicy') {
@@ -129,19 +154,20 @@ const DrawerScreen = () => {
             <Ionicons name="chevron-back" size={25} color={Colors.text_Color} />
           </LinearGradient>
         </TouchableOpacity>
-        {/* 
+
         <TouchableOpacity
+          style={{ paddingHorizontal: 20 }}
           onPress={() => {
             navigation.navigate('EditProfile', { userInfo: user_Info });
           }}
-          style={{}}>
+        >
           <FontAwesome5
             name="user-edit"
             color={Colors.text_Color}
             size={20}
             style={{ marginTop: 12 }}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
 
       <View style={{ marginLeft: 20 }}>
@@ -157,9 +183,20 @@ const DrawerScreen = () => {
       <View style={styles.drawerContainer}>
         <View style={styles.contentContainer}>
           <View style={styles.profile_continer}>
-            <Text style={{ color: Colors.text_Color, fontSize: 22 }}>
-              {avatarName}
-            </Text>
+            {profile_image ? (
+              <>
+                <Image
+                  source={{ uri: profile_image }}
+                  style={styles.DrawerProfile}
+                />
+              </>
+            ) : (
+              <Text style={{ color: Colors.text_Color, fontSize: 22 }}>
+                {avatarName}
+              </Text>
+            )}
+
+
           </View>
           <View style={{ marginLeft: 15, justifyContent: 'center' }}>
             <Text style={styles.user_detail}>{user_Info?.name}</Text>
