@@ -3,12 +3,11 @@ import {
   View,
   Image,
   TouchableOpacity,
-  StyleSheet,
   ImageBackground,
   Text,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './style';
@@ -19,7 +18,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import axios from 'axios';
-import Feather from 'react-native-vector-icons/Feather'
+import Feather from 'react-native-vector-icons/Feather';
 import { API_BASE_URL } from '../../../Constants';
 
 const DrawerScreen = () => {
@@ -28,7 +27,6 @@ const DrawerScreen = () => {
   const [avatarName, setAvatarName] = useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [CurrentUser, setCurrentUser] = useState()
   const [profile_image, setProfile_image] = useState(null);
 
 
@@ -40,10 +38,10 @@ const DrawerScreen = () => {
   const handleBackPress = () => {
     navigation.goBack();
   };
+
   useEffect(() => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
-      setCurrentUser(user)
       if (user) {
         let matches = user?.name?.match(/\b(\w)/g);
         let acronym = matches?.join('');
@@ -52,6 +50,7 @@ const DrawerScreen = () => {
       }
     })();
   }, []);
+
 
   const formatMobileNumber = number => {
     if (number?.startsWith('92')) {
@@ -72,8 +71,9 @@ const DrawerScreen = () => {
       console.error('Error signing out:', error);
     }
   };
+
   const handleDeleteUser = () => {
-    axios.delete(`${API_BASE_URL}/deleteUser/${CurrentUser?.cnic}`)
+    axios.delete(`${API_BASE_URL}/deleteUser/${user_Info?.cnic}`)
       .then((response) => {
         console.log(response?.data);
         SignOut()
@@ -84,11 +84,6 @@ const DrawerScreen = () => {
         Alert.alert(error);
       });
   };
-
-  useEffect(() => {
-    profile_Get()
-  }, [profile_image]);
-
   const profile_Get = async () => {
     try {
       const response = await fetch(
@@ -96,7 +91,6 @@ const DrawerScreen = () => {
       );
       if (response?.ok) {
         const data = await response.json();
-        console.log(' fetch data:::  ', data?.data[0]?.image);
         setProfile_image(data?.data[0]?.image);
       } else {
         console.log('Error: Unable to fetch data');
@@ -105,6 +99,9 @@ const DrawerScreen = () => {
       console.error('Error:', error);
     }
   };
+  useFocusEffect(() => {
+    profile_Get();
+  });
 
   const Delete = () => {
     Alert.alert(
@@ -113,13 +110,9 @@ const DrawerScreen = () => {
       [
         { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
         { text: 'OK', onPress: () => handleDeleteUser() },
-
       ],
-
     )
   }
-
-
   const HandlePolicy = text => {
     if (text?.value === 'FsmPolicy') {
       navigation.navigate('Fsm_Policy', { privacy: true, });
@@ -183,7 +176,7 @@ const DrawerScreen = () => {
       <View style={styles.drawerContainer}>
         <View style={styles.contentContainer}>
           <View style={styles.profile_continer}>
-            {profile_image ? (
+            {profile_image?.length > 9 ? (
               <>
                 <Image
                   source={{ uri: profile_image }}

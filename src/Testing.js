@@ -8,12 +8,15 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
+
 import { useEffect } from "react";
 import axios from "axios";
 import { Text } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from "./Components/CustomButton";
+import { Colors } from "./Utils/Colors";
+import { Alert } from "react-native";
+import ImagePicker from 'react-native-image-crop-picker';
 
 const EditProfile = ({ route, }) => {
   const [Name, setName] = useState("");
@@ -49,17 +52,18 @@ const EditProfile = ({ route, }) => {
 
 
 
-  const options = {
-    mediaType: 'photo',
-    quality: 1,
-    includeBase64: false,
-  };
+
   const Cameraopen = async () => {
     try {
-      const result = await launchCamera(options);
-      if (!result?.didCancel && !result?.error) {
-        console.log('Selected image URI:', result);
-      }
+      const result = ImagePicker.openCamera({
+        width: 300,
+        height: 400,
+        cropping: false,
+      }).then(image => {
+        console.log(image);
+      });
+      console.log('camera image URI:', result);
+
     } catch (error) {
       console.error('Error selecting image:', error);
     }
@@ -68,10 +72,16 @@ const EditProfile = ({ route, }) => {
 
   const Gallery = async () => {
     try {
-      const result = await launchImageLibrary(options);
-      if (!result?.didCancel && !result?.error) {
-        console.log('Selected image URI:', result);
-      }
+      const result = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: false
+      }).then(image => {
+        console.log(image);
+      });;
+
+      console.log('Selected image URI:', result);
+
     } catch (error) {
       console.error('Error selecting image:', error);
     }
@@ -111,20 +121,21 @@ const EditProfile = ({ route, }) => {
 
   return (
 
-    <View>
+    <View style={{ backgroundColor: 'red', flex: 1 }}>
 
-      <TouchableOpacity onPress={() => Select()}>
+      <TouchableOpacity>
         {imageSource && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </TouchableOpacity>
 
       <CustomButton
-        // onPress={() => updateUserProfile()}
+        onPress={() => Select()}
         ContainerStyle={{
           paddingVertical: 15,
           justifyContent: "center",
           alignSelf: "center",
           width: "80%",
-          borderRadius: 15
+          borderRadius: 15,
+          marginTop: 200,
         }}
         textStyle={{ color: Colors.text_Color, textAlign: "center", fontSize: 16, fontFamily: '200' }}
         title="Edit Profile"

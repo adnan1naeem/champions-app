@@ -117,10 +117,12 @@ const SignUp = () => {
     } else if (!dealerCode) {
       Alert.alert('Please enter dealerCode.');
       return;
-    } else if (isChecked === false) {
-      Alert.alert('Agree the terms and condition.');
-      return;
-    } else if (!password) {
+    }
+    // else if (isChecked === false) {
+    //   Alert.alert('Agree the terms and condition.');
+    //   return;
+    // } 
+    else if (!password) {
       Alert.alert('Please enter password.');
       return;
     } else if (dealerCode.length !== 7) {
@@ -152,39 +154,34 @@ const SignUp = () => {
           dealerCode: dealerCode,
           password: password,
           companyCode: value,
-          status: isChecked,
+          // status: isChecked,
         }),
       };
-
 
       const response = await fetch(`${API_BASE_URL}/register`, config);
       setLoading(false);
 
       if (!response.ok) {
-        if (response?.status === 403) {
-          const data = await response.json();
-          Alert.alert(data?.message);
-          return;
-        } else if (response?.status === 402) {
+        if (response?.status === 421 || response?.status === 403) {
           const data = await response.json();
           Alert.alert(data?.message);
           return;
         }
-
         Alert.alert(
           'Network Error!',
           'Unable to connect to server, \n Please try again later',
         );
       } else {
         const data = await response.json();
-
         if (response?.status === 201) {
           navigation.replace('Congratulation', {
             message:
               'Your registration will be completed within next 24 hours.',
           });
-        } else if (response?.status === 402) {
+        }
+        if (response?.status === 421 || response?.status === 403) {
           Alert.alert(data?.message);
+          return;
         }
       }
     } catch (error) {

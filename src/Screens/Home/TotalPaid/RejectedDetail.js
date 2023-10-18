@@ -11,10 +11,11 @@ import { Colors } from '../../../Utils/Colors';
 
 const RejectedDetail = ({ route, navigation }) => {
     let batchlisting = route?.params?.item;
+    console.log("batchlisting: ", batchlisting);
 
 
     const formatDate = date => {
-        return moment(date).format('MM-D-YYYY');
+        return moment(date).format('MM-D-YYYY h:mm A');
     };
 
     const renderItem = ({ item, index }) => (
@@ -35,7 +36,7 @@ const RejectedDetail = ({ route, navigation }) => {
                             <Text style={[styles.flatList_text, { paddingVertical: 5, fontSize: 15 }]}>
                                 {item?.batchCode}
                             </Text>
-                            <Text style={[styles.flatList_text_detail, { paddingVertical: 5, fontSize: 15 }]}>
+                            <Text style={[styles.flatList_text_detail, { paddingVertical: 5, fontSize: 14 }]}>
                                 Created date: {formatDate(item.createdAt)}{' '}
                             </Text>
                         </View>
@@ -108,7 +109,7 @@ const RejectedDetail = ({ route, navigation }) => {
                         <Text
                             style={[
                                 styles.flatList_text_qty,
-                                { padding: 5, borderRadius: 5, paddingHorizontal: 15 },
+                                { padding: 5, borderRadius: 5, paddingHorizontal: 15, fontSize: 14 },
                             ]}>
                             {formatDate(item.createdAt)}
                         </Text>
@@ -161,7 +162,7 @@ const RejectedDetail = ({ route, navigation }) => {
                     flexGrow: 1,
                 }}>
                 <View style={{ paddingHorizontal: 10 }}>
-                    <Header value={true} />
+                    {/* <Header value={true} /> */}
                     <BackButton navigation={navigation} />
                 </View>
 

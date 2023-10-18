@@ -1,4 +1,3 @@
-// import typography from "native-base/lib/typescript/theme/base/typography";
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors } from '../../Utils/Colors';
 let deviceWidth = Dimensions.get('window').width;
@@ -14,6 +13,12 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     color: Colors.text_Color,
     paddingVertical: Platform.OS === 'ios' ? 11 : null,
+  },
+  submitButton: {
+    fontSize: 15,
+    color: Colors.text_Color,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   Login_view: {
     paddingVertical: 30,

@@ -1,4 +1,3 @@
-#import <Firebase.h>
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
 
@@ -12,9 +11,6 @@
   self.initialProps = @{};
   
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
-   if ([FIRApp defaultApp] == nil) {
-    [FIRApp configure];
-  }
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

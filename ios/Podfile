@@ -28,12 +28,6 @@ end
 target 'Champion' do
   config = use_native_modules!
 
-
-  #     use_frameworks! :linkage => :static
-  pod 'Firebase', :modular_headers => true
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
-  $RNFirebaseAsStaticFramework = true
   # Flags change depending on the env values.
 
   # Flags change depending on the env values.
@@ -53,11 +47,12 @@ target 'Champion' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
+
   target 'ChampionTests' do
     inherit! :complete
     # Pods for testing
   end
-
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
@@ -69,6 +64,3 @@ target 'Champion' do
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
-
- 
- 

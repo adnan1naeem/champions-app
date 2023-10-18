@@ -20,10 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../../Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -31,22 +29,19 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
-  const [Internet, setInternet] = useState()
+  const [Internet, setInternet] = useState();
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
   const navigation = useNavigation();
 
-
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      setInternet(state.isConnected)
+      setInternet(state.isConnected);
     });
-    const unsubscribe = NetInfo.addEventListener(state => {
-    });
-    unsubscribe()
-
-  }, [Internet])
+    const unsubscribe = NetInfo.addEventListener(state => { });
+    unsubscribe();
+  }, [Internet]);
 
   const formatMobileNumber = number => {
     if (number?.startsWith('0')) {
@@ -55,13 +50,11 @@ const Signin = () => {
     return number;
   };
 
-
   const handleSignIn = async () => {
     let errorMessage = null;
     if (!Internet) {
       errorMessage = 'Please Check Your Internet Connection!';
-    }
-    else if (!mobile) {
+    } else if (!mobile) {
       errorMessage = 'Please enter mobile number.';
     } else if (!password) {
       errorMessage = 'Please enter password.';
@@ -109,12 +102,10 @@ const Signin = () => {
     } catch (error) {
       if (error.message === 'Network request failed') {
         errorMessage = 'An error occurred while connecting to the server.';
-      }
-      else {
+      } else {
         console.log('Error posting data: ', error);
         errorMessage = 'An error occurred while connecting to the server.';
       }
-
     }
     setLoading(false);
     if (errorMessage) {
@@ -132,13 +123,10 @@ const Signin = () => {
         enableOnAndroid={true}
         enableAutomaticScroll={true}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-
-      >
+        contentContainerStyle={{ flexGrow: 1 }}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps={'always'}
-        >
+          keyboardShouldPersistTaps={'always'}>
           <Image
             style={styles.logo}
             source={require('../../../Assets/Image/login_image.png')}
@@ -162,7 +150,6 @@ const Signin = () => {
                   onChangeText={setMobile}
                   keyboardType={'phone-pad'}
                 />
-
               </View>
               <View style={styles.container}>
                 <Password
@@ -196,9 +183,8 @@ const Signin = () => {
                 style={styles.container1}
                 onPress={handleCheckboxChange}
                 activeOpacity={0.8}>
-
                 <View style={styles.checkbox}>
-                  {isChecked ?
+                  {isChecked ? (
                     <LinearGradient
                       colors={[
                         'rgb(39, 174, 229)',
@@ -215,10 +201,14 @@ const Signin = () => {
                         color={Colors.text_Color}
                         borderColor="transparent"
                       />
-                    </LinearGradient> :
-                    <MaterialIcons name="check-box-outline-blank" size={24}
-                      color={Colors.text_Color} />
-                  }
+                    </LinearGradient>
+                  ) : (
+                    <MaterialIcons
+                      name="check-box-outline-blank"
+                      size={24}
+                      color={Colors.text_Color}
+                    />
+                  )}
                 </View>
 
                 <Text style={styles.label}>Remember me</Text>
@@ -250,7 +240,13 @@ const Signin = () => {
                 fontSize: 16,
                 fontFamily: '200',
               }}
-              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Login'}
+              title={
+                loading ? (
+                  <ActivityIndicator color={Colors.text_Color} />
+                ) : (
+                  'Login'
+                )
+              }
             />
             <CustomButton
               onPress={() => navigation.navigate('SignUp')}

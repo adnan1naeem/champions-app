@@ -24,7 +24,6 @@ import { ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 const Scan = ({ navigation }) => {
-  const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,19 +88,26 @@ const Scan = ({ navigation }) => {
       const data = await response.json();
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
-      } else if (response.status !== 201) {
-        console.log("haris: ", data?.message);
-        Alert.alert(data?.message);
         setLoading(false);
+      } else if (response.status !== 201) {
+        if (data?.error === 'Server Timeout') {
+          Alert.alert("SAP Server Timeout");
+          setLoading(false);
+        } else {
+          Alert.alert(JSON.stringify(data?.message));
+          setLoading(false);
+        }
       }
     } catch (error) {
       console.log('Error posting data:', error);
       if (error.message === 'Network request failed') {
-        Alert.alert("Please Check Your Internet Connection")
+        Alert.alert("Please Try again later")
+        setLoading(false);
       }
       else {
         console.log('Error posting data: ', error);
         Alert.alert('An error occurred while connecting to the server.');
+        setLoading(false);
       }
     }
   };
@@ -115,7 +121,6 @@ const Scan = ({ navigation }) => {
 
     try {
       setLoading(true);
-      console.log(barCode);
       const config = {
         method: 'POST',
         headers: {
@@ -128,29 +133,31 @@ const Scan = ({ navigation }) => {
       };
       const response = await fetch(`${API_BASE_URL}/batchScan`, config);
       const data = await response.json();
-      console.log("esponse.status:: ", response.status);
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
-        console.log('data:: ', data);
-        Alert.alert((JSON.stringify(data?.message)));
-        setLoading(false);
+        if (data?.error === 'Server Timeout') {
+          Alert.alert("SAP Server Timeout");
+        } else {
+          console.log('data:: ', data?.message);
+          Alert.alert(JSON.stringify(data?.message));
+        }
       }
+      setLoading(false);
     } catch (error) {
-      console.log('Error posting data:', error);
       if (error.message === 'Network request failed') {
-        Alert.alert("Please Check Your Internet Connection")
+        Alert.alert("Please Try again later")
       }
       else {
         console.log('Error posting data: ', error);
         Alert.alert('An error occurred while connecting to the server.');
       }
+      setLoading(false);
     }
   };
   barcodeRecognized = ({ barcodes }) => {
     console.log("Bar: ", barcodes);
-    Alert.alert(barcodes)
-    barcodes.forEach(barcode => console.warn(barcode.data))
+    barcodes.forEach(barcode => console.log(barcode.data))
   };
 
   return (
@@ -188,12 +195,7 @@ const Scan = ({ navigation }) => {
             </View>
             <CustomButton
               ContainerStyle={[styles.proceed_button, { alignSelf: 'center', marginTop: 0, marginBottom: 20 }]}
-              textStyle={{
-                fontSize: 15,
-                color: Colors.text_Color,
-                textAlign: 'center',
-                fontWeight: 'bold',
-              }}
+              textStyle={styles.submitButton}
               title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Submit'}
               onPress={() => handleSubmit()}
               disabled={loading}

@@ -95,11 +95,3 @@ const Header = ({ Logo }) => {
 };
 
 export default Header;
-
-// <View style={styles.modalContent}>
-//   {products.map((product) => (
-//     <View key={product.id}>
-//       <Text style={{ color: Colors.text_Color, fontWeight: 500, fontSize: 11, paddingVertical: 3 }}>{product.name}</Text>
-//     </View>
-//   ))}
-// </View>

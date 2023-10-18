@@ -18,7 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
 import Header from '../../Components/Header/Header';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
@@ -118,6 +118,11 @@ const Home = () => {
     getBatchListing();
   }, [startDate, endDate, selectedValue]);
 
+  useEffect(() => {
+    getBatchListing();
+  }, [])
+
+
   const getBatchListing = async () => {
     const user = JSON.parse(await AsyncStorage.getItem('USER'));
     const payload = {
@@ -127,7 +132,6 @@ const Home = () => {
       divCode:
         selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
-
     try {
       const response = await fetch(`${API_BASE_URL}/BatchListing`, {
         method: 'POST',
@@ -140,44 +144,50 @@ const Home = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+
       const paidBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus === 'paid',
+        batch => batch?.batchPostStatus?.toLowerCase() === 'paid',
       );
       const total_PaidIncentiveAmount = paidBatches?.reduce(
         (sum, batch) => sum + batch?.incentiveAmount,
         0,
       );
       const approvedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus === 'approved',
+        batch => batch?.batchPostStatus?.toLowerCase() === 'approved',
       );
       const total_approvedIncentiveAmount = approvedBatches?.reduce(
         (sum, batch) => sum + batch?.incentiveAmount,
         0,
       );
       const verifiedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus === 'verified',
+        batch => batch?.batchPostStatus?.toLowerCase() === 'verified',
       );
 
-      const rejectedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus === 'rejected',
-      );
-
-      const pendingBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus === 'pending',
-      );
-      const total_pendingIncentiveAmount = pendingBatches?.reduce(
+      const total_verifiedIncentiveAmount = verifiedBatches?.reduce(
         (sum, batch) => sum + batch?.incentiveAmount,
         0,
       );
 
-      setPending_list(pendingBatches.reverse());
-      setRejected_list(rejectedBatches.reverse());
-      setVerified_list(verifiedBatches.reverse());
-      setPaid_list(paidBatches.reverse());
-      setApproved_list(approvedBatches.reverse());
+      const rejectedBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus?.toLowerCase() === 'rejected',
+      );
+      const pendingBatches = data?.batchList?.filter(
+        batch => batch?.batchPostStatus?.toLowerCase() === 'pending',
+      );
+
+      // const total_pendingIncentiveAmount = pendingBatches?.reduce(
+      //   (sum, batch) => sum + batch?.incentiveAmount,
+      //   0,
+      // );
+      const totalOutstanding = total_verifiedIncentiveAmount + total_approvedIncentiveAmount
+      setPending_list([...pendingBatches.reverse()]);
+      setRejected_list([...rejectedBatches.reverse()]);
+      setVerified_list([...verifiedBatches.reverse()]);
+      setPaid_list([...paidBatches.reverse()]);
+      setApproved_list([...approvedBatches.reverse()]);
       setapproved_ammount(total_approvedIncentiveAmount);
       setPaid_ammount(total_PaidIncentiveAmount);
-      setpending_ammount(total_pendingIncentiveAmount);
+      setpending_ammount(totalOutstanding);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -201,14 +211,14 @@ const Home = () => {
       let dataIs = {
         _id: '11111',
         categoryCode: '0',
-        categoryName: 'All',
+        categoryName: 'All Products',
         companyName: 'Orient Electronics Pvt. Ltd.',
         companyCode: '1000',
       };
 
       setCategory([dataIs, ...data?.category]);
     } catch (error) {
-      console.error('Error123:', error);
+      console.error('Error:', error);
       if (
         error instanceof TypeError &&
         error.message === 'Network request failed'
@@ -276,7 +286,7 @@ const Home = () => {
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                   style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={styles.dropdownItemText}>All</Text>
+                  <Text style={styles.dropdownItemText}>All Products</Text>
                   <Entypo
                     name={modalVisible ? 'chevron-up' : 'chevron-down'}
                     style={{ color: Colors.text_Color, fontSize: 20 }}
@@ -298,7 +308,7 @@ const Home = () => {
             visible={modalVisible}
             onBackdropPress={() => setModalVisible(false)}
             onRequestClose={() => setModalVisible(false)}>
-            <View style={[styles.modalContainer]}>
+            <View style={[styles.catmodalContainer]}>
               <View style={styles.modalContent}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
@@ -383,15 +393,8 @@ const Home = () => {
           <Modal visible={isVisible} transparent animationType="slide" >
 
             <View style={styles.modalContainer}>
-
               <Text style={styles.UpdateHeading}>Champions Update Available</Text>
-
-
-
-
               <Text style={styles.updateMessage}>Please update your app !</Text>
-
-
               <CustomButton onPress={() => {
                 BackHandler.exitApp();
                 Linking.openURL(Platform.OS === 'ios' ? Ios_Link : Android_Link);

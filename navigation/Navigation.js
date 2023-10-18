@@ -1,44 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AppAutoUpdateScreen from "../src/Screens/AppAutoUpdateScreen";
-import Detail from "../src/Screens/Detail";
-import Home from "../src/Screens/Home/Index";
-import Signin from "../src/Screens/Authentication/SignIn/Signin";
-import PinCodeScreen from "../src/Screens/Authentication/SignIn/PinCodeScreen";
-import StartScreen from "../src/Screens/SplashScreen/SplashScreen";
-import SplashScreen from "../src/Screens/SplashScreen/SplashScreen";
-import SignUp from "../src/Screens/Authentication/SignUp/SignUp";
-import Scan from "../src/Screens/SCAN/Scan";
-import DrawerScreen from "../src/Screens/Drawer/Drawer";
-import AccountSetting from "../src/Screens/Drawer/AccountSetting/AccountSetting";
-import PaidCategory from "../src/Screens/Home/TotalPaid/PaidCategory";
-import HelpFAQ from "../src/Screens/Drawer/HelpFAQ/HelpFaq";
-import SearchCate from "../src/Screens/Search/SearchCate";
-import ForgetPassword from "../src/Screens/Authentication/ForgetPassword/ForgetPassword";
-import ChangePassword from "../src/Screens/Authentication/ChangePassword/ChangePassword";
-import ConfirmPassword from "../src/Screens/Authentication/ChangePassword/ConfirmPassword";
-import Congratulation from "../src/Screens/Authentication/ChangePassword/Congratulations";
-import AboutUs from "../src/Screens/Drawer/HelpFAQ/AboutUs/AboutUs";
-import TermsAndCondition from "../src/Screens/Drawer/HelpFAQ/TermsConditions/TermsConditions";
-import ContactUs from "../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs";
-import Gallery from "../src/Screens/Drawer/HelpFAQ/Gallery/Gallery";
-import FAQ from "../src/Screens/Drawer/HelpFAQ/FAQ/FAQ";
-import EditProfile from "../src/Screens/EditProfile/Index";
-import Testing from "../src/Testing";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
-import Congrats from "../src/Screens/Authentication/ForgetPassword/Congrats";
-import ProductManuals from "../src/Screens/Drawer/HelpFAQ/Gallery/ProductManuals";
-import Videos from "../src/Screens/Drawer/HelpFAQ/Gallery/Videos";
-import Blogs from "../src/Screens/Drawer/HelpFAQ/Gallery/Blogs";
-import Catelogue from "../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue";
-import Policy from "../src/Screens/Drawer/HelpFAQ/Gallery/Policy";
-import ProductFaq from "../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq";
-import Fsm_Policy from "../src/Screens/Drawer/Fsm_Policy";
-import RejectedDetail from "../src/Screens/Home/TotalPaid/RejectedDetail";
-import RefCatalogue from "../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue";
-import WDCatalogue from "../src/Screens/Drawer/HelpFAQ/Gallery/WDCatalogue";
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AppAutoUpdateScreen from '../src/Screens/AppAutoUpdateScreen';
+import Detail from '../src/Screens/Detail';
+import Home from '../src/Screens/Home/Index';
+import Signin from '../src/Screens/Authentication/SignIn/Signin';
+import PinCodeScreen from '../src/Screens/Authentication/SignIn/PinCodeScreen';
+import StartScreen from '../src/Screens/SplashScreen/SplashScreen';
+import SplashScreen from '../src/Screens/SplashScreen/SplashScreen';
+import SignUp from '../src/Screens/Authentication/SignUp/SignUp';
+import Scan from '../src/Screens/SCAN/Scan';
+import DrawerScreen from '../src/Screens/Drawer/Drawer';
+import AccountSetting from '../src/Screens/Drawer/AccountSetting/AccountSetting';
+import PaidCategory from '../src/Screens/Home/TotalPaid/PaidCategory';
+import HelpFAQ from '../src/Screens/Drawer/HelpFAQ/HelpFaq';
+import SearchCate from '../src/Screens/Search/SearchCate';
+import ForgetPassword from '../src/Screens/Authentication/ForgetPassword/ForgetPassword';
+import ChangePassword from '../src/Screens/Authentication/ChangePassword/ChangePassword';
+import ConfirmPassword from '../src/Screens/Authentication/ChangePassword/ConfirmPassword';
+import Congratulation from '../src/Screens/Authentication/ChangePassword/Congratulations';
+import AboutUs from '../src/Screens/Drawer/HelpFAQ/AboutUs/AboutUs';
+import TermsAndCondition from '../src/Screens/Drawer/HelpFAQ/TermsConditions/TermsConditions';
+import ContactUs from '../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs';
+import Gallery from '../src/Screens/Drawer/HelpFAQ/Gallery/Gallery';
+import FAQ from '../src/Screens/Drawer/HelpFAQ/FAQ/FAQ';
+import EditProfile from '../src/Screens/EditProfile/index';
+import Testing from '../src/Testing';
+import { Alert } from 'react-native';
+import Congrats from '../src/Screens/Authentication/ForgetPassword/Congrats';
+import ProductManuals from '../src/Screens/Drawer/HelpFAQ/Gallery/ProductManuals';
+import Videos from '../src/Screens/Drawer/HelpFAQ/Gallery/Videos';
+import Blogs from '../src/Screens/Drawer/HelpFAQ/Gallery/Blogs';
+import Catelogue from '../src/Screens/Drawer/HelpFAQ/Gallery/Catelogue';
+import Policy from '../src/Screens/Drawer/HelpFAQ/Gallery/Policy';
+import ProductFaq from '../src/Screens/Drawer/HelpFAQ/FAQ/ProductFaq';
+import Fsm_Policy from '../src/Screens/Drawer/Fsm_Policy';
+import RejectedDetail from '../src/Screens/Home/TotalPaid/RejectedDetail';
+import RefCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue';
+import WDCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/WDCatalogue';
 
 
 const Stack = createNativeStackNavigator();
@@ -60,7 +59,6 @@ const RootNavigator = ({ navigation }) => {
         options={{
           headerShown: false,
         }}
-
       />
       <Stack.Screen
         name="Scan"
@@ -295,7 +293,6 @@ const RootNavigator = ({ navigation }) => {
           headerShown: false,
         }}
       />
-
     </Stack.Navigator>
   );
 };

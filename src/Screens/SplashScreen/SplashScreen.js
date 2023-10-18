@@ -8,15 +8,16 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const user = JSON.parse(await AsyncStorage.getItem("USER"));
-      let initialRoute = "SignIn";
-      if (user?.token) {
-        initialRoute = "Home";
-      }
-      navigation.replace(initialRoute);
-    }, 4600);
-    return () => clearTimeout(timer);
+    navigation.replace("SignIn")
+    // const timer = setTimeout(async () => {
+    //   const user = JSON.parse(await AsyncStorage.getItem("USER"));
+    //   let initialRoute = "SignIn";
+    //   if (user?.token) {
+    //     initialRoute = "Home";
+    //   }
+    //   navigation.replace(initialRoute);
+    // }, 4600);
+    // return () => clearTimeout(timer);
   }, []);
 
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -29,38 +30,31 @@ const SplashScreen = () => {
         duration: 1200,
         useNativeDriver: true,
       }).start();
-
       await new Promise((resolve) => setTimeout(resolve, 1200));
-
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 1200,
         useNativeDriver: true,
       }).start();
     };
-
     animateFade();
   }, [fadeAnim]);
 
   useEffect(() => {
     const animateFade2 = async () => {
       await new Promise((resolve) => setTimeout(resolve, 2400));
-
       Animated.timing(fadeAnim2, {
         toValue: 1,
         duration: 1200,
         useNativeDriver: true,
       }).start();
-
       await new Promise((resolve) => setTimeout(resolve, 1200));
-
       Animated.timing(fadeAnim2, {
         toValue: 0,
         duration: 1200,
         useNativeDriver: true,
       }).start();
     };
-
     animateFade2();
   }, [fadeAnim2]);
 

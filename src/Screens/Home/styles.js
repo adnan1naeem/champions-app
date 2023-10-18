@@ -83,7 +83,9 @@ export const styles = StyleSheet.create({
     color: Colors.text_Color,
     paddingVertical: 3,
     fontSize: 13,
+
   },
+
   dropdownItem: {
     flexDirection: 'row',
   },
@@ -94,6 +96,21 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     alignSelf: 'center',
     borderRadius: 15,
+  },
+  catmodalContainer: {
+    position: 'absolute',
+    start: 15,
+    top: 110,
+    backgroundColor: '#3a85d6',
+    borderRadius: 8,
+    width: 170,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  modalContent: {
+    alignSelf: 'center',
+    paddingVertical: 10,
+    alignItems: 'center',
   },
   updateMessage: {
     color: Colors.text_Color,
@@ -107,6 +124,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.text_Color,
     paddingVertical: 10,
-    fontSize: 20
+    fontSize: 20,
   },
 });

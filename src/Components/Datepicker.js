@@ -165,12 +165,13 @@ const Datepicker = ({ onDateSelect, refreshState }) => {
             style={{
               backgroundColor: '#3a85d6',
               paddingVertical: 15,
+              paddingHorizontal: 20,
               alignSelf: 'center',
               borderRadius: 10,
               position: 'absolute',
               top: 100,
               right: 28,
-              paddingHorizontal: 20,
+
             }}>
             <FlatList
               data={options}
