@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
+import messaging from '@react-native-firebase/messaging';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -52,6 +53,7 @@ const Home = () => {
   const [category, setCategory] = useState();
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = React.useState(false);
+
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -250,6 +252,37 @@ const Home = () => {
     </TouchableOpacity>
   );
 
+  const [backgroundToken, setbackgroundToken] = useState()
+  const [forgroundToken, setforgroundToken] = useState()
+
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+  useEffect(() => {
+    (async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+      const Token = await messaging().getToken();
+      console.log("Token:: ", Token);
+      setbackgroundToken(Token)
+
+    })();
+  }, [])
+
+
+
+
   return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
@@ -294,7 +327,6 @@ const Home = () => {
                 </TouchableOpacity>
               )}
             </View>
-
             <View>
               <Datepicker
                 refreshState={refreshing}
@@ -375,7 +407,6 @@ const Home = () => {
             value={rejected_list?.length}
             onPress={() => handleSubmmit('Rejected Cards', rejected_list)}
           />
-
           <TouchableOpacity
             style={styles.scan_button}
             onPress={() => {
@@ -389,9 +420,7 @@ const Home = () => {
             />
             <Text style={styles.scan_text}>SCAN</Text>
           </TouchableOpacity>
-
           <Modal visible={isVisible} transparent animationType="slide" >
-
             <View style={styles.modalContainer}>
               <Text style={styles.UpdateHeading}>Champions Update Available</Text>
               <Text style={styles.updateMessage}>Please update your app !</Text>

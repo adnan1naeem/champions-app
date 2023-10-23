@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
@@ -22,6 +23,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Bio_unLock } from '../BiometricLock';
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics'
+
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -113,6 +118,10 @@ const Signin = () => {
     }
   };
 
+  useEffect(() => {
+    Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics")
+  }, []);
+
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
@@ -133,6 +142,28 @@ const Signin = () => {
             resizeMode="contain"
           />
           <View style={styles.Login_view}>
+            <View style={styles.unlock_view}>
+              <TouchableOpacity onPress={() => Bio_unLock(navigation, "FaceID")}>
+                <Image
+                  source={require('../../../Assets/Image/face.png')}
+                  style={{
+                    height: 70,
+                    width: 68,
+                    resizeMode: 'contain',
+                    marginRight: 15,
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Bio_unLock(navigation, "Biometrics")}>
+                <Icon
+                  style={styles.Unlock_Icon}
+                  name="finger-print-outline"
+                  size={70}
+                  color="black"
+                />
+              </TouchableOpacity>
+
+            </View>
             <View style={{ width: '70%', alignSelf: 'center' }}>
               <View style={styles.container}>
                 <Ionicons
@@ -168,6 +199,7 @@ const Signin = () => {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={isPasswordSecure}
+                  onSubmitEditing={() => handleSignIn()}
                 />
                 <MaterialIcons
                   onPress={() => setIsPasswordSecure(!isPasswordSecure)}
@@ -270,3 +302,5 @@ const Signin = () => {
 };
 
 export default Signin;
+
+
