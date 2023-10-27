@@ -5,14 +5,12 @@ import {
   ScrollView,
   FlatList,
   ImageBackground,
-  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { styles } from './styles';
 import Header from '../../../Components/Header/Header';
 import LinearGradient from 'react-native-linear-gradient';
 import BackButton from '../../../Components/BackButton';
-import { Colors } from '../../../Utils/Colors';
 
 const PaidCategory = ({ route, navigation }) => {
   const [title, setTitle] = useState(route?.params?.status);

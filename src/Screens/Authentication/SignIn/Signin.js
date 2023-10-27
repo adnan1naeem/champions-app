@@ -25,7 +25,10 @@ import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Bio_unLock } from '../BiometricLock';
-import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics'
+import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
+import messaging from '@react-native-firebase/messaging';
+import { request, PERMISSIONS, RESULTS } from '@react-native-permissions/permissions';
+
 
 
 const Signin = () => {
@@ -35,6 +38,9 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();
+  const [deviceToken, setDeviceToken] = useState()
+  const [forgroundToken, setforgroundToken] = useState()
+
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -48,12 +54,22 @@ const Signin = () => {
     unsubscribe();
   }, [Internet]);
 
-  const formatMobileNumber = number => {
-    if (number?.startsWith('0')) {
-      return '92' + number.slice(1);
-    }
-    return number;
-  };
+
+  useEffect(() => {
+    (async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+      const Token = await messaging().getToken();
+      console.log("Token12:: ", Token);
+      setDeviceToken(Token)
+    })();
+  }, [])
 
   const handleSignIn = async () => {
     let errorMessage = null;
@@ -68,14 +84,12 @@ const Signin = () => {
       Alert.alert('Field Required', errorMessage);
       return;
     }
-
     setLoading(true);
-    const formattedMobile = formatMobileNumber(mobile);
-
     try {
       const data = {
-        mobile: formattedMobile,
+        mobile: mobile.replace(/ /g, ''),
         password: password,
+        deviceToken: deviceToken
       };
 
       const config = {
@@ -85,6 +99,7 @@ const Signin = () => {
         },
         body: JSON.stringify(data),
       };
+      console.log("data: ", data);
 
       const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
@@ -118,14 +133,16 @@ const Signin = () => {
     }
   };
 
-  useEffect(() => {
-    Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics")
-  }, []);
+  // useEffect(() => {
+  //   Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
+
+  // }, []);
+
 
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
-      style={{ flex: 1, backgroundColor: Colors.blueBackground, paddingTop: 10 }}>
+      style={{ flex: 1, backgroundColor: Colors.backgroundColor, paddingTop: 10 }}>
       <KeyboardAwareScrollView
         extraHeight={Platform.OS === 'ios' ? 90 : 130}
         extraScrollHeight={Platform.OS === 'ios' ? 90 : 130}
@@ -177,7 +194,7 @@ const Signin = () => {
                   placeholderTextColor={Colors.text_Color}
                   placeholder="Mobile No."
                   marginLeft={20}
-                  value={mobile}
+                  value={formatMobileNumber(mobile)}
                   onChangeText={setMobile}
                   keyboardType={'phone-pad'}
                 />

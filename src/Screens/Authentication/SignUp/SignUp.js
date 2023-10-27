@@ -21,8 +21,10 @@ import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { API_BASE_URL } from '../../../../Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
+import messaging from '@react-native-firebase/messaging';
 
 
 const SignUp = () => {
@@ -34,7 +36,9 @@ const SignUp = () => {
   const [dealerCode, setDealerCode] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [Internet, setInternet] = useState()
+  const [Internet, setInternet] = useState();
+  const [deviceToken, setDeviceToken] = useState()
+
 
   const navigation = useNavigation();
 
@@ -50,6 +54,7 @@ const SignUp = () => {
     }
     return formattedCnic;
   };
+
   const handleInputChange = (field, value) => {
     if (field === 'name') {
       const alphabeticRegex = /^[a-zA-Z\s]*$/;
@@ -65,41 +70,53 @@ const SignUp = () => {
     } else if (field === 'mobileNo') {
       const numericRegex = /^[0-9]*$/;
       if (numericRegex.test(value)) {
-        setmobile(value);
+        const formattedNumber = formatMobileNumber(value);
+        setmobile(formattedNumber);
         setmobileNo(false);
       } else {
+        setmobile(value);
         setmobileNo(true);
       }
     } else if (field === 'password') {
       setPassword(value);
     }
   };
+  console.log("signup: ", deviceToken);
+
+
+
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
-  const formatMobileNumber = number => {
-    if (number?.startsWith('0')) {
-      return '92' + number?.slice(1);
-    }
-    return number;
-  };
+
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      setInternet(state.isConnected)
-
+      setInternet(state.isConnected);
     });
-    const unsubscribe = NetInfo.addEventListener(state => {
-    });
-    unsubscribe()
+    const unsubscribe = NetInfo.addEventListener(state => { });
+    unsubscribe();
+  }, []);
+  useEffect(() => {
+    (async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+      const Token = await messaging().getToken();
+      console.log("Token12:: ", Token);
+      setDeviceToken(Token)
+    })();
   }, [])
 
   const handleSignUp = () => {
     if (!Internet) {
       Alert.alert('Please Check Your Internet Connection!.');
-      return
-    }
-    else if (!Name) {
+      return;
+    } else if (!Name) {
       Alert.alert('Please enter name.');
       return;
     } else if (!cnic) {
@@ -114,22 +131,21 @@ const SignUp = () => {
     } else if (mobile?.length < 11) {
       Alert.alert('Please enter valid mobile number.');
       return;
-    } else if (!dealerCode) {
+    }
+    else if (!mobile.startsWith('92 3') && !mobile.startsWith('03')) {
+      Alert.alert("Please enter valid mobile number.")
+      return
+    }
+    else if (!dealerCode) {
       Alert.alert('Please enter dealerCode.');
       return;
-    }
-    // else if (isChecked === false) {
-    //   Alert.alert('Agree the terms and condition.');
-    //   return;
-    // } 
-    else if (!password) {
+    } else if (!password) {
       Alert.alert('Please enter password.');
       return;
     } else if (dealerCode.length !== 7) {
       Alert.alert('Please enter a 7-digit dealer code.');
       return;
-    }
-    else if (!value) {
+    } else if (!value) {
       Alert.alert('Please select a company.');
       return;
     }
@@ -140,7 +156,6 @@ const SignUp = () => {
 
   const postUserData = async () => {
     const formattedMobile = formatMobileNumber(mobile);
-
     try {
       const config = {
         method: 'POST',
@@ -150,11 +165,11 @@ const SignUp = () => {
         body: JSON.stringify({
           name: Name,
           cnic: cnic,
-          mobile: formattedMobile,
+          mobile: mobile.replace(/ /g, ''),
           dealerCode: dealerCode,
           password: password,
           companyCode: value,
-          // status: isChecked,
+          deviceToken: deviceToken
         }),
       };
 
@@ -186,24 +201,16 @@ const SignUp = () => {
       }
     } catch (error) {
       if (error.message === 'Network request failed') {
-        Alert.alert("Please Check Your Internet Connection")
-        setLoading(false)
-      }
-      else {
+        Alert.alert('Please Check Your Internet Connection');
+        setLoading(false);
+      } else {
         console.log('Error posting data: ', error);
         Alert.alert(
           'Error',
           'An error occurred while processing your request. Please try again.',
         );
-        setLoading(false)
+        setLoading(false);
       }
-      // setLoading(false);
-      // Alert.alert(
-      //   'Error',
-      //   'An error occurred while processing your request. Please try again.',
-      // );
-      // console.error('Error posting data: ', error?.message);
-      // throw error;
     }
   };
 
@@ -211,9 +218,6 @@ const SignUp = () => {
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: 'Orient Electronics Pvt. Ltd', value: '1000' },
-    // { label: 'Orient Material Pvt.Ltd', value: '2020' },
-    // { label: 'Adnan Corporation', value: '3000' },
-    // { label: 'Orient Apparel', value: '8080' },
   ]);
 
   return (
@@ -226,13 +230,10 @@ const SignUp = () => {
         enableOnAndroid={true}
         enableAutomaticScroll={true}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-
-      >
+        contentContainerStyle={{ flexGrow: 1 }}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps={'always'}
-        >
+          keyboardShouldPersistTaps={'always'}>
           <Image
             style={styles.logo}
             source={require('../../../Assets/Image/login_image.png')}
@@ -279,7 +280,7 @@ const SignUp = () => {
                   value={mobile}
                   onChangeText={text => handleInputChange('mobileNo', text)}
                   keyboardType="numeric"
-                  maxLength={12}
+                // maxLength={12}
                 />
               </View>
               <View style={styles.container}>
@@ -326,7 +327,6 @@ const SignUp = () => {
                     backgroundColor: '#1A4578',
                     borderColor: 'transparent',
                     paddingVertical: 5,
-
                   }}
                   TickIconComponent={() => (
                     <FontAwesome6 name="check" color={Colors.text_Color} />
@@ -367,7 +367,9 @@ const SignUp = () => {
                     />
                   )}
                 </View>
-                <Text style={styles.label}>I Agree the Terms and Conditions</Text>
+                <Text style={styles.label}>
+                  I Agree the Terms and Conditions
+                </Text>
               </TouchableOpacity>
             </View>
             <CustomButton
@@ -385,7 +387,13 @@ const SignUp = () => {
                 fontSize: 16,
                 fontFamily: '200',
               }}
-              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Proceed'}
+              title={
+                loading ? (
+                  <ActivityIndicator color={Colors.text_Color} />
+                ) : (
+                  'Proceed'
+                )
+              }
               disabled={loading}
             />
             <TouchableOpacity

@@ -1,4 +1,4 @@
-import { Image, Text, View, ImageBackground, ScrollView, ActivityIndicator } from 'react-native';
+import { Image, Text, View, ImageBackground, ScrollView, ActivityIndicator, BackHandler } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { styles } from '../Drawer/HelpFAQ/AboutUs/style';
 import { useNavigation } from '@react-navigation/native';
@@ -7,33 +7,51 @@ import BackButton from '../../Components/BackButton';
 import { Colors } from '../../Utils/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API_BASE_URL } from '../../../Constants';
+import CustomButton from '../../Components/CustomButton';
+import * as OpenAnything from 'react-native-openanything'
+
 const Fsm_Policy = ({ route }) => {
     const navigation = useNavigation();
     const privacy = route?.params;
     const [loading, setLoading] = useState(false);
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState('');
+
     useEffect(() => {
-        const fetchData = async () => {
-
-            try {
-                setLoading(true);
-                const response = await fetch(`${API_BASE_URL}/getPrivacyImage`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                const imageUrlWithoutSpaces = data?.data[0]?.image?.replace(/\s/g, '');
-                console.log(imageUrlWithoutSpaces);
-                setImage(imageUrlWithoutSpaces);
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-                console.error('Fetch error:', error);
-            }
-        };
-
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            // setLoading(true);
+            const response = await fetch(`${API_BASE_URL}/getPrivacyImage`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            const imageUrlWithoutSpaces = data?.data[0]?.image?.replace(/\s/g, '');
+            console.log(imageUrlWithoutSpaces);
+            setImage(imageUrlWithoutSpaces);
+            setLoading(false);
+        } catch (error) {
+            // setLoading(false);
+            console.error('Fetch error:', error);
+        }
+    };
+
+
+    const openPDF = (params) => {
+        try {
+            setLoading(true)
+            if (image) {
+                console.log("params: ", params);
+                OpenAnything.Open(params)
+            }
+        } catch (e) {
+            console.log(e);
+            // setLoading(false)
+        }
+
+    }
 
     return (
         <ImageBackground
@@ -66,17 +84,7 @@ const Fsm_Policy = ({ route }) => {
                     <View
                         style={{ width: '85%', alignSelf: 'center', paddingVertical: 20 }}>
                         {privacy ? (
-                            !loading ?
-                                <Image
-                                    resizeMode="stretch"
-                                    source={{ uri: image }}
-                                    style={{
-                                        height: 120,
-                                        width: '100%',
-                                        alignSelf: 'center',
-                                    }}
-                                /> : <ActivityIndicator />
-
+                            <CustomButton textStyle={{}} title=" https://docs.google.com" onPress={() => openPDF(image)} />
                         ) : (
                             <View>
                                 <Text style={styles.about_text}>
