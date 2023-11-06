@@ -1,6 +1,5 @@
-
-
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../Utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -23,15 +22,15 @@ export const styles = StyleSheet.create({
   main_logo: {
     width: 235,
     height: 50,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   modalContainer: {
     paddingVertical: 35,
-    position: "absolute",
-    end: "2%",
+    position: 'absolute',
+    end: '2%',
     top: '3%',
     backgroundColor: '#1B4679',
-    width: "33%",
+    width: '33%',
     borderRadius: 8,
   },
   modalContent: {
@@ -39,7 +38,13 @@ export const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
   },
-
+  NotificationsContainer: {
+    backgroundColor: Colors.backgroundColor,
+    position: 'absolute',
+    right: 20,
+    top: 90,
+    paddingHorizontal: 17,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
 });
-
-

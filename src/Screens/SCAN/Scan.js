@@ -30,40 +30,57 @@ const Scan = ({ navigation }) => {
   const [barCode, setbarCode] = useState('');
   const [cnic, setCnic] = useState();
 
+
+
   useEffect(() => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
       setCnic(user?.cnic);
     })();
-  }, [cnic,]);
+  }, [cnic]);
 
-  useEffect(() => {
-    // const getBarCodeScannerPermissions = async () => {
-    //   const { status } = await QRCodeScanner.requestCameraPermission();
-    //   setHasPermission(status === 'granted');
-    // };
-    // getBarCodeScannerPermissions();
-  }, []);
 
-  const onSuccess = e => {
-    console.log('sucess scan:: ', e?.data);
-    setbarCode(e?.data);
-    setScanned(true);
-    handleSubmitForScan(e?.data);
-    setScanning(false);
+  const onSuccess = (e) => {
+    if (Platform.OS === 'android') {
+      if (e?.data) {
+        Alert.alert(
+          'Batch Code Found',
+          'Do you want to continue?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => setScanning(false),
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => Permission_Batch_Submit(e) },
+          ],
+          { cancelable: true }
+        );
+      }
+    } else {
+      Permission_Batch_Submit(e)
+    }
 
   };
 
+
+  const Permission_Batch_Submit = (e) => {
+    setbarCode(e?.data);
+
+    handleSubmitForScan(e?.data);
+    setScanning(false);
+    setScanned(false);
+  }
+
   useEffect(() => {
-    // if (barCode?.length >= 10) {
-    //   handleSubmit();
-    //   setScanning(false);
-    // }
   }, [barCode]);
 
   const handleScanButtonPress = () => {
     setScanning(true);
+
+
   };
+
 
   const handleCloseButtonPress = () => {
     setScanning(false);
@@ -112,7 +129,37 @@ const Scan = ({ navigation }) => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = (e) => {
+    if (Platform.OS === 'android') {
+      if (barCode?.length > 0) {
+        Alert.alert(
+          'Batch Code Found',
+          'Do you want to continue?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => setScanning(false),
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => Manul_Batch(e) },
+          ],
+          { cancelable: true }
+        );
+      }
+      else {
+        Alert.alert("Please Enter Batch Code")
+      }
+    } else {
+      Manul_Batch(e)
+    }
+
+
+  };
+
+
+
+
+  const Manul_Batch = async () => {
     if (!barCode) {
       Alert.alert('Please Enter BatchCode!')
       return
@@ -136,6 +183,7 @@ const Scan = ({ navigation }) => {
       if (response.status === 201) {
         navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
       } else if (response.status !== 201) {
+        console.log("Error:: ", data);
         if (data?.error === 'Server Timeout') {
           Alert.alert("SAP Server Timeout");
         } else {
@@ -198,6 +246,7 @@ const Scan = ({ navigation }) => {
               textStyle={styles.submitButton}
               title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Submit'}
               onPress={() => handleSubmit()}
+              // onPress={() => Manul_Batch(e)}
               disabled={loading}
             />
 
@@ -227,7 +276,7 @@ const Scan = ({ navigation }) => {
                 justifyContent: 'center',
               }}>
               <CustomButton
-                disabled={loading || barCode.length > 0}
+                disabled={loading || barCode?.length > 0}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
@@ -235,7 +284,7 @@ const Scan = ({ navigation }) => {
 
               />
               <CustomButton
-                disabled={loading || barCode.length > 0}
+                disabled={loading || barCode?.length > 0}
                 onPress={() => handleScanButtonPress(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
@@ -269,19 +318,18 @@ const Scan = ({ navigation }) => {
                 style={{ color: Colors.text_Color, fontSize: 30 }}
               />
             </TouchableOpacity>
+
             {Platform.OS === 'ios' ?
               <RNCamera
-                ref={ref => {
-                  // Ref callback logic here if needed
-                }}
+                ref={ref => { }}
                 onBarCodeRead={onSuccess}
                 onGoogleVisionBarcodesDetected={barcodeRecognized}
                 style={{
                   width: "100%",
                   height: 400
                 }}
-              >
-              </RNCamera> : <QRCodeScanner onRead={onSuccess} />}
+              />
+              : <QRCodeScanner onRead={onSuccess} />}
           </View>
         )}
       </ImageBackground>

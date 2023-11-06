@@ -1,39 +1,55 @@
-import React, { useState } from 'react';
-import {
-    View,
-    Image,
-    TouchableOpacity,
-    StyleSheet,
-    ImageBackground,
-    Text,
-    Switch,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image, ImageBackground, Text, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import { color } from 'react-native-elements/dist/helpers';
 import { styles } from './Style';
-import { Colors } from '../../../Utils/Colors';
 import Header from '../../../Components/Header/Header';
 import BackButton from '../../../Components/BackButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Colors } from '../../../Utils/Colors';
+
+
 const AccountSetting = () => {
     const navigation = useNavigation();
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const [FingerToggle, setFingerToggle] = useState(false);
-    const AuthenticationToggle = () =>
-        setFingerToggle(previousState => !previousState);
-    const handleBackPress = () => {
-        // Handle back button press
-        navigation.goBack();
+    const [profile_pic, setProfile_pic] = useState(true);
+    const [FingerToggle, setFingerToggle] = useState(true);
+    const [notifications, setNotifications] = useState(true);
+
+    useEffect(() => {
+        async function retrieveData() {
+            try {
+                const bioData = await AsyncStorage.getItem('BIOMETRIC');
+                const profileData = await AsyncStorage.getItem('PROFILEPICTURE');
+
+                if (bioData !== null) {
+                    setFingerToggle(JSON.parse(bioData));
+                }
+
+                if (profileData !== null) {
+                    setProfile_pic(JSON.parse(profileData));
+                }
+            } catch (error) {
+                console.error('Error reading data: ' + error);
+            }
+        }
+
+        retrieveData();
+    }, []);
+
+    const handleBioToggle = async (value) => {
+        setFingerToggle(value);
+        await AsyncStorage.setItem('BIOMETRIC', JSON.stringify(value));
     };
-    const SignOut = () => {
-        // navigation.navigate('SignIn');
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'SignIn' }],
-        });
+
+    const handleProfileToggle = async (value) => {
+        setProfile_pic(value);
+        await AsyncStorage.setItem('PROFILEPICTURE', JSON.stringify(value));
     };
+
+
+    const handleNotification = async (value) => {
+        setNotifications(value)
+    }
 
     return (
         <ImageBackground
@@ -82,16 +98,15 @@ const AccountSetting = () => {
                     <LinearGradient
                         colors={['rgb(62, 97, 173)', 'rgb(16,169,228)']}
                         style={styles.toggle}
-                        start={{ x: 0, y: 0 }} // Start from the left side
-                        end={{ x: 0, y: 1 }} // End at the right side
-                    >
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0, y: 1 }}>
                         <Switch
-                            trackColor={{ false: 'transparent', true: 'transparent' }}
-                            thumbColor={isEnabled ? 'blue' : '#fff'}
+                            trackColor={{ false: 'transparent', true: Colors.blue }}
+                            thumbColor={notifications ? Colors.blueBar : Colors.text_Color}
                             ios_backgroundColor="#3e3e3e"
                             size={30}
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
+                            onValueChange={() => handleNotification(!notifications)}
+                            value={notifications}
                         />
                     </LinearGradient>
                 </View>
@@ -100,16 +115,32 @@ const AccountSetting = () => {
                     <LinearGradient
                         colors={['rgb(62, 97, 173)', 'rgb(16,169,228)']}
                         style={styles.toggle}
-                        start={{ x: 0, y: 0 }} // Start from the left side
-                        end={{ x: 0, y: 1 }} // End at the right side
-                    >
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0, y: 1 }}>
                         <Switch
-                            trackColor={{ false: 'transparent', true: 'transparent' }}
-                            thumbColor={FingerToggle ? 'blue' : '#fff'}
+                            trackColor={{ false: 'transparent', true: Colors.blue }}
+                            thumbColor={FingerToggle ? Colors.blueBar : Colors.text_Color}
                             ios_backgroundColor="#3e3e3e"
                             size={30}
-                            onValueChange={AuthenticationToggle}
+                            onValueChange={() => handleBioToggle(!FingerToggle)}
                             value={FingerToggle}
+                        />
+                    </LinearGradient>
+                </View>
+                <View style={styles.toggle_container}>
+                    <Text style={styles.Text_detail}>Picture</Text>
+                    <LinearGradient
+                        colors={['rgb(62, 97, 173)', 'rgb(16,169,228)']}
+                        style={styles.toggle}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0, y: 1 }}>
+                        <Switch
+                            trackColor={{ false: 'transparent', true: Colors.blue }}
+                            thumbColor={profile_pic ? Colors.blueBar : Colors.text_Color}
+                            ios_backgroundColor="#3e3e3e"
+                            size={30}
+                            onValueChange={() => handleProfileToggle(!profile_pic)}
+                            value={profile_pic}
                         />
                     </LinearGradient>
                 </View>

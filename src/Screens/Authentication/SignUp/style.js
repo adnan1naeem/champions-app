@@ -20,11 +20,11 @@ export const styles = StyleSheet.create({
         fontWeight: '300',
     },
     logo: {
-        height: 150,
+        // height: 90,
         width: "85%",
-        marginTop: Platform.OS === 'ios' ? 45 : 15,
+        marginTop: Platform.OS === 'ios' ? 45 : 1,
         alignSelf: 'center',
-        marginBottom: 10,
+        // marginBottom: 10,
         // marginVertical: 10
     },
     Login_view: {
@@ -155,6 +155,10 @@ export const styles = StyleSheet.create({
         borderRadius: 5,
         height: 24,
         width: 24,
+    },
+    backIcon_style: {
+        width: 30,
+        borderRadius: 20
     },
 
 

@@ -37,7 +37,9 @@ const Index = ({ route, navigation }) => {
         onPress: () => openGallery(false),
         style: 'cancel',
       },
-    ]);
+    ],
+      { cancelable: true }
+    );
   };
 
   const openCamera = async () => {
@@ -70,7 +72,6 @@ const Index = ({ route, navigation }) => {
           const responseData = await response?.json();
           setProfile_image(responseData?.image);
           profile_Get()
-          // setIsLoading(false);
 
         } else {
           Alert.alert('Image upload failed');
@@ -122,7 +123,6 @@ const Index = ({ route, navigation }) => {
           const responseData = await response?.json();
           setProfile_image(responseData?.image);
           profile_Get();
-          // setIsLoading(false);
         } else {
           console.log('Image upload failed - HTTP Status:', response.status);
           Alert.alert('Image upload failed');
@@ -141,9 +141,6 @@ const Index = ({ route, navigation }) => {
       setIsLoading(false);
     }
   }
-
-
-
 
   const profile_Get = async () => {
     try {
@@ -170,13 +167,16 @@ const Index = ({ route, navigation }) => {
   useEffect(() => {
     (async () => {
       const user = JSON.parse(await AsyncStorage.getItem('USER'));
+      const Profile = await AsyncStorage.getItem("PROFILEPICTURE");
       if (user) {
         let matches = user?.name?.match(/\b(\w)/g);
         let acronym = matches?.join('');
         setAvatarName(acronym, 'jkdsjdshjj');
       }
+      if (Profile == 'true' || Profile == null) {
+        profile_Get()
+      }
     })();
-    profile_Get();
   }, []);
 
   return (

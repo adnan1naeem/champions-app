@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Image,
@@ -16,10 +16,11 @@ import { Colors } from '../../Utils/Colors';
 import Header from '../../Components/Header/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather';
 import { API_BASE_URL } from '../../../Constants';
+import { formatMobileNumber } from '../../Components/MobileNumberFormat';
 
 const DrawerScreen = () => {
   const navigation = useNavigation();
@@ -28,7 +29,6 @@ const DrawerScreen = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [profile_image, setProfile_image] = useState(null);
-
 
   const [items, setItems] = useState([
     { label: 'FSM Policy', value: 'FsmPolicy' },
@@ -51,14 +51,12 @@ const DrawerScreen = () => {
     })();
   }, []);
 
-
-  const formatMobileNumber = number => {
-    if (number?.startsWith('92')) {
-      return '0' + number.slice(2);
-    }
-    return number;
-  };
-
+  // const formatMobileNumber = number => {
+  //   if (number?.startsWith('92')) {
+  //     return '0' + number.slice(2);
+  //   }
+  //   return number;
+  // };
 
   const SignOut = async () => {
     try {
@@ -73,17 +71,18 @@ const DrawerScreen = () => {
   };
 
   const handleDeleteUser = () => {
-    axios.delete(`${API_BASE_URL}/deleteUser/${user_Info?.cnic}`)
-      .then((response) => {
+    axios
+      .delete(`${API_BASE_URL}/deleteUser/${user_Info?.cnic}`)
+      .then(response => {
         console.log(response?.data);
-        SignOut()
-        navigation.navigate('SignIn')
-
+        SignOut();
+        navigation.navigate('SignIn');
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.alert(error);
       });
   };
+
   const profile_Get = async () => {
     try {
       const response = await fetch(
@@ -99,23 +98,32 @@ const DrawerScreen = () => {
       console.error('Error:', error);
     }
   };
-  useFocusEffect(() => {
-    profile_Get();
-  });
+
+  useFocusEffect(
+    useCallback(async () => {
+      try {
+        const Profile = await AsyncStorage.getItem('PROFILEPICTURE');
+        if (Profile == 'true' || Profile == null) {
+          profile_Get();
+        } else {
+          setProfile_image(null);
+        }
+      } catch (error) {
+        console.error('Error reading data: ' + error);
+      }
+    }, [profile_image]),
+  );
 
   const Delete = () => {
-    Alert.alert(
-      'Warning..!',
-      'Are you sure you want to continue?',
-      [
-        { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
-        { text: 'OK', onPress: () => handleDeleteUser() },
-      ],
-    )
-  }
+    Alert.alert('Warning..!', 'Are you sure you want to continue?', [
+      { text: 'Cancel', onPress: () => console.log('Cancel Pressed!') },
+      { text: 'OK', onPress: () => handleDeleteUser() },
+    ]);
+  };
+
   const HandlePolicy = text => {
     if (text?.value === 'FsmPolicy') {
-      navigation.navigate('Fsm_Policy', { privacy: true, });
+      navigation.navigate('Fsm_Policy', { privacy: true });
       return;
     }
     navigation.navigate('Fsm_Policy');
@@ -135,12 +143,7 @@ const DrawerScreen = () => {
         }}>
         <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
           <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
-            ]}
+            colors={Colors.gradient_color_Pair}
             style={styles.backIcon_style}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}>
@@ -152,8 +155,7 @@ const DrawerScreen = () => {
           style={{ paddingHorizontal: 20 }}
           onPress={() => {
             navigation.navigate('EditProfile', { userInfo: user_Info });
-          }}
-        >
+          }}>
           <FontAwesome5
             name="user-edit"
             color={Colors.text_Color}
@@ -188,8 +190,6 @@ const DrawerScreen = () => {
                 {avatarName}
               </Text>
             )}
-
-
           </View>
           <View style={{ marginLeft: 15, justifyContent: 'center' }}>
             <Text style={styles.user_detail}>{user_Info?.name}</Text>
@@ -220,12 +220,7 @@ const DrawerScreen = () => {
             <Text style={styles.user_detail_cate}>Account Settings</Text>
           </View>
           <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
-            ]}
+            colors={Colors.gradient_color_Pair}
             style={styles.forward_arrow}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}>
@@ -253,12 +248,7 @@ const DrawerScreen = () => {
           </View>
 
           <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
-            ]}
+            colors={Colors.gradient_color_Pair}
             style={styles.forward_arrow}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}>
@@ -270,7 +260,13 @@ const DrawerScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', zIndex: 1, marginEnd: 2 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            zIndex: 1,
+            marginEnd: 2,
+          }}>
           <Image
             source={require('../../Assets/Image/Policy.png')}
             style={[
@@ -291,7 +287,7 @@ const DrawerScreen = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            onSelectItem={(text) => HandlePolicy(text)}
+            onSelectItem={text => HandlePolicy(text)}
             placeholder="Policies"
             autoScroll={true}
             textStyle={[styles.user_detail_cate, { paddingLeft: 0 }]}
@@ -308,20 +304,11 @@ const DrawerScreen = () => {
             }}
             ArrowDownIconComponent={({ style }) => (
               <LinearGradient
-                colors={[
-                  'rgb(39, 174, 229)',
-                  'rgb(41,128,201)',
-                  'rgb(50,107,194)',
-                  'rgb(59,90,183)',
-                ]}
+                colors={Colors.gradient_color_Pair}
                 style={styles.forward_arrow}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}>
-                <Ionicons
-                  name="chevron-forward"
-                  size={20}
-                  color={'#9297b0'}
-                />
+                <Ionicons name="chevron-forward" size={20} color={'#9297b0'} />
               </LinearGradient>
             )}
             TickIconComponent={() => (
@@ -339,21 +326,12 @@ const DrawerScreen = () => {
           }}
           onPress={() => Delete()}>
           <View style={{ flexDirection: 'row' }}>
-            <Feather
-              name='delete'
-              size={15}
-              color={'#9297b0'}
-            />
+            <Feather name="delete" size={15} color={'#9297b0'} />
 
             <Text style={styles.user_detail_cate}>Delete Account</Text>
           </View>
           <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
-            ]}
+            colors={Colors.gradient_color_Pair}
             style={styles.forward_arrow}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}>
@@ -372,7 +350,7 @@ const DrawerScreen = () => {
             alignItems: 'center',
             marginEnd: 2,
             justifyContent: 'space-between',
-            marginVertical: 10
+            marginVertical: 10,
           }}>
           <View
             style={{
@@ -387,12 +365,7 @@ const DrawerScreen = () => {
             <Text style={styles.user_detail_cate}>Sign Out</Text>
           </View>
           <LinearGradient
-            colors={[
-              'rgb(39, 174, 229)',
-              'rgb(41,128,201)',
-              'rgb(50,107,194)',
-              'rgb(59,90,183)',
-            ]}
+            colors={Colors.gradient_color_Pair}
             style={styles.forward_arrow}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}>

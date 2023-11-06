@@ -25,6 +25,7 @@ import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 import messaging from '@react-native-firebase/messaging';
+import BackButton from '../../../Components/BackButton';
 
 
 const SignUp = () => {
@@ -201,7 +202,7 @@ const SignUp = () => {
       }
     } catch (error) {
       if (error.message === 'Network request failed') {
-        Alert.alert('Please Check Your Internet Connection');
+        Alert.alert('Network request failed');
         setLoading(false);
       } else {
         console.log('Error posting data: ', error);
@@ -232,13 +233,16 @@ const SignUp = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps={'always'}>
           <Image
             style={styles.logo}
             source={require('../../../Assets/Image/login_image.png')}
             resizeMode="contain"
           />
+          <View style={{ paddingHorizontal: 10, paddingBottom: 5 }}>
+            <BackButton marginTop={3} marginBottom={15} navigation={navigation} />
+          </View>
+
           <View style={styles.Login_view}>
             <View style={{ width: '70%', alignSelf: 'center' }}>
               <View style={{ alignItems: 'center' }}>
@@ -343,12 +347,7 @@ const SignUp = () => {
                 <View style={styles.checkbox}>
                   {isChecked ? (
                     <LinearGradient
-                      colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(41,128,201)',
-                        'rgb(50,107,194)',
-                        'rgb(59,90,183)',
-                      ]}
+                      colors={Colors.gradient_color_Pair}
                       style={styles.checkboxGradient}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}>

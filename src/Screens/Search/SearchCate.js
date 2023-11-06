@@ -54,11 +54,11 @@ const SearchCate = () => {
   }, []);
 
 
-  useEffect(()=>{
-    if(title === ''){
+  useEffect(() => {
+    if (title === '') {
       setActive(false);
     }
-  },[title])
+  }, [title])
 
   const handleSearch = () => {
     if (!title) {
@@ -80,12 +80,7 @@ const SearchCate = () => {
     <View style={{ alignItems: 'center' }}>
       {console.log('item??? ', item)}
       <LinearGradient
-        colors={[
-          'rgb(39, 174, 229)',
-          'rgb(41,128,201)',
-          'rgb(50,107,194)',
-          'rgb(59,90,183)',
-        ]}
+        colors={Colors.gradient_color_Pair}
         style={[styles.gradient_container, styles.flatList_container]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}>
@@ -93,12 +88,7 @@ const SearchCate = () => {
         <Text style={styles.flatList_text_detail}>{item?.batchCode}</Text>
       </LinearGradient>
       <LinearGradient
-        colors={[
-          'rgb(39, 174, 229)',
-          'rgb(41,128,201)',
-          'rgb(50,107,194)',
-          'rgb(59,90,183)',
-        ]}
+        colors={Colors.gradient_color_Pair}
         style={[styles.gradient_container, styles.flatList_container]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}>
@@ -106,12 +96,7 @@ const SearchCate = () => {
         <Text style={styles.flatList_text_detail}>{item?.name}</Text>
       </LinearGradient>
       <LinearGradient
-        colors={[
-          'rgb(39, 174, 229)',
-          'rgb(41,128,201)',
-          'rgb(50,107,194)',
-          'rgb(59,90,183)',
-        ]}
+        colors={Colors.gradient_color_Pair}
         style={[styles.gradient_container, styles.flatList_container]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}>
@@ -123,12 +108,7 @@ const SearchCate = () => {
         </View>
       </LinearGradient>
       <LinearGradient
-        colors={[
-          'rgb(39, 174, 229)',
-          'rgb(41,128,201)',
-          'rgb(50,107,194)',
-          'rgb(59,90,183)',
-        ]}
+        colors={Colors.gradient_color_Pair}
         style={[styles.gradient_container, styles.flatList_container]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}>
@@ -193,12 +173,7 @@ const SearchCate = () => {
           {!searchBatchlisting && Active ? (
             <View style={{ alignSelf: 'center' }}>
               <LinearGradient
-                colors={[
-                  'rgb(39, 174, 229)',
-                  'rgb(41,128,201)',
-                  'rgb(50,107,194)',
-                  'rgb(59,90,183)',
-                ]}
+                colors={Colors.gradient_color_Pair}
                 style={[
                   {
                     borderRadius: 20,

@@ -28,6 +28,7 @@ import { Bio_unLock } from '../BiometricLock';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 import messaging from '@react-native-firebase/messaging';
 import { request, PERMISSIONS, RESULTS } from '@react-native-permissions/permissions';
+import { tokens } from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
 
 
 
@@ -39,7 +40,7 @@ const Signin = () => {
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();
   const [deviceToken, setDeviceToken] = useState()
-  const [forgroundToken, setforgroundToken] = useState()
+  const [inApp_Bio_Active, setinApp_Bio_Active] = useState(true)
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -61,13 +62,12 @@ const Signin = () => {
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
       if (enabled) {
-        console.log('Authorization status:', authStatus);
+        console.log(authStatus);
       }
       const Token = await messaging().getToken();
-      console.log("Token12:: ", Token);
       setDeviceToken(Token)
+      console.log(Token);
     })();
   }, [])
 
@@ -99,8 +99,6 @@ const Signin = () => {
         },
         body: JSON.stringify(data),
       };
-      console.log("data: ", data);
-
       const response = await fetch(`${API_BASE_URL}/login`, config);
       if (!response.ok) {
         setLoading(false);
@@ -121,7 +119,7 @@ const Signin = () => {
       }
     } catch (error) {
       if (error.message === 'Network request failed') {
-        errorMessage = 'An error occurred while connecting to the server.';
+        errorMessage = 'Network request failed';
       } else {
         console.log('Error posting data: ', error);
         errorMessage = 'An error occurred while connecting to the server.';
@@ -133,10 +131,16 @@ const Signin = () => {
     }
   };
 
-  // useEffect(() => {
-  //   Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
-
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const status_Bio = await AsyncStorage.getItem("BIOMETRIC");
+      console.log("active:: ", status_Bio);
+      if (status_Bio == 'true' || status_Bio == null) {
+        setinApp_Bio_Active(false);
+        Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
+      }
+    })();
+  }, []);
 
 
   return (
@@ -160,7 +164,7 @@ const Signin = () => {
           />
           <View style={styles.Login_view}>
             <View style={styles.unlock_view}>
-              <TouchableOpacity onPress={() => Bio_unLock(navigation, "FaceID")}>
+              <TouchableOpacity disabled={inApp_Bio_Active} onPress={() => Bio_unLock(navigation, "FaceID")}>
                 <Image
                   source={require('../../../Assets/Image/face.png')}
                   style={{
@@ -171,7 +175,7 @@ const Signin = () => {
                   }}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Bio_unLock(navigation, "Biometrics")}>
+              <TouchableOpacity disabled={inApp_Bio_Active} onPress={() => Bio_unLock(navigation, "Biometrics")}>
                 <Icon
                   style={styles.Unlock_Icon}
                   name="finger-print-outline"
@@ -235,12 +239,7 @@ const Signin = () => {
                 <View style={styles.checkbox}>
                   {isChecked ? (
                     <LinearGradient
-                      colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(41,128,201)',
-                        'rgb(50,107,194)',
-                        'rgb(59,90,183)',
-                      ]}
+                      colors={Colors.gradient_color_Pair}
                       style={styles.checkboxGradient}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}>

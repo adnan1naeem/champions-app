@@ -13,12 +13,12 @@ import {
   Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
 import Header from '../../Components/Header/Header';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Datepicker from '../../Components/Datepicker';
 import CardsButton from '../../Components/CardsButton';
 import { Colors } from '../../Utils/Colors';
@@ -34,6 +34,7 @@ import NetInfo from '@react-native-community/netinfo';
 import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
+
 
 const Home = () => {
   const navigation = useNavigation();
@@ -52,7 +53,14 @@ const Home = () => {
   const [rejected_list, setRejected_list] = useState([]);
   const [category, setCategory] = useState();
   const scrollViewRef = useRef(null);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+
+  useEffect(() => {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Received a background message:', remoteMessage);
+    });
+  }, []);
 
 
   useEffect(() => {
@@ -79,15 +87,15 @@ const Home = () => {
         iosStoreURL: Ios_Link,
         androidStoreURL: Android_Link,
       });
-      console.log("Build status: ", check?.result);
       if (check?.result === 'new') {
-        handle_Update_Modal(true)
+        handle_Update_Modal(true);
       }
     } catch (e) {
       console.log(e.message);
     }
   };
-  const handle_Update_Modal = (status) => {
+
+  const handle_Update_Modal = status => {
     setisVisible(status);
   };
 
@@ -101,8 +109,6 @@ const Home = () => {
       setendDate('');
     }, 1000);
   }, []);
-
-
 
   const handleSubmmit = (status, list) => {
     navigation.navigate('PaidCategory', {
@@ -122,8 +128,7 @@ const Home = () => {
 
   useEffect(() => {
     getBatchListing();
-  }, [])
-
+  }, []);
 
   const getBatchListing = async () => {
     const user = JSON.parse(await AsyncStorage.getItem('USER'));
@@ -181,7 +186,8 @@ const Home = () => {
       //   (sum, batch) => sum + batch?.incentiveAmount,
       //   0,
       // );
-      const totalOutstanding = total_verifiedIncentiveAmount + total_approvedIncentiveAmount
+      const totalOutstanding =
+        total_verifiedIncentiveAmount + total_approvedIncentiveAmount;
       setPending_list([...pendingBatches.reverse()]);
       setRejected_list([...rejectedBatches.reverse()]);
       setVerified_list([...verifiedBatches.reverse()]);
@@ -252,33 +258,7 @@ const Home = () => {
     </TouchableOpacity>
   );
 
-  const [backgroundToken, setbackgroundToken] = useState()
-  const [forgroundToken, setforgroundToken] = useState()
 
-
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage.notification.body));
-    });
-
-    return unsubscribe;
-  }, []);
-  useEffect(() => {
-    (async () => {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-      }
-      const Token = await messaging().getToken();
-      console.log("Token:: ", Token);
-      setbackgroundToken(Token)
-
-    })();
-  }, [])
 
 
   return (
@@ -418,20 +398,26 @@ const Home = () => {
             />
             <Text style={styles.scan_text}>SCAN</Text>
           </TouchableOpacity>
-          <Modal visible={isVisible} transparent animationType="slide" >
+          <Modal visible={isVisible} transparent animationType="slide">
             <View style={styles.modalContainer}>
-              <Text style={styles.UpdateHeading}>Champions Update Available</Text>
+              <Text style={styles.UpdateHeading}>
+                Champions Update Available
+              </Text>
               <Text style={styles.updateMessage}>Please update your app !</Text>
-              <CustomButton onPress={() => {
-                BackHandler.exitApp();
-                Linking.openURL(Platform.OS === 'ios' ? Ios_Link : Android_Link);
-              }} title="Update" />
-
+              <CustomButton
+                onPress={() => {
+                  BackHandler.exitApp();
+                  Linking.openURL(
+                    Platform.OS === 'ios' ? Ios_Link : Android_Link,
+                  );
+                }}
+                title="Update"
+              />
             </View>
           </Modal>
         </ScrollView>
       </View>
-    </ImageBackground >
+    </ImageBackground>
   );
 };
 

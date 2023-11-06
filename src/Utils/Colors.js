@@ -11,5 +11,11 @@ export const Colors = {
   flatlist_color: "#D0D3E2",
   button_color: '#63A8D3',
   blueBar: '#0c63c2',
-  border: ['#27AEFF', '#2980C9', '#326BC2', '#3B5AB7']
+  border: ['#27AEFF', '#2980C9', '#326BC2', '#3B5AB7'],
+  gradient_color_Pair: [
+    'rgb(39, 174, 229)',
+    'rgb(41,128,201)',
+    'rgb(50,107,194)',
+    'rgb(59,90,183)',
+  ]
 };

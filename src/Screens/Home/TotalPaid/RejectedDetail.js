@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { ImageBackground } from 'react-native';
 import Header from '../../../Components/Header/Header';
@@ -11,8 +11,6 @@ import { Colors } from '../../../Utils/Colors';
 
 const RejectedDetail = ({ route, navigation }) => {
     let batchlisting = route?.params?.item;
-    console.log("batchlisting: ", batchlisting);
-
 
     const formatDate = date => {
         return moment(date).format('MM-D-YYYY h:mm A');
@@ -22,12 +20,7 @@ const RejectedDetail = ({ route, navigation }) => {
         <View style={{ alignItems: 'center' }}>
             <TouchableOpacity style={styles.flatList_container} disabled={true}>
                 <LinearGradient
-                    colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(29,138,210)',
-                        'rgb(47,111,194)',
-                        'rgb(64,94,171)',
-                    ]}
+                    colors={Colors.gradient_color_Pair}
                     style={styles.gradient_container}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
@@ -49,12 +42,7 @@ const RejectedDetail = ({ route, navigation }) => {
                 </LinearGradient>
 
                 <LinearGradient
-                    colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(29,138,210)',
-                        'rgb(47,111,194)',
-                        'rgb(64,94,171)',
-                    ]}
+                    colors={Colors.gradient_color_Pair}
                     style={[styles.gradient_container, { marginTop: '5%' }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
@@ -77,7 +65,8 @@ const RejectedDetail = ({ route, navigation }) => {
                                     padding: 5,
                                     borderRadius: 5,
                                     paddingHorizontal: 15,
-                                    fontSize: 15
+                                    fontSize: 15,
+                                    overflow: 'hidden'
                                 },
                             ]}>
                             {item?.batchPostStatus}
@@ -86,12 +75,7 @@ const RejectedDetail = ({ route, navigation }) => {
                 </LinearGradient>
 
                 <LinearGradient
-                    colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(29,138,210)',
-                        'rgb(47,111,194)',
-                        'rgb(64,94,171)',
-                    ]}
+                    colors={Colors.gradient_color_Pair}
                     style={[styles.gradient_container, { marginTop: '5%' }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
@@ -125,12 +109,7 @@ const RejectedDetail = ({ route, navigation }) => {
                     REJECTED REASON
                 </Text>
                 <LinearGradient
-                    colors={[
-                        'rgb(39, 174, 229)',
-                        'rgb(29,138,210)',
-                        'rgb(47,111,194)',
-                        'rgb(64,94,171)',
-                    ]}
+                    colors={Colors.gradient_color_Pair}
                     style={[styles.gradient_container, { marginTop: '5%' }]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
@@ -160,9 +139,10 @@ const RejectedDetail = ({ route, navigation }) => {
             <ScrollView
                 contentContainerStyle={{
                     flexGrow: 1,
+
                 }}>
                 <View style={{ paddingHorizontal: 10 }}>
-                    {/* <Header value={true} /> */}
+                    <Header value={true} />
                     <BackButton navigation={navigation} />
                 </View>
 

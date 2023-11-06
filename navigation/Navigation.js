@@ -6,7 +6,7 @@ import Detail from '../src/Screens/Detail';
 import Home from '../src/Screens/Home/Index';
 import Signin from '../src/Screens/Authentication/SignIn/Signin';
 import PinCodeScreen from '../src/Screens/Authentication/SignIn/PinCodeScreen';
-import StartScreen from '../src/Screens/SplashScreen/SplashScreen';
+import Notifications from '../src/Screens/Notifications/Index';
 import SplashScreen from '../src/Screens/SplashScreen/SplashScreen';
 import SignUp from '../src/Screens/Authentication/SignUp/SignUp';
 import Scan from '../src/Screens/SCAN/Scan';
@@ -38,6 +38,7 @@ import Fsm_Policy from '../src/Screens/Drawer/Fsm_Policy';
 import RejectedDetail from '../src/Screens/Home/TotalPaid/RejectedDetail';
 import RefCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue';
 import WDCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/WDCatalogue';
+import { Colors } from '../src/Utils/Colors';
 
 
 const Stack = createNativeStackNavigator();
@@ -45,7 +46,16 @@ const Stack = createNativeStackNavigator();
 const RootNavigator = ({ navigation }) => {
 
   return (
-    <Stack.Navigator initialRouteName={"SplashScreen"}>
+    <Stack.Navigator
+
+      initialRouteName={"SplashScreen"}
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: Colors.blueBackground
+        }
+      }}
+    >
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -289,6 +299,13 @@ const RootNavigator = ({ navigation }) => {
       <Stack.Screen
         name="RejectedDetail"
         component={RejectedDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={Notifications}
         options={{
           headerShown: false,
         }}

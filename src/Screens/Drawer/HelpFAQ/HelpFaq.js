@@ -1,14 +1,11 @@
 import React from 'react';
 import {
     View,
-    Image,
     TouchableOpacity,
     ImageBackground,
     Text,
     ScrollView,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Colors } from '../../../Utils/Colors';
