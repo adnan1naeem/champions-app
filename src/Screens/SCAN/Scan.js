@@ -28,45 +28,18 @@ const Scan = ({ navigation }) => {
   const [scanning, setScanning] = useState(false);
   const [loading, setLoading] = useState(false);
   const [barCode, setbarCode] = useState('');
-  const [cnic, setCnic] = useState();
-
-
-
-  useEffect(() => {
-    (async () => {
-      const user = JSON.parse(await AsyncStorage.getItem('USER'));
-      setCnic(user?.cnic);
-    })();
-  }, [cnic]);
 
 
   const onSuccess = (e) => {
-    if (Platform.OS === 'android') {
-      if (e?.data) {
-        Alert.alert(
-          'Batch Code Found',
-          'Do you want to continue?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => setScanning(false),
-              style: 'cancel',
-            },
-            { text: 'OK', onPress: () => Permission_Batch_Submit(e) },
-          ],
-          { cancelable: true }
-        );
-      }
-    } else {
-      Permission_Batch_Submit(e)
-    }
-
+    console.log(e?.data);
+    setScanning(false);
+    setScanned(false);
+    setbarCode(e?.data);
   };
 
 
   const Permission_Batch_Submit = (e) => {
     setbarCode(e?.data);
-
     handleSubmitForScan(e?.data);
     setScanning(false);
     setScanned(false);
@@ -75,16 +48,7 @@ const Scan = ({ navigation }) => {
   useEffect(() => {
   }, [barCode]);
 
-  const handleScanButtonPress = () => {
-    setScanning(true);
 
-
-  };
-
-
-  const handleCloseButtonPress = () => {
-    setScanning(false);
-  };
 
   const handleSubmitForScan = async barCode => {
     const user = JSON.parse(await AsyncStorage.getItem('USER'));
@@ -130,30 +94,24 @@ const Scan = ({ navigation }) => {
   };
 
   const handleSubmit = (e) => {
-    if (Platform.OS === 'android') {
-      if (barCode?.length > 0) {
-        Alert.alert(
-          'Batch Code Found',
-          'Do you want to continue?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => setScanning(false),
-              style: 'cancel',
-            },
-            { text: 'OK', onPress: () => Manul_Batch(e) },
-          ],
-          { cancelable: true }
-        );
-      }
-      else {
-        Alert.alert("Please Enter Batch Code")
-      }
-    } else {
-      Manul_Batch(e)
+    if (barCode?.length > 0) {
+      Alert.alert(
+        'Batch Code Found',
+        'Do you want to continue?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => setScanning(false),
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => Manul_Batch(e) },
+        ],
+        { cancelable: true }
+      );
     }
-
-
+    else {
+      Alert.alert("Please Enter Batch Code")
+    }
   };
 
 
@@ -244,10 +202,10 @@ const Scan = ({ navigation }) => {
             <CustomButton
               ContainerStyle={[styles.proceed_button, { alignSelf: 'center', marginTop: 0, marginBottom: 20 }]}
               textStyle={styles.submitButton}
-              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : 'Submit'}
+              title={loading ? <ActivityIndicator color={Colors.text_Color} /> : barCode?.length <= 0 ? 'Enter Code' : 'Submit'}
               onPress={() => handleSubmit()}
               // onPress={() => Manul_Batch(e)}
-              disabled={loading}
+              disabled={barCode?.length <= 0 || loading}
             />
 
             <View style={styles.scanner_view}>
@@ -277,7 +235,7 @@ const Scan = ({ navigation }) => {
               }}>
               <CustomButton
                 disabled={loading || barCode?.length > 0}
-                onPress={() => handleScanButtonPress(true)}
+                onPress={() => setScanning(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
                 title={loading ? <ActivityIndicator color={Colors.text_Color} /> : "QR CODE"}
@@ -285,7 +243,7 @@ const Scan = ({ navigation }) => {
               />
               <CustomButton
                 disabled={loading || barCode?.length > 0}
-                onPress={() => handleScanButtonPress(true)}
+                onPress={() => setScanning(true)}
                 ContainerStyle={styles.proceed_button}
                 textStyle={styles.text}
                 title={loading ? <ActivityIndicator color={Colors.text_Color} /> : "BARCODE"}
@@ -312,7 +270,7 @@ const Scan = ({ navigation }) => {
                 zIndex: 1,
                 alignSelf: 'flex-end',
               }}
-              onPress={handleCloseButtonPress}>
+              onPress={() => setScanning(false)}>
               <Entypo
                 name="circle-with-cross"
                 style={{ color: Colors.text_Color, fontSize: 30 }}

@@ -90,8 +90,7 @@ export const styles = StyleSheet.create({
   flatList_text: {
     marginLeft: 20,
     color: Colors.flatlist_color,
-    fontSize: 20,
-    // fontWeight: 600,
+    fontSize: 15,
   },
   flatList_text_qty: {
     marginLeft: 20,
@@ -100,10 +99,8 @@ export const styles = StyleSheet.create({
     // fontWeight: 200,
   },
   flatList_text_detail: {
-    marginLeft: 20,
-    // color: Colors.flatlist_color,
-    fontSize: 16,
-    // fontWeight: 400,
+    marginLeft: 10,
+    fontSize: 15,
   },
   scan_button: {
     alignItems: 'center',

@@ -13,6 +13,7 @@ const CustomButton = ({
   Notification,
   textStyle,
   disabled,
+  disabledColor,
   Linear,
 }) => {
 
@@ -35,7 +36,7 @@ const CustomButton = ({
       )}
       {loading ? (
         <LinearGradient
-          colors={backgroundGradientColors}
+          colors={disabled && disabledColor ? disabledColor : backgroundGradientColors}
           style={styles.gradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}>
@@ -43,7 +44,7 @@ const CustomButton = ({
         </LinearGradient>
       ) : (
         <LinearGradient
-          colors={backgroundGradientColors}
+          colors={disabled && disabledColor ? disabledColor : backgroundGradientColors}
           style={styles.gradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}>

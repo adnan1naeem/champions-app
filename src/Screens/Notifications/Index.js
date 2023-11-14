@@ -82,7 +82,6 @@ const Index = ({ route, navigation }) => {
                 },
             })
                 .then(response => {
-                    console.log('Status code:', response.status);
                     if (response.status === 204) {
                         if (item?.data?.batchPostStatus === 'rejected') {
                             navigation.navigate('RejectedDetail', { item: item?.data });
@@ -90,7 +89,6 @@ const Index = ({ route, navigation }) => {
                             navigation.navigate('PaidCategory', {
                                 item: item?.data,
                                 Notifications: item?.data?.batchPostStatus,
-                                // Notifications: 'paid',
                             });
                         }
                     } else if (!response.ok) {
@@ -142,7 +140,6 @@ const Index = ({ route, navigation }) => {
                                     <TouchableOpacity
                                         onPress={() => handleNavigate(item)}
                                         style={styles.flatList_container}>
-                                        {console.log(item?.seen)}
                                         <LinearGradient
                                             colors={
                                                 item?.seen === true
@@ -153,20 +150,25 @@ const Index = ({ route, navigation }) => {
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <View style={{ width: '75%' }}>
+                                                <View style={{}}>
+                                                    {console.log("filteredData: ", item?.data?.batchCode)}
                                                     <Text
                                                         style={[
                                                             styles.flatList_text,
-                                                            { paddingVertical: 5 },
+                                                            { paddingVertical: 20 },
                                                         ]}>
-                                                        {item?.data?.batchCode}
+                                                        Your Batch has been
                                                     </Text>
+
+                                                </View>
+                                                <View>
+
                                                     <Text
                                                         style={[
                                                             styles.flatList_text_detail,
                                                             {
-                                                                paddingVertical: 4,
-                                                                paddingBottom: 7,
+                                                                paddingVertical: 22,
+
                                                                 fontWeight: 'bold',
                                                                 color:
                                                                     item?.data?.batchPostStatus.toLowerCase() === 'rejected'
@@ -178,15 +180,7 @@ const Index = ({ route, navigation }) => {
                                                                                 : Colors.flatlist_color,
                                                             },
                                                         ]}>
-                                                        {item?.data?.batchPostStatus.toUpperCase()}
-                                                    </Text>
-                                                </View>
-                                                <View style={[styles.text_container, { width: '25%' }]}>
-                                                    <Text style={styles.flatList_text_qty}>
-                                                        {item?.data?.incentiveAmount
-                                                            ? item?.data?.incentiveAmount
-                                                            : '0'}
-                                                        Rs
+                                                        {item?.data?.batchPostStatus?.toUpperCase()}
                                                     </Text>
                                                 </View>
                                             </View>
