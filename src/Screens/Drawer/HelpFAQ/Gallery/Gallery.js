@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
@@ -95,9 +96,9 @@ const Gallery = ({ route }) => {
         },
         {
             id: '13',
-            icon: '',
-            text: '',
-            onPress: '',
+            icon: 'tiktok',
+            text: 'tiktok',
+            onPress: 'https://www.tiktok.com/@orient.electronics?_t=8hLamd8mynQ&_r=1',
         },
     ];
 
@@ -134,7 +135,7 @@ const Gallery = ({ route }) => {
                             tintColor: Colors.text_Color,
                         }}
                     />
-                ) : (
+                ) : item.id === '13' ? <MaterialIcons name={item.icon} size={29} color={Colors.text_Color} /> : (
                     <MaterialCommunityIcons
                         name={item.icon}
                         size={29}

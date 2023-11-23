@@ -149,41 +149,35 @@ const Index = ({ route, navigation }) => {
                                             style={styles.gradient_container}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}>
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <View style={{}}>
-                                                    {console.log("filteredData: ", item?.data?.batchCode)}
-                                                    <Text
-                                                        style={[
-                                                            styles.flatList_text,
-                                                            { paddingVertical: 20 },
-                                                        ]}>
-                                                        Your Batch has been
-                                                    </Text>
+                                            <Text
+                                                style={[
+                                                    styles.flatList_text, {
+                                                        flexWrap: 'wrap', paddingHorizontal: 15, paddingVertical: 10
+                                                    }
+                                                ]}>
+                                                {/* {`Your card number ${item?.data?.batchCode} is${' '}`} */}
+                                                Your card number <Text style={{ textDecorationLine: 'underline' }}>{item?.data?.batchCode}</Text>
+                                                {`${' '}is${' '}`}
+                                                <Text
+                                                    style={[
+                                                        styles.flatList_text,
+                                                        {
+                                                            fontWeight: 'bold',
+                                                            color:
+                                                                item?.data?.batchPostStatus.toLowerCase() === 'rejected'
+                                                                    ? 'red'
+                                                                    : item?.data?.batchPostStatus.toLowerCase() === 'pending'
+                                                                        ? '#DEC20B'
+                                                                        : item?.data?.batchPostStatus.toLowerCase() === 'approved'
+                                                                            ? 'green'
+                                                                            : Colors.flatlist_color,
+                                                        },
+                                                    ]}>
 
-                                                </View>
-                                                <View>
+                                                    {item?.data?.batchPostStatus?.toUpperCase()}
+                                                </Text>
+                                            </Text>
 
-                                                    <Text
-                                                        style={[
-                                                            styles.flatList_text_detail,
-                                                            {
-                                                                paddingVertical: 22,
-
-                                                                fontWeight: 'bold',
-                                                                color:
-                                                                    item?.data?.batchPostStatus.toLowerCase() === 'rejected'
-                                                                        ? 'red'
-                                                                        : item?.data?.batchPostStatus.toLowerCase() === 'pending'
-                                                                            ? '#DEC20B'
-                                                                            : item?.data?.batchPostStatus.toLowerCase() === 'approved'
-                                                                                ? 'green'
-                                                                                : Colors.flatlist_color,
-                                                            },
-                                                        ]}>
-                                                        {item?.data?.batchPostStatus?.toUpperCase()}
-                                                    </Text>
-                                                </View>
-                                            </View>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </View>
