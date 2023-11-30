@@ -8,16 +8,16 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // navigation.replace("SignIn")
-    const timer = setTimeout(async () => {
-      const user = JSON.parse(await AsyncStorage.getItem("USER"));
-      let initialRoute = "SignIn";
-      if (user?.token) {
-        initialRoute = "Home";
-      }
-      navigation.replace(initialRoute);
-    }, 4600);
-    return () => clearTimeout(timer);
+    navigation.replace("SignIn")
+    // const timer = setTimeout(async () => {
+    //   const user = JSON.parse(await AsyncStorage.getItem("USER"));
+    //   let initialRoute = "SignIn";
+    //   if (user?.token) {
+    //     initialRoute = "Home";
+    //   }
+    //   navigation.replace(initialRoute);
+    // }, 4600);
+    // return () => clearTimeout(timer);
   }, []);
 
   const [fadeAnim] = useState(new Animated.Value(0));

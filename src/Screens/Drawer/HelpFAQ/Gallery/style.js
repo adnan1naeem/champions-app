@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    input:{
+    input: {
         padding: 2,
         borderWidth: 1.5,
         borderRadius: 10,
@@ -45,6 +45,20 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         paddingBottom: 20,
         marginTop: 35,
+    },
+    catalogueTitleImage: {
+        width: '89%',
+        borderRadius: 15,
+        resizeMode: 'stretch',
+        height: 270,
+        marginVertical: 5,
+        alignSelf: 'center'
+    },
+    Activity_Indicator: {
+        justifyContent: "center",
+        alignItems: 'center',
+        color: Colors.text_Color,
+        marginTop: '20%'
     },
     unlock_view: {
         display: 'flex',

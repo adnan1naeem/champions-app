@@ -6,28 +6,45 @@ import {
     ImageBackground,
     ScrollView,
     FlatList,
+    ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from './style';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
+import { API_BASE_URL } from '../../../../../Constants';
+
 const ProductManuals = () => {
     const navigation = useNavigation();
-    const imageList = [
-        {
-            id: '1',
-            source: require('../../../../Assets/Image/Ref.png'),
-            onpress: 'RefCatalogue',
-        },
-        {
-            id: '2',
-            source: require('../../../../Assets/Image/WD.png'),
-            onpress: 'RefCatalogue',
-        },
-    ];
+    const [catalogue, setCatalogue] = useState()
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        try {
+            const response = await fetch(`${API_BASE_URL}/pdfNames`, requestOptions);
+            if (response.ok) {
+                const result = await response.json();
+                setCatalogue(result);
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <ImageBackground
@@ -48,30 +65,29 @@ const ProductManuals = () => {
                     style={{ textAlign: 'center', fontSize: 18, color: Colors.text_Color }}>
                     Catalogue
                 </Text>
-                <View style={[styles.Login_view, { paddingBottom: 25 }]}>
-                    <FlatList
-                        data={imageList}
-                        keyExtractor={item => item.id}
-                        contentContainerStyle={{ marginHorizontal: 25, paddingTop: 10 }}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate(item?.onpress, { index: item?.id })}>
-                                <Image
-                                    style={{
-                                        width: item?.id === "1" ? '95%' : '95.2%',
-                                        borderRadius: 15,
-                                        resizeMode: 'stretch',
-                                        height: 270,
-                                        marginVertical: 5,
-                                        marginHorizontal: 5,
-                                    }}
-                                    source={item.source}
-                                />
-                            </TouchableOpacity>
-                        )}
-                        numColumns={1}
-                    />
-                </View>
+
+                {loading ? (
+                    <ActivityIndicator size="large" style={styles.Activity_Indicator} />
+                ) : (
+                    catalogue && catalogue.length > 0 && (
+                        <FlatList
+                            data={catalogue}
+                            keyExtractor={item => item.id}
+                            contentContainerStyle={[styles.Login_view, { paddingBottom: 15, paddingTop: 15 }]}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity onPress={() => navigation.navigate('RefCatalogue', { index: item })}>
+                                    <Image
+                                        style={styles.catalogueTitleImage}
+                                        source={{ uri: item?.image }}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                            numColumns={1}
+                        />
+                    )
+                )}
+
+
             </ScrollView>
         </ImageBackground>
     );
