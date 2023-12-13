@@ -75,7 +75,7 @@ const Index = ({ route, navigation }) => {
         const user = JSON.parse(await AsyncStorage.getItem('USER'));
 
         if (user) {
-            fetch(`http://16.24.45.175:5000/changeSeenStatus/${item?._id}`, {
+            fetch(`${API_BASE_URL}/changeSeenStatus/${item?._id}`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${user?.token}`,
