@@ -24,11 +24,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from '@react-native-community/netinfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Bio_unLock } from '../BiometricLock';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 import messaging from '@react-native-firebase/messaging';
 import { request, PERMISSIONS, RESULTS } from '@react-native-permissions/permissions';
-import { tokens } from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
+import ReactNativeBiometrics from 'react-native-biometrics';
 
 
 
@@ -49,11 +48,11 @@ const Signin = () => {
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      setInternet(state.isConnected);
+      setInternet(state?.isConnected);
     });
     const unsubscribe = NetInfo.addEventListener(state => { });
     unsubscribe();
-  }, [Internet]);
+  }, []);
 
 
   useEffect(() => {
@@ -63,35 +62,39 @@ const Signin = () => {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
       if (enabled) {
-        console.log(authStatus);
+        // console.log("authStatus:: ", authStatus);
       }
       const Token = await messaging().getToken();
       setDeviceToken(Token)
-      console.log(Token);
+      // console.log(Token);
     })();
   }, [])
 
   const handleSignIn = async () => {
+    const mobileData = await AsyncStorage.getItem("MOBILE");
+    const passwordData = await AsyncStorage.getItem("PASSWORD");
     let errorMessage = null;
-    if (!Internet) {
-      errorMessage = 'Please Check Your Internet Connection!';
-    } else if (!mobile) {
-      errorMessage = 'Please enter mobile number.';
-    } else if (!password) {
-      errorMessage = 'Please enter password.';
-    }
-    if (errorMessage) {
-      Alert.alert('Field Required', errorMessage);
-      return;
-    }
+
+    // if (!Internet) {
+    //   errorMessage = 'Please Check Your Internet Connection!';
+    // } else if (!mobile || !mobileData) {
+    //   errorMessage = 'Please enter mobile number.';
+    // } else if (!password || !passwordData) {
+    //   errorMessage = 'Please enter password.';
+    // }
+    // if (errorMessage) {
+    //   Alert.alert('Field Required', errorMessage);
+    //   return;
+    // }
+
     setLoading(true);
+
     try {
       const data = {
-        mobile: mobile.replace(/ /g, ''),
-        password: password,
+        mobile: mobile.replace(/ /g, '') || mobileData.replace(/ /g, ''),
+        password: password || passwordData,
         deviceToken: deviceToken
       };
-
       const config = {
         method: 'POST',
         headers: {
@@ -99,7 +102,9 @@ const Signin = () => {
         },
         body: JSON.stringify(data),
       };
+
       const response = await fetch(`${API_BASE_URL}/login`, config);
+
       if (!response.ok) {
         setLoading(false);
         if (response?.status === 401) {
@@ -110,8 +115,10 @@ const Signin = () => {
         const responseData = await response?.json();
         if (responseData) {
           const cnic = responseData?.cnic;
-          console.log(responseData);
+          // console.log(responseData);
           await AsyncStorage.setItem('USER', JSON.stringify(responseData));
+          await AsyncStorage.setItem("MOBILE", mobile);
+          await AsyncStorage.setItem("PASSWORD", password);
           navigation.replace('Home');
         } else {
           errorMessage = 'Invalid Password';
@@ -125,22 +132,75 @@ const Signin = () => {
         errorMessage = 'An error occurred while connecting to the server.';
       }
     }
+
     setLoading(false);
+
     if (errorMessage) {
       Alert.alert('Error', errorMessage);
     }
   };
 
+
   useEffect(() => {
     (async () => {
       const status_Bio = await AsyncStorage.getItem("BIOMETRIC");
-      console.log("active:: ", status_Bio);
+      // console.log("active:: ", status_Bio);
       if (status_Bio == 'true' || status_Bio == null) {
         setinApp_Bio_Active(false);
-        Bio_unLock(navigation, Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
+        Bio_unLock(Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
       }
     })();
   }, []);
+
+
+  const Bio_unLock = async (id, extra) => {
+    try {
+      const user = JSON.parse(await AsyncStorage.getItem("USER"));
+      if (!user || !user.token) {
+        if (extra === "default") {
+          console.log("You need to login first");
+          return;
+        }
+        Alert.alert("You need to login first");
+        return;
+      }
+      const rnBiometrics = new ReactNativeBiometrics();
+      const resultObject = await rnBiometrics.isSensorAvailable();
+      const { available, biometryType } = resultObject;
+
+      if (available && biometryType === id) {
+        try {
+          const biometricResult = await new Promise((resolve, reject) => {
+            rnBiometrics.simplePrompt({ promptMessage: 'Confirm fingerprint' })
+              .then(resolve)
+              .catch(reject);
+          });
+
+          console.log('Biometric result:', biometricResult);
+          const { success } = biometricResult;
+          if (success) {
+            try {
+              handleSignIn();
+            } catch (error) {
+              console.log('Error while Biometric login :', error);
+            }
+          } else {
+            console.log('Biometric authentication failed');
+          }
+        } catch (error) {
+          console.log('Error in biometric authentication:', error);
+        }
+      } else {
+        if (extra === "default") {
+          console.log(`${id} NOT supported`);
+        }
+        Alert.alert(`${id} NOT supported`);
+        return;
+      }
+    } catch (error) {
+      console.log('Error fetching user data:', error);
+    }
+  };
 
 
   return (
