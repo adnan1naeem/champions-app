@@ -13,7 +13,7 @@ import {
   Linking,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from './styles';
@@ -34,6 +34,8 @@ import NetInfo from '@react-native-community/netinfo';
 import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
+import TierFlow from './TierFlow';
+import { Branch, Zone } from './Tier';
 
 
 const Home = () => {
@@ -61,7 +63,6 @@ const Home = () => {
       console.log('Received a background message:', remoteMessage);
     });
   }, []);
-
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -182,10 +183,6 @@ const Home = () => {
         batch => batch?.batchPostStatus?.toLowerCase() === 'pending',
       );
 
-      // const total_pendingIncentiveAmount = pendingBatches?.reduce(
-      //   (sum, batch) => sum + batch?.incentiveAmount,
-      //   0,
-      // );
       const totalOutstanding =
         total_verifiedIncentiveAmount + total_approvedIncentiveAmount;
       setPending_list([...pendingBatches.reverse()]);
@@ -312,6 +309,7 @@ const Home = () => {
               />
             </View>
           </View>
+
           <Modal
             animationType="fade"
             transparent={true}
@@ -329,6 +327,7 @@ const Home = () => {
               </View>
             </View>
           </Modal>
+
           <View style={{ alignItems: 'center', marginVertical: 5 }}>
             <Text style={styles.performance}>RS. {pending_ammount}</Text>
             <Text style={styles.part}>Total Outstanding</Text>
@@ -349,12 +348,17 @@ const Home = () => {
               <Text style={styles.part}>Total Approved</Text>
             </View>
           </View>
-
           <Image
             style={styles.Chamiopm_Logo}
             resizeMode="contain"
             source={require('../../Assets/Image/Orient_icon.png')}
           />
+          <View style={styles.tierContainer}>
+            <TierFlow title={"Zone"} data={Zone} />
+            <TierFlow title={"Branch"} data={Branch} />
+            <TierFlow title={"Dealer"} data={Zone} />
+            <TierFlow title={"FSM"} data={Zone} />
+          </View>
           <CardsButton
             disabled={paid_list?.length <= 0}
             status={'Paid Cards'}

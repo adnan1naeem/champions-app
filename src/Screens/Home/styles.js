@@ -126,4 +126,60 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 20,
   },
+  modalContainer1: {
+    backgroundColor: '#3a85d6',
+    paddingHorizontal: 15,
+    width: '98%',
+    paddingVertical: 15,
+    borderRadius: 15,
+    height: 300
+
+  },
+  UpdateHeading1: {
+    fontWeight: 'bold',
+    color: Colors.text_Color,
+    fontSize: 20,
+    paddingVertical: 3
+  },
+  dropdownItem1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  input: {
+    backgroundColor: Colors.White,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    width: '100%',
+    paddingVertical: 10
+  },
+  container1: {
+    borderWidth: 1,
+    marginVertical: 5,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderColor: Colors.White,
+    marginHorizontal: 20,
+
+  },
+  crossIcon: {
+    color: Colors.text_Color,
+    fontSize: 25,
+  },
+  selectedValue: {
+    paddingHorizontal: 10,
+    color: Colors.text_Color
+  },
+  dropIcon: {
+    color: Colors.text_Color,
+    fontSize: 13,
+  },
+  checkIcon: {
+    color: Colors.text_Color,
+    fontSize: 16,
+    marginLeft: 10
+  },
+  tierContainer: {
+    marginTop: 15
+  }
 });

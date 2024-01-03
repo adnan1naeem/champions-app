@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://16.24.45.175:8000';
+export const API_BASE_URL = 'http://16.24.45.175:5000';
 
 export const iosVersion = '2.1.6';
 export const androidVersion = '1.1.1';
