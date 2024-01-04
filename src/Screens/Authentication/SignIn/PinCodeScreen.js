@@ -20,14 +20,11 @@ import OtpInput from '../OTP/OTP';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
 const PinCodeScreen = ({ route }) => {
   const navigation = useNavigation();
   const [varificationCode, setVarificationCode] = useState('');
   const [timer, setTimer] = useState(60);
   const [isTimerRunning, setIsTimerRunning] = useState(true);
-
   useEffect(() => {
     if (isTimerRunning) {
       if (timer > 0) {
@@ -40,17 +37,13 @@ const PinCodeScreen = ({ route }) => {
       }
     }
   }, [isTimerRunning, timer]);
-
-
-
   const handleForgot = async () => {
     setIsTimerRunning(true);
     setTimer(60);
     try {
       const data = {
-        cnic: route?.params?.cnic,
+        PinCodeScreen: route?.params?.mobile,
       };
-
       const config = {
         method: 'POST',
         headers: {
@@ -58,7 +51,6 @@ const PinCodeScreen = ({ route }) => {
         },
         body: JSON.stringify(data),
       };
-
       const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
       if (!response?.ok) {
         if (response?.status === 404) {
@@ -83,7 +75,6 @@ const PinCodeScreen = ({ route }) => {
       console.log('Error posting data:', error?.message);
     }
   };
-
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
@@ -95,13 +86,11 @@ const PinCodeScreen = ({ route }) => {
         enableAutomaticScroll={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
-
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps={'always'}
         >
-
           <Image style={{
             height: 100,
             width: '80%',
@@ -120,7 +109,7 @@ const PinCodeScreen = ({ route }) => {
                   fontSize: 20,
                   fontWeight: '300',
                 }}>
-                {route?.params?.cnic}
+                {route?.params?.mobile}
               </Text>
             </View>
             <View style={{ width: '78%', alignSelf: 'center', marginVertical: 50 }}>
@@ -138,8 +127,6 @@ const PinCodeScreen = ({ route }) => {
                 <OtpInput onPress={text => setVarificationCode(text)} />
               </View>
             </View>
-
-
             <View style={styles.otp_not_received}>
               {isTimerRunning && timer > 0 ? (
                 <Text style={styles.otp}>
@@ -159,11 +146,10 @@ const PinCodeScreen = ({ route }) => {
                 </TouchableOpacity>
               )}
             </View>
-
             <CustomButton
               onPress={() =>
                 navigation.navigate('ChangePassword', {
-                  cnic: route?.params?.cnic,
+                  mobile: route?.params?.mobile,
                   varificationCode: varificationCode,
                 })
               }
@@ -177,5 +163,4 @@ const PinCodeScreen = ({ route }) => {
     </ImageBackground>
   );
 };
-
 export default PinCodeScreen;

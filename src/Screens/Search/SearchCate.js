@@ -15,8 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../../Utils/Colors';
 import { API_BASE_URL } from '../../../Constants';
 import BackButton from '../../Components/BackButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import axios from './../../Utils/axiosConfig';
 const SearchCate = () => {
   const navigation = useNavigation();
   const [batchlisting, setbatchlisting] = useState([]);
@@ -26,27 +25,25 @@ const SearchCate = () => {
 
   useEffect(() => {
     (async () => {
-      const user = JSON.parse(await AsyncStorage.getItem('USER'));
       try {
         const config = {
           method: 'POST',
+          url: `${API_BASE_URL}/BatchListing`,
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
+          data: JSON.stringify({
             start_date: '',
             end_date: '',
             divCode: '',
-            cnic: user?.cnic,
           }),
         };
-        const response = await fetch(`${API_BASE_URL}/BatchListing`, config);
-        if (response) {
-          const data = await response.json();
-          setbatchlisting(data?.batchList);
-        } else {
-          console.log('Failed to fetch data:', response.statusText);
-        }
+        await axios.request(config)
+        .then(async (response) => {
+          if(response?.data){
+            setbatchlisting(response?.data?.batchList);
+          }
+        });
       } catch (error) {
         console.log('An error occurred:', error);
       }

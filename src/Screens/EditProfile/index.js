@@ -19,6 +19,7 @@ import { styles } from './style';
 import { TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native';
 import CustomButton from '../../Components/CustomButton';
+import axios from './../../Utils/axiosConfig';
 
 const Index = ({ route, navigation }) => {
   const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
@@ -30,11 +31,11 @@ const Index = ({ route, navigation }) => {
     Alert.alert('Profile Picture', 'From where you want to upload', [
       {
         text: 'Camera',
-        onPress: () => openCamera(),
+        onPress: () => uploadImage(true),
       },
       {
         text: 'Gallery',
-        onPress: () => openGallery(false),
+        onPress: () => uploadImage(false),
         style: 'cancel',
       },
     ],
@@ -42,54 +43,63 @@ const Index = ({ route, navigation }) => {
     );
   };
 
-  const openCamera = async () => {
+  const uploadImage = async (camera) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const image = await ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: false,
-      });
+      let image;
+      if(camera){
+        image = await ImagePicker.openCamera({
+          width: 300,
+          height: 400,
+          cropping: false,
+        });
+      }else{
+        image = await ImagePicker.openPicker({
+          width: 300,
+          height: 300,
+          cropping: false,
+        });
+      }
 
-      const fileName = image.path.substring(image.path.lastIndexOf('/') + 1);
-      const formdata = new FormData();
-      formdata.append('image', {
-        uri: image.path,
+      const fileName = image?.path.substring(image.path.lastIndexOf('/') + 1);
+      const data = new FormData();
+      data.append('image', {
+        uri: image.path || image.sourceURL,
         type: image.mime,
         name: fileName,
       });
-      formdata.append('cnic', User_Info?.cnic);
-      try {
-        const response = await fetch(`${API_BASE_URL}/updateProfile`, {
-          method: 'POST',
-          body: formdata,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/updateProfile`,
+        headers: {
+          'Content-Type': 'multipart/form-data;',
+        },
+        data: data
+      };
+
+      axios.request(config)
+        .then((response) => {
+          if (response?.data) {
+            setProfile_image(response?.data?.image);
+          } else {
+            Alert.alert('Image upload failed');
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(JSON.stringify(error, null, 2));
         });
 
-        if (response.ok) {
-          const responseData = await response?.json();
-          setProfile_image(responseData?.image);
-          profile_Get()
-
-        } else {
-          Alert.alert('Image upload failed');
-          setIsLoading(false);
-
-        }
-      } catch (error) {
-        if (error.message === 'Network request failed') {
-          Alert.alert('Please try again later');
-          setIsLoading(false);
-
-        }
-        console.log('error', error.message);
-      } finally {
-        setIsLoading(false);
-      }
     } catch (error) {
-      console.error('Error selecting image from camera:', error);
+      if (error.message === 'Network request failed') {
+        Alert.alert('Please try again later');
+        setIsLoading(false);
+
+      }
+      console.log('error', error.message);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -145,18 +155,25 @@ const Index = ({ route, navigation }) => {
   const profile_Get = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `${API_BASE_URL}/getProfile/${User_Info?.cnic}`,
-      );
-      if (response?.ok) {
-        const data = await response.json();
-        setProfile_image(data?.data[0]?.image);
-      } else {
-        console.log('Error: Unable to fetch data');
-      }
-      setIsLoading(false);
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/getProfile`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
 
-
+      axios.request(config)
+        .then((response) => {
+          if (response?.data) {
+            setProfile_image(response?.data?.data?.image);
+          }
+          setIsLoading(false);
+        })
+        .catch(() =>
+          setIsLoading(false)
+        );
     } catch (error) {
       console.error('Error:', error);
     } finally {

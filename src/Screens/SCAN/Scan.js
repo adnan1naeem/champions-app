@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  Text,
   Button,
   View,
   ScrollView,
@@ -14,7 +13,6 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Header from '../../Components/Header/Header';
 import CustomButton from '../../Components/CustomButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 import { Colors } from '../../Utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -22,6 +20,7 @@ import BackButton from '../../Components/BackButton';
 import { API_BASE_URL } from '../../../Constants';
 import { ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import axios from './../../Utils/axiosConfig'
 
 const Scan = ({ navigation }) => {
   const [scanned, setScanned] = useState(false);
@@ -31,56 +30,49 @@ const Scan = ({ navigation }) => {
 
 
   const onSuccess = (e) => {
-    console.log(e?.data);
     setScanning(false);
     setScanned(false);
     setbarCode(e?.data);
   };
 
+  const handleSubmitForScan = async () => {
+    if (!barCode) {
+      Alert.alert('Please Enter BatchCode!')
+      return
+    }
 
-  const Permission_Batch_Submit = (e) => {
-    setbarCode(e?.data);
-    handleSubmitForScan(e?.data);
-    setScanning(false);
-    setScanned(false);
-  }
+    setLoading(true);
+    let config = {
+      method: 'post',
+      url: `${API_BASE_URL}/batchScan`,
+      headers: { 
+        'Content-Type': 'application/json', 
+      },
+      data: JSON.stringify({
+        code: barCode,
+      }),
+    };
 
-  useEffect(() => {
-  }, [barCode]);
-
-
-
-  const handleSubmitForScan = async barCode => {
-    const user = JSON.parse(await AsyncStorage.getItem('USER'));
     try {
-      setLoading(true);
-      console.log(barCode);
-      const config = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: barCode,
-          cnic: user?.cnic,
-        }),
-      };
-      const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      const data = await response.json();
-      if (response.status === 201) {
-        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
-        setLoading(false);
-      } else if (response.status !== 201) {
-        if (data?.error === 'Server Timeout') {
-          Alert.alert("SAP Server Timeout");
+      axios.request(config)
+      .then((response) => {
+        if (response.status === 201) {
+          navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
           setLoading(false);
-        } else {
-          Alert.alert(JSON.stringify(data?.message));
-          setLoading(false);
+        } else if (response.status !== 201) {
+          if (data?.error === 'Server Timeout') {
+            Alert.alert("SAP Server Timeout");
+            setLoading(false);
+          } else {
+            Alert.alert(JSON.stringify(data?.message));
+            setLoading(false);
+          }
         }
-      }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     } catch (error) {
-      console.log('Error posting data:', error);
       if (error.message === 'Network request failed') {
         Alert.alert("Please Try again later")
         setLoading(false);
@@ -96,15 +88,15 @@ const Scan = ({ navigation }) => {
   const handleSubmit = (e) => {
     if (barCode?.length > 0) {
       Alert.alert(
-        'Batch Code Found',
-        'Do you want to continue?',
+        'Batch code alert!',
+        `Do you want to continue with ${barCode} ?`,
         [
           {
             text: 'Cancel',
             onPress: () => setScanning(false),
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => Manul_Batch(e) },
+          { text: 'OK', onPress: () => handleSubmitForScan() },
         ],
         { cancelable: true }
       );
@@ -114,55 +106,7 @@ const Scan = ({ navigation }) => {
     }
   };
 
-
-
-
-  const Manul_Batch = async () => {
-    if (!barCode) {
-      Alert.alert('Please Enter BatchCode!')
-      return
-    }
-    const user = JSON.parse(await AsyncStorage.getItem('USER'));
-
-    try {
-      setLoading(true);
-      const config = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: barCode,
-          cnic: user?.cnic,
-        }),
-      };
-      const response = await fetch(`${API_BASE_URL}/batchScan`, config);
-      const data = await response.json();
-      if (response.status === 201) {
-        navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
-      } else if (response.status !== 201) {
-        console.log("Error:: ", data);
-        if (data?.error === 'Server Timeout') {
-          Alert.alert("SAP Server Timeout");
-        } else {
-          console.log('data:: ', data?.message);
-          Alert.alert(JSON.stringify(data?.message));
-        }
-      }
-      setLoading(false);
-    } catch (error) {
-      if (error.message === 'Network request failed') {
-        Alert.alert("Please Try again later")
-      }
-      else {
-        console.log('Error posting data: ', error);
-        Alert.alert('An error occurred while connecting to the server.');
-      }
-      setLoading(false);
-    }
-  };
   barcodeRecognized = ({ barcodes }) => {
-    console.log("Bar: ", barcodes);
     barcodes.forEach(barcode => console.log(barcode.data))
   };
 

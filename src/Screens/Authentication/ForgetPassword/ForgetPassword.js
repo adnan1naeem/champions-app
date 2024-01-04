@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from '../../../../Constants';
 import BackButton from '../../../Components/BackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 
 const ForgetPassword = () => {
   // const [ref, setRef] = useState();
@@ -25,19 +26,20 @@ const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const CnicInput = text => {
-    const Id_Card_Number = text.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '');
+
     setMobile(Id_Card_Number);
   };
 
   const handleForgot = async () => {
-    if (mobile?.length !== 13) {
-      alert('Please enter valid cnic code');
-      return;
-    }
+    // if (mobile?.length !== 13) {
+    //   Alert.alert('Please enter valid cnic code');
+    //   return;
+    // }
     setLoading(true);
     try {
+      console.log("mobile:: ", mobile);
       const data = {
-        cnic: mobile,
+        mobile: mobile,
       };
 
       const config = {
@@ -52,10 +54,10 @@ const ForgetPassword = () => {
       if (!response?.ok) {
         setLoading(false);
         if (response?.status === 404) {
-          alert('User not Exist\nPlease check your CNIC and try again.');
+          Alert.alert('User not Exist\nPlease check your Mobile Number and try again.');
           return;
         }
-        alert('User not Exist\nPlease check your CNIC and try again.');
+        Alert.alert('User not Exist\nPlease check your Mobile Number and try again.');
         return;
       }
       const responseData = await response.json();
@@ -63,7 +65,7 @@ const ForgetPassword = () => {
       if (responseData) {
         setLoading(false);
 
-        navigation.replace('PinCodeScreen', { cnic: mobile });
+        navigation.replace('PinCodeScreen', { mobile: mobile });
       } else {
         setLoading(false);
         Alert.alert(
@@ -119,7 +121,7 @@ const ForgetPassword = () => {
                   fontSize: 20,
                   fontWeight: 200,
                 }}>
-                Enter CNIC
+                Enter Phone Number
               </Text>
             </View>
             <View style={{ width: '70%', alignSelf: 'center' }}>
@@ -133,9 +135,9 @@ const ForgetPassword = () => {
                   placeholder=""
                   marginLeft={20}
                   value={mobile}
-                  onChangeText={text => CnicInput(text)}
-                  keyboardType={'numeric'}
-                  maxLength={13}
+                  onChangeText={(text) => setMobile(text)}
+                // keyboardType={'numeric'}
+                // maxLength={13}
                 />
               </View>
             </View>

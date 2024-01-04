@@ -5,8 +5,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar, LogBox, } from 'react-native';
 import { Colors } from './src/Utils/Colors';
 import messaging from '@react-native-firebase/messaging';
+import RNScreenshotPrevent from 'react-native-screenshot-prevent';
 
 const App = () => {
+  RNScreenshotPrevent.enableSecureView();
+  RNScreenshotPrevent.enabled(true);
 
   useEffect(() => {
     LogBox.ignoreAllLogs();

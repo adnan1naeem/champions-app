@@ -16,10 +16,11 @@ import { useNavigation } from '@react-navigation/native';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 
 
 const ChangePassword = ({ route }) => {
-  const [cnic, setCnic] = useState(route?.params?.cnic);
+  const [mobile, setMobile] = useState(route?.params?.mobile);
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [isConfirmPasswordSecure, setIsConfirmPasswordSecure] = useState(true);
@@ -29,6 +30,7 @@ const ChangePassword = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  console.log("route?.params?.mobile:: ", route?.params?.mobile);
   const handleSignUp = async () => {
     setLoading(true);
     setEmptyField(false);
@@ -44,7 +46,7 @@ const ChangePassword = ({ route }) => {
         setIncorrectPassword(false);
         try {
           let data = JSON.stringify({
-            cnic: cnic,
+            mobile: mobile,
             newPassword: password,
             reEnterPassword: confirmPassword,
             verificationCode: route?.params?.varificationCode?.toString(),
@@ -61,6 +63,7 @@ const ChangePassword = ({ route }) => {
             `${API_BASE_URL}/resetPassword`,
             config,
           );
+          console.log("response change Password:: ", response);
           if (!response.ok) {
             setLoading(false);
             if (response?.status === 401) {
@@ -154,8 +157,8 @@ const ChangePassword = ({ route }) => {
                   style={styles.input}
                   placeholderTextColor={Colors.text_Color}
                   placeholder="CNIC/Social Security"
-                  value={formatCnic(route?.params?.cnic?.toString())}
-                  onChangeText={text => handleInputChange('cnic', text)}
+                  value={formatMobileNumber(route?.params?.mobile?.toString())}
+                  onChangeText={text => handleInputChange('mobile', text)}
                   keyboardType={'numeric'}
                 />
               </View>

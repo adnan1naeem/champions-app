@@ -28,13 +28,12 @@ import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 import messaging from '@react-native-firebase/messaging';
 import { request, PERMISSIONS, RESULTS } from '@react-native-permissions/permissions';
 import ReactNativeBiometrics from 'react-native-biometrics';
-
-
+import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
-  const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
+  const [mobile, setMobile] = useState('923029403174');
+  const [password, setPassword] = useState('aassddff');
   const [loading, setLoading] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();
@@ -75,18 +74,6 @@ const Signin = () => {
     const passwordData = await AsyncStorage.getItem("PASSWORD");
     let errorMessage = null;
 
-    // if (!Internet) {
-    //   errorMessage = 'Please Check Your Internet Connection!';
-    // } else if (!mobile || !mobileData) {
-    //   errorMessage = 'Please enter mobile number.';
-    // } else if (!password || !passwordData) {
-    //   errorMessage = 'Please enter password.';
-    // }
-    // if (errorMessage) {
-    //   Alert.alert('Field Required', errorMessage);
-    //   return;
-    // }
-
     setLoading(true);
 
     try {
@@ -95,35 +82,34 @@ const Signin = () => {
         password: password || passwordData,
         deviceToken: deviceToken
       };
+
       const config = {
-        method: 'POST',
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/login`,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        data: JSON.stringify(data),
       };
 
-      const response = await fetch(`${API_BASE_URL}/login`, config);
-
-      if (!response.ok) {
-        setLoading(false);
-        if (response?.status === 401) {
-          const responseData = await response?.json();
-          errorMessage = responseData?.message || responseData?.error;
-        }
-      } else {
-        const responseData = await response?.json();
-        if (responseData) {
-          const cnic = responseData?.cnic;
-          // console.log(responseData);
-          await AsyncStorage.setItem('USER', JSON.stringify(responseData));
+      const response = await axios.request(config).then(async (response) => {
+        if (response?.data) {
+          await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
+          await AsyncStorage.setItem('AUTH_TOKEN', response?.data?.token);
           await AsyncStorage.setItem("MOBILE", mobile);
           await AsyncStorage.setItem("PASSWORD", password);
           navigation.replace('Home');
         } else {
           errorMessage = 'Invalid Password';
         }
-      }
+      }).catch(async (error) => {
+        setLoading(false);
+        if (error?.response?.status === 401) {
+          const responseData = await response?.json();
+          errorMessage = error?.response?.data?.message || responseData?.message || responseData?.error;
+        }
+      });
     } catch (error) {
       if (error.message === 'Network request failed') {
         errorMessage = 'Network request failed';

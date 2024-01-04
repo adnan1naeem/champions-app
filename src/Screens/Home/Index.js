@@ -29,14 +29,13 @@ import {
   androidVersion,
   iosVersion,
 } from '../../../Constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from './../../Utils/axiosConfig'
 import NetInfo from '@react-native-community/netinfo';
 import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
 import TierFlow from './TierFlow';
 import { Branch, Zone } from './Tier';
-
 
 const Home = () => {
   const navigation = useNavigation();
@@ -56,7 +55,6 @@ const Home = () => {
   const [category, setCategory] = useState();
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
-
 
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -132,96 +130,114 @@ const Home = () => {
   }, []);
 
   const getBatchListing = async () => {
-    const user = JSON.parse(await AsyncStorage.getItem('USER'));
-    const payload = {
-      cnic: user?.cnic,
+    const data = {
       start_date: endDate,
       end_date: startDate,
       divCode:
         selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
+
+    let config = {
+      method: 'POST',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/BatchListing`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
     try {
-      const response = await fetch(`${API_BASE_URL}/BatchListing`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
 
-      const paidBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus?.toLowerCase() === 'paid',
-      );
-      const total_PaidIncentiveAmount = paidBatches?.reduce(
-        (sum, batch) => sum + batch?.incentiveAmount,
-        0,
-      );
-      const approvedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus?.toLowerCase() === 'approved',
-      );
-      const total_approvedIncentiveAmount = approvedBatches?.reduce(
-        (sum, batch) => sum + batch?.incentiveAmount,
-        0,
-      );
-      const verifiedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus?.toLowerCase() === 'verified',
-      );
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data) {
+            const data = response?.data;
 
-      const total_verifiedIncentiveAmount = verifiedBatches?.reduce(
-        (sum, batch) => sum + batch?.incentiveAmount,
-        0,
-      );
+            const paidBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus?.toLowerCase() === 'paid',
+            );
+            const total_PaidIncentiveAmount = paidBatches?.reduce(
+              (sum, batch) => sum + batch?.incentiveAmount,
+              0,
+            );
+            const approvedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus?.toLowerCase() === 'approved',
+            );
+            const total_approvedIncentiveAmount = approvedBatches?.reduce(
+              (sum, batch) => sum + batch?.incentiveAmount,
+              0,
+            );
+            const verifiedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus?.toLowerCase() === 'verified',
+            );
 
-      const rejectedBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus?.toLowerCase() === 'rejected',
-      );
-      const pendingBatches = data?.batchList?.filter(
-        batch => batch?.batchPostStatus?.toLowerCase() === 'pending',
-      );
+            const total_verifiedIncentiveAmount = verifiedBatches?.reduce(
+              (sum, batch) => sum + batch?.incentiveAmount,
+              0,
+            );
 
-      const totalOutstanding =
-        total_verifiedIncentiveAmount + total_approvedIncentiveAmount;
-      setPending_list([...pendingBatches.reverse()]);
-      setRejected_list([...rejectedBatches.reverse()]);
-      setVerified_list([...verifiedBatches.reverse()]);
-      setPaid_list([...paidBatches.reverse()]);
-      setApproved_list([...approvedBatches.reverse()]);
-      setapproved_ammount(total_approvedIncentiveAmount);
-      setPaid_ammount(total_PaidIncentiveAmount);
-      setpending_ammount(totalOutstanding);
+            const rejectedBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus?.toLowerCase() === 'rejected',
+            );
+            const pendingBatches = data?.batchList?.filter(
+              batch => batch?.batchPostStatus?.toLowerCase() === 'pending',
+            );
+
+            const totalOutstanding =
+              total_verifiedIncentiveAmount + total_approvedIncentiveAmount;
+            setPending_list([...pendingBatches.reverse()]);
+            setRejected_list([...rejectedBatches.reverse()]);
+            setVerified_list([...verifiedBatches.reverse()]);
+            setPaid_list([...paidBatches.reverse()]);
+            setApproved_list([...approvedBatches.reverse()]);
+            setapproved_ammount(total_approvedIncentiveAmount);
+            setPaid_ammount(total_PaidIncentiveAmount);
+            setpending_ammount(totalOutstanding);
+          }
+        })
+        .catch((error) => {
+          console.log(JSON.stringify(error, null, 2));
+        });
+
+
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   const fetchCategoryData = async () => {
-    const payload = {
-      companyCode: '1000',
-    };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/getCategory`, {
-        method: 'POST',
+      const payload = {
+        companyCode: '1000',
+      };
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/getCategory`,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      let dataIs = {
-        _id: '11111',
-        categoryCode: '0',
-        categoryName: 'All Products',
-        companyName: 'Orient Electronics Pvt. Ltd.',
-        companyCode: '1000',
+        data: JSON.stringify(payload)
       };
 
-      setCategory([dataIs, ...data?.category]);
+      axios.request(config)
+        .then((response) => {
+          if (response?.data) {
+            let dataIs = {
+              _id: '11111',
+              categoryCode: '0',
+              categoryName: 'All Products',
+              companyName: 'Orient Electronics Pvt. Ltd.',
+              companyCode: '1000',
+            };
+
+            setCategory([dataIs, ...response?.data?.category]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       console.error('Error:', error);
       if (
