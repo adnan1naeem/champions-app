@@ -18,6 +18,7 @@ import { API_BASE_URL } from '../../../../Constants';
 import BackButton from '../../../Components/BackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
+import axios from './../../../Utils/axiosConfig';
 
 const ForgetPassword = () => {
   const [mobile, setMobile] = useState('');
@@ -27,42 +28,45 @@ const ForgetPassword = () => {
   const handleForgot = async () => {
     setLoading(true);
     try {
-      console.log("mobile:: ", mobile);
-      const data = {
-        mobile: mobile,
-      };
-
-      const config = {
+      let data = JSON.stringify({
+        mobile: mobile
+      });
+      let config = {
         method: 'POST',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/forgetPassword`,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        data: data
       };
 
-      const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
-      if (!response?.ok) {
-        setLoading(false);
-        if (response?.status === 404) {
-          Alert.alert('User not Exist\nPlease check your Mobile Number and try again.');
-          return;
-        }
-        Alert.alert('User not Exist\nPlease check your Mobile Number and try again.');
-        return;
-      }
-      const responseData = await response.json();
-      console.log('Login Response: ', response?.token);
-      if (responseData) {
-        setLoading(false);
+      axios.request(config)
+        .then((response) => {
+          if (response?.status === 200) {
+            setLoading(false);
+            navigation.replace('PinCodeScreen', { mobile: mobile });
+          } else {
+            setLoading(false);
+            Alert.alert(
+              'Invalid Password',
+              'Please check your password and try again.',
+            );
+          }
+        })
+        .catch((error) => {
+          if (error?.response?.status === 404) {
+            Alert.alert(error?.response?.data?.message);
+            return;
+          }
+          Alert.alert(
+            'Network Error!',
+            'Unable to connect to server, \n Please try again later',
+          );
+          setLoading(false);
+          console.log(error);
+        });
 
-        navigation.replace('PinCodeScreen', { mobile: mobile });
-      } else {
-        setLoading(false);
-        Alert.alert(
-          'Invalid Password',
-          'Please check your password and try again.',
-        );
-      }
     } catch (error) {
       setLoading(false);
       console.log('Error posting data:', error?.message);

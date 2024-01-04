@@ -150,13 +150,11 @@ const SignUp = () => {
       Alert.alert('Please select a company.');
       return;
     }
-
     setLoading(true);
     postUserData();
   };
 
   const postUserData = async () => {
-    const formattedMobile = formatMobileNumber(mobile);
     try {
       const config = {
         method: 'POST',

@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Colors } from '../../../Utils/Colors';
@@ -17,6 +18,8 @@ import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
+import axios from './../../../Utils/axiosConfig';
+
 const ChangePassword = ({ route }) => {
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
@@ -26,52 +29,42 @@ const ChangePassword = ({ route }) => {
   const [emptyField, setEmptyField] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
   const handleSignUp = async () => {
     setLoading(true);
     setEmptyField(false);
     if (route?.params?.mobile === '' || password === '' || confirmPassword === '') {
       setLoading(false);
       setEmptyField(true);
-    } else {
-      if (password !== confirmPassword) {
-        setLoading(false);
-        setIncorrectPassword(true);
-        return;
-      } else {
-        setIncorrectPassword(false);
-        try {
-          let data = JSON.stringify({
-            mobile: route?.params?.mobile,
-            newPassword: password,
-            reEnterPassword: confirmPassword,
-            verificationCode: route?.params?.varificationCode?.toString(),
-          });
-          const config = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: data,
-          };
-          const response = await fetch(
-            `${API_BASE_URL}/resetPassword`,
-            config,
-          );
-          console.log("response change Password:: ", response);
-          if (!response.ok) {
-            setLoading(false);
-            if (response?.status === 401) {
-              alert('Invalid Varification Code');
-              navigation.pop();
-              return;
-            }
-            alert(
-              'Invalid Password \nPlease check your password and try again.',
-            );
-            // throw new Error("Network response was not ok");
-            return;
-          }
-          const responsedata = await response.json();
+      return
+    }
+    if (password !== confirmPassword) {
+      setLoading(false);
+      setIncorrectPassword(true);
+      return;
+    }
+    setIncorrectPassword(false);
+
+    try {
+      let data = JSON.stringify({
+        mobile: route?.params?.mobile,
+        newPassword: password,
+        reEnterPassword: confirmPassword,
+        verificationCode: route?.params?.varificationCode?.toString(),
+      });
+      let config = {
+        method: 'POST',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/resetPassword`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: data
+      };
+      
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response, null,2));
           if (response?.status === 200) {
             setLoading(false);
             navigation.reset({
@@ -80,15 +73,22 @@ const ChangePassword = ({ route }) => {
             });
           } else if (response?.status !== 200) {
             setLoading(false);
-            alert(responsedata?.message);
+            Alert.alert(response?.data?.message || response?.message);
           }
-        } catch (error) {
-          setLoading(fasle);
-          console.error('Error posting data:' + error?.message);
-        }
-      }
+        })
+        .catch((error) => {
+          setLoading(false);
+          if(error?.response?.status === 401){
+            Alert.alert(error?.response?.data?.message);
+            navigation.pop();
+          }
+        });
+    } catch (error) {
+      setLoading(fasle);
+      console.error('Error posting data:' + error?.message);
     }
   };
+
   const handleInputChange = (field, value) => {
     if (field === 'password') {
       setPassword(value);
@@ -96,6 +96,7 @@ const ChangePassword = ({ route }) => {
       setConfirmPassword(value);
     }
   };
+
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}

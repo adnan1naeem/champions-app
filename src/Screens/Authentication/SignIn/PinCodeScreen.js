@@ -16,6 +16,8 @@ import OtpInput from '../OTP/OTP';
 import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from './../../../Utils/axiosConfig';
+
 const PinCodeScreen = ({ route }) => {
   const navigation = useNavigation();
   const [varificationCode, setVarificationCode] = useState('');
@@ -33,44 +35,83 @@ const PinCodeScreen = ({ route }) => {
       }
     }
   }, [isTimerRunning, timer]);
+
   const handleForgot = async () => {
     setIsTimerRunning(true);
     setTimer(60);
     try {
-      const data = {
-        PinCodeScreen: route?.params?.mobile,
-      };
-      const config = {
+      let data = JSON.stringify({
+        mobile: route?.params?.mobile,
+      });
+      let config = {
         method: 'POST',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/forgetPassword`,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        data: data
       };
-      const response = await fetch(`${API_BASE_URL}/forgetPassword`, config);
-      if (!response?.ok) {
-        if (response?.status === 404) {
-          Alert.alert('User not Exist\nPlease check your CNIC and try again.');
-          return;
-        }
-        Alert.alert('User not Exist\nPlease check your CNIC and try again.');
-        // throw new Error("Network response was not ok");
-        return;
-      }
-      const responseData = await response.json();
-      console.log('Login Response: ', response?.token);
-      if (responseData) {
-        // navigation.replace('PinCodeScreen', { cnic: route?.params?.cnic });
-      } else {
-        Alert.alert(
-          'Invalid Password',
-          'Please check your password and try again.',
-        );
-      }
+
+      axios.request(config)
+        .then((response) => {
+          if (response?.status === 200) {
+
+          } else {
+            Alert.alert(
+              'Invalid Password',
+              'Please check your password and try again.',
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     } catch (error) {
       console.log('Error posting data:', error?.message);
     }
   };
+
+  const verifyOTP = async () => {
+    try {
+      if (varificationCode?.length !== 5) {
+        Alert.alert("Please Enter 5 digit ", "verification code");
+        return;
+      }
+      let data = JSON.stringify({
+        code: varificationCode,
+      });
+      let config = {
+        method: 'POST',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/forgetPassword`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: data
+      };
+
+      axios.request(config)
+        .then((response) => {
+          if (response?.status === 200) {
+
+          } else {
+            Alert.alert(
+              'Invalid Password',
+              'Please check your password and try again.',
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    } catch (error) {
+      console.log('Error posting data:', error?.message);
+    }
+  };
+
   return (
     <ImageBackground
       source={require('../../../Assets/Image/background_image.png')}
@@ -143,11 +184,16 @@ const PinCodeScreen = ({ route }) => {
               )}
             </View>
             <CustomButton
-              onPress={() =>
+              onPress={() => {
+                if (varificationCode?.length !== 5) {
+                  Alert.alert("Please enter 5 digit", "verification code");
+                  return;
+                }
                 navigation.navigate('ChangePassword', {
                   mobile: route?.params?.mobile,
                   varificationCode: varificationCode,
                 })
+              }
               }
               ContainerStyle={styles.proceed_button}
               textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
