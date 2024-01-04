@@ -23,8 +23,6 @@ import DrawerScreen from '../src/Screens/Drawer/Drawer'
 import PaidCategory from '../src/Screens/Home/TotalPaid/PaidCategory'
 import HelpFAQ from '../src/Screens/Drawer/HelpFAQ/HelpFaq'
 import SearchCate from '../src/Screens/Search/SearchCate'
-import Testing from "../src/Testing";
-
 
 const HomeStack = () => {
   return (
@@ -190,13 +188,6 @@ const HomeStack = () => {
       <Stack.Screen
         name="SearchCate"
         component={SearchCate}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Testing"
-        component={Testing}
         options={{
           headerShown: false,
         }}

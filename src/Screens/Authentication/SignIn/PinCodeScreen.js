@@ -1,6 +1,5 @@
 import {
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   ImageBackground,
@@ -8,12 +7,9 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';
-import orient_icon from '../../../Assets/Image/OrientNewLogo.png';
-// import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { styles } from './style';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../../Components/CustomButton';
 import OtpInput from '../OTP/OTP';

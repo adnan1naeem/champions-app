@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CustomButton from '../../../Components/CustomButton';
 import { styles } from './style';
@@ -20,21 +20,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 
 const ForgetPassword = () => {
-  // const [ref, setRef] = useState();
   const [mobile, setMobile] = useState('');
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const CnicInput = text => {
-
-    setMobile(Id_Card_Number);
-  };
-
   const handleForgot = async () => {
-    // if (mobile?.length !== 13) {
-    //   Alert.alert('Please enter valid cnic code');
-    //   return;
-    // }
     setLoading(true);
     try {
       console.log("mobile:: ", mobile);
@@ -77,14 +67,6 @@ const ForgetPassword = () => {
       setLoading(false);
       console.log('Error posting data:', error?.message);
     }
-  };
-
-  const onPressTouch = () => {
-    ref?.scrollTo({
-      x: 0,
-      y: 250,
-      animated: true,
-    });
   };
 
   return (
@@ -134,9 +116,9 @@ const ForgetPassword = () => {
                   placeholderTextColor={Colors.text_Color}
                   placeholder=""
                   marginLeft={20}
-                  value={mobile}
+                  value={formatMobileNumber(mobile)}
                   onChangeText={(text) => setMobile(text)}
-                // keyboardType={'numeric'}
+                  keyboardType={'numeric'}
                 // maxLength={13}
                 />
               </View>

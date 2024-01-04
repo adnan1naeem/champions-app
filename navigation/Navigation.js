@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppAutoUpdateScreen from '../src/Screens/AppAutoUpdateScreen';
@@ -25,8 +25,6 @@ import ContactUs from '../src/Screens/Drawer/HelpFAQ/ContactUs/ContactUs';
 import Gallery from '../src/Screens/Drawer/HelpFAQ/Gallery/Gallery';
 import FAQ from '../src/Screens/Drawer/HelpFAQ/FAQ/FAQ';
 import EditProfile from '../src/Screens/EditProfile/index';
-import Testing from '../src/Testing';
-import { Alert } from 'react-native';
 import Congrats from '../src/Screens/Authentication/ForgetPassword/Congrats';
 import ProductManuals from '../src/Screens/Drawer/HelpFAQ/Gallery/ProductManuals';
 import Videos from '../src/Screens/Drawer/HelpFAQ/Gallery/Videos';
@@ -39,7 +37,6 @@ import RejectedDetail from '../src/Screens/Home/TotalPaid/RejectedDetail';
 import RefCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/RefCatalogue';
 import WDCatalogue from '../src/Screens/Drawer/HelpFAQ/Gallery/WDCatalogue';
 import { Colors } from '../src/Utils/Colors';
-
 
 const Stack = createNativeStackNavigator();
 
@@ -235,13 +232,6 @@ const RootNavigator = ({ navigation }) => {
       <Stack.Screen
         name="SearchCate"
         component={SearchCate}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Testing"
-        component={Testing}
         options={{
           headerShown: false,
         }}

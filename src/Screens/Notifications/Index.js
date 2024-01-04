@@ -6,7 +6,6 @@ import {
     ScrollView,
     FlatList,
     ImageBackground,
-    Alert,
     RefreshControl,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,8 +17,9 @@ import { API_BASE_URL } from '../../../Constants';
 import { Colors } from '../../Utils/Colors';
 import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import axios from './../../Utils/axiosConfig'
 
-const Index = ({ route, navigation }) => {
+const Index = ({ navigation }) => {
     const [Notifications, setNotifications] = useState();
     const [loading, setLoading] = useState(true);
     const scrollViewRef = React.useRef(null);
@@ -39,49 +39,52 @@ const Index = ({ route, navigation }) => {
         }, 1000);
     }, []);
 
-
     const fetchData = async () => {
-        const user = JSON.parse(await AsyncStorage.getItem('USER'));
-        if (user) {
-            try {
-                const apiUrl = `${API_BASE_URL}/notificationsList?page=1&limit=20`;
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${user?.token}`,
-                    },
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    const filteredData = data?.data?.filter(item => {
-                        return item?.data !== null && item?.data !== undefined;
-                    });
-                    setNotifications(filteredData);
-                } else {
-                    console.log('Notifications response was not ok');
+        try {
+            setLoading(true);
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `${API_BASE_URL}/notificationsList?page=1&limit=20`,
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-            } catch (error) {
-                console.error('Fetch error:', error);
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            console.log('USER NOT FOUND');
+            };
+            axios.request(config)
+                .then((response) => {
+                    if (response?.data) {
+                        const filteredData = response?.data?.data?.filter(item => {
+                            return item?.data !== null && item?.data !== undefined;
+                        });
+                        setNotifications([...filteredData]);
+                    }
+                })
+                .catch((error) => {
+                    setLoading(false);
+                    console.log(error);
+                });
+        } catch (error) {
+            setLoading(false);
+            console.error('Fetch error:', error);
+        } finally {
             setLoading(false);
         }
+        setLoading(false);
     };
 
-    const handleNavigate = async item => {
-        const user = JSON.parse(await AsyncStorage.getItem('USER'));
-
-        if (user) {
-            fetch(`${API_BASE_URL}/changeSeenStatus/${item?._id}`, {
+    const handleNavigate = async (item) => {
+        try {
+            let config = {
                 method: 'PATCH',
+                maxBodyLength: Infinity,
+                url: `${API_BASE_URL}/changeSeenStatus/${item?._id}`,
                 headers: {
-                    Authorization: `Bearer ${user?.token}`,
+                    'Content-Type': 'application/json',
                 },
-            })
-                .then(response => {
+            };
+
+            axios.request(config)
+                .then((response) => {
                     if (response.status === 204) {
                         if (item?.data?.batchPostStatus === 'rejected') {
                             navigation.navigate('RejectedDetail', { item: item?.data });
@@ -95,11 +98,12 @@ const Index = ({ route, navigation }) => {
                         throw new Error(`HTTP error Status: ${response?.status}`);
                     }
                 })
-                .catch(error => {
-                    console.error(error);
+                .catch((error) => {
+                    setLoading(false);
+                    console.log(error);
                 });
-        } else {
-            console.log('USER NOT FOUND');
+        } catch (error) {
+
         }
     };
 

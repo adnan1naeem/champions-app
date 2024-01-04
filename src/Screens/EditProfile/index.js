@@ -46,6 +46,8 @@ const Index = ({ route, navigation }) => {
   const uploadImage = async (camera) => {
     setIsLoading(true);
     try {
+      // uri: Platform.OS === 'ios' ? image.sourceURL : image.path,
+
       let image;
       if(camera){
         image = await ImagePicker.openCamera({
@@ -78,11 +80,11 @@ const Index = ({ route, navigation }) => {
         },
         data: data
       };
-
       axios.request(config)
-        .then((response) => {
+        .then(async(response) => {
           if (response?.data) {
             setProfile_image(response?.data?.image);
+            await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
           } else {
             Alert.alert('Image upload failed');
           }
@@ -103,54 +105,6 @@ const Index = ({ route, navigation }) => {
       setIsLoading(false);
     }
   };
-
-  const openGallery = async () => {
-    try {
-      const image = await ImagePicker.openPicker({
-        width: 300,
-        height: 300,
-        cropping: false,
-      });
-      setIsLoading(true);
-      const fileName = image.path.substring(image.path.lastIndexOf('/') + 1);
-      const formdata = new FormData();
-      formdata.append('image', {
-        uri: Platform.OS === 'ios' ? image.sourceURL : image.path,
-        type: image.mime,
-        name: fileName,
-      });
-      formdata.append('cnic', User_Info?.cnic);
-      try {
-        const response = await fetch(`${API_BASE_URL}/updateProfile`, {
-          method: 'POST',
-          body: formdata,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        if (response.ok) {
-          const responseData = await response?.json();
-          setProfile_image(responseData?.image);
-          profile_Get();
-        } else {
-          console.log('Image upload failed - HTTP Status:', response.status);
-          Alert.alert('Image upload failed');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        if (error.message === 'Network request failed') {
-          Alert.alert('Please try again later');
-          setIsLoading(false);
-        }
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.log('Error selecting image:', error);
-      Alert.alert('Error selecting image');
-      setIsLoading(false);
-    }
-  }
 
   const profile_Get = async () => {
     try {

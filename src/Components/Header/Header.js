@@ -14,8 +14,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import messaging from '@react-native-firebase/messaging';
 import Octicons from 'react-native-vector-icons/Octicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../../../Constants';
+import axios from './../../Utils/axiosConfig'
 
 const Header = ({ Logo }) => {
 
@@ -42,32 +42,31 @@ const Header = ({ Logo }) => {
   );
 
   const fetchData = async () => {
-    const user = JSON.parse(await AsyncStorage.getItem('USER'));
-    if (user) {
-      try {
-        const apiUrl = `${API_BASE_URL}/notificationsList?page=1&limit=20`;
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          const filteredData = data?.data?.filter(item => {
-            return item?.data !== null && item?.data !== undefined;
-          });
-          const Notifying = filteredData?.find(item => item?.seen === false);
-          setNotify(Notifying?._id);
-        } else {
-          console.log('Notifications response was not ok');
+    try {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${API_BASE_URL}/notificationsList?page=1&limit=20`,
+        headers: {
+          'Content-Type': 'application/json',
         }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      } finally {
-      }
-    } else {
-      console.log('USER NOT FOUND');
+      };
+      axios.request(config)
+        .then((response) => {
+          if (response?.data) {
+            const filteredData = response?.data?.data?.filter(item => {
+              return item?.data !== null && item?.data !== undefined;
+            });
+            const Notifying = filteredData?.find(item => item?.seen === false);
+            setNotify(Notifying?._id);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
     }
   };
 

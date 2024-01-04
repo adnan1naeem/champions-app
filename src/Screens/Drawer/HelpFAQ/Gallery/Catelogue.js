@@ -16,6 +16,7 @@ import { Colors } from '../../../../Utils/Colors';
 import BackButton from '../../../../Components/BackButton';
 import Header from '../../../../Components/Header/Header';
 import { API_BASE_URL } from '../../../../../Constants';
+import axios from './../../../../Utils/axiosConfig'
 
 const ProductManuals = () => {
     const navigation = useNavigation();
@@ -27,18 +28,25 @@ const ProductManuals = () => {
     }, []);
 
     const fetchData = async () => {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
         try {
-            const response = await fetch(`${API_BASE_URL}/pdfNames`, requestOptions);
-            if (response.ok) {
-                const result = await response.json();
-                setCatalogue(result);
-            } else {
-                console.log('Error:', response.statusText);
-            }
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `${API_BASE_URL}/pdfNames`,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            axios.request(config)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data, null,2));
+                    setCatalogue([...response?.data]);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setLoading(false);
+                });
         } catch (error) {
             console.log('Error:', error);
         } finally {

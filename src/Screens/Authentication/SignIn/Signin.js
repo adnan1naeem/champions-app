@@ -26,7 +26,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/Ionicons';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
 import messaging from '@react-native-firebase/messaging';
-import { request, PERMISSIONS, RESULTS } from '@react-native-permissions/permissions';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import axios from './../../../Utils/axiosConfig'
 

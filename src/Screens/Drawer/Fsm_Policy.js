@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { API_BASE_URL } from '../../../Constants';
 import CustomButton from '../../Components/CustomButton';
 import * as OpenAnything from 'react-native-openanything'
+import axios from './../../Utils/axiosConfig'
 
 const Fsm_Policy = ({ route }) => {
     const navigation = useNavigation();
@@ -22,18 +23,29 @@ const Fsm_Policy = ({ route }) => {
 
     const fetchData = async () => {
         try {
-            // setLoading(true);
-            const response = await fetch(`${API_BASE_URL}/getPrivacyImage`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            const imageUrlWithoutSpaces = data?.data[0]?.image?.replace(/\s/g, '');
-            console.log(imageUrlWithoutSpaces);
-            setImage(imageUrlWithoutSpaces);
-            setLoading(false);
+            setLoading(true);
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `${API_BASE_URL}/getPrivacyImage`,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            axios.request(config)
+                .then((response) => {
+                    if (response?.data) {
+                        const imageUrlWithoutSpaces = response?.data?.data[0]?.image?.replace(/\s/g, '');
+                        setImage(imageUrlWithoutSpaces);
+                    }
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setLoading(false);
+                });
         } catch (error) {
-            // setLoading(false);
+            setLoading(false);
             console.error('Fetch error:', error);
         }
     };

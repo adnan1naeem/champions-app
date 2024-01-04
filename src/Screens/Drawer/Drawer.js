@@ -17,7 +17,7 @@ import Header from '../../Components/Header/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import axios from 'axios';
+import axios from './../../Utils/axiosConfig';
 import Feather from 'react-native-vector-icons/Feather';
 import { API_BASE_URL } from '../../../Constants';
 import { formatMobileNumber } from '../../Components/MobileNumberFormat';
@@ -51,13 +51,6 @@ const DrawerScreen = () => {
     })();
   }, []);
 
-  // const formatMobileNumber = number => {
-  //   if (number?.startsWith('92')) {
-  //     return '0' + number.slice(2);
-  //   }
-  //   return number;
-  // };
-
   const SignOut = async () => {
     try {
       await AsyncStorage.removeItem('USER');
@@ -83,35 +76,21 @@ const DrawerScreen = () => {
       });
   };
 
-  const profile_Get = async () => {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/getProfile/${user_Info?.cnic}`,
-      );
-      if (response?.ok) {
-        const data = await response.json();
-        setProfile_image(data?.data[0]?.image);
-      } else {
-        console.log('Error: Unable to fetch data');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   useFocusEffect(
     useCallback(async () => {
-      try {
-        const Profile = await AsyncStorage.getItem('PROFILEPICTURE');
-        if (Profile == 'true' || Profile == null) {
-          profile_Get();
-        } else {
-          setProfile_image(null);
-        }
-      } catch (error) {
-        console.error('Error reading data: ' + error);
+      const Profile = await AsyncStorage.getItem('PROFILEPICTURE');
+      if (Profile == 'false') {
+        setProfile_image(null);
+        return
       }
-    }, [profile_image]),
+      const userProfile = await AsyncStorage.getItem('USER');
+      let image = JSON.parse(userProfile)?.image;
+      if (image) {
+        setProfile_image(image);
+      } else {
+        setProfile_image(null);
+      }
+    }, []),
   );
 
   const Delete = () => {

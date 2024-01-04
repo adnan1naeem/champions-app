@@ -17,10 +17,7 @@ import BackButton from '../../../Components/BackButton';
 import { API_BASE_URL } from '../../../../Constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formatMobileNumber } from '../../../Components/MobileNumberFormat';
-
-
 const ChangePassword = ({ route }) => {
-  const [mobile, setMobile] = useState(route?.params?.mobile);
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [isConfirmPasswordSecure, setIsConfirmPasswordSecure] = useState(true);
@@ -29,12 +26,10 @@ const ChangePassword = ({ route }) => {
   const [emptyField, setEmptyField] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-
-  console.log("route?.params?.mobile:: ", route?.params?.mobile);
   const handleSignUp = async () => {
     setLoading(true);
     setEmptyField(false);
-    if (cnic === '' || password === '' || confirmPassword === '') {
+    if (route?.params?.mobile === '' || password === '' || confirmPassword === '') {
       setLoading(false);
       setEmptyField(true);
     } else {
@@ -46,7 +41,7 @@ const ChangePassword = ({ route }) => {
         setIncorrectPassword(false);
         try {
           let data = JSON.stringify({
-            mobile: mobile,
+            mobile: route?.params?.mobile,
             newPassword: password,
             reEnterPassword: confirmPassword,
             verificationCode: route?.params?.varificationCode?.toString(),
@@ -58,7 +53,6 @@ const ChangePassword = ({ route }) => {
             },
             body: data,
           };
-
           const response = await fetch(
             `${API_BASE_URL}/resetPassword`,
             config,
@@ -95,19 +89,6 @@ const ChangePassword = ({ route }) => {
       }
     }
   };
-
-  const formatCnic = input => {
-    const numericInput = input?.replace(/[^\d]/g, '');
-    let formattedCnic = '';
-    for (let i = 0; i < numericInput?.length; i++) {
-      if (i === 5 || i === 12) {
-        formattedCnic += '-';
-      }
-      formattedCnic += numericInput[i];
-    }
-
-    return formattedCnic;
-  };
   const handleInputChange = (field, value) => {
     if (field === 'password') {
       setPassword(value);
@@ -126,13 +107,11 @@ const ChangePassword = ({ route }) => {
         enableAutomaticScroll={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
-
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps={'always'}
         >
-
           <View style={[styles.Login_main_view, { marginTop: 35, }]}>
             <Image
               style={{
@@ -156,7 +135,7 @@ const ChangePassword = ({ route }) => {
                   editable={false}
                   style={styles.input}
                   placeholderTextColor={Colors.text_Color}
-                  placeholder="CNIC/Social Security"
+                  placeholder="Mobile/Social Security"
                   value={formatMobileNumber(route?.params?.mobile?.toString())}
                   onChangeText={text => handleInputChange('mobile', text)}
                   keyboardType={'numeric'}
@@ -188,7 +167,6 @@ const ChangePassword = ({ route }) => {
                   keyboardType="default"
                   secureTextEntry={isConfirmPasswordSecure}
                 />
-
                 <MaterialIcons onPress={() => setIsConfirmPasswordSecure(!isConfirmPasswordSecure)} name={isConfirmPasswordSecure ? 'visibility' : 'visibility-off'} size={20} color={"#D0D3E2"} style={{ paddingTop: 16 }} />
               </View>
               {incorrectPassword ? (
@@ -224,5 +202,4 @@ const ChangePassword = ({ route }) => {
     </ImageBackground>
   );
 };
-
 export default ChangePassword;
