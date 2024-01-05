@@ -307,6 +307,7 @@ const SignUp = () => {
                   onChangeText={text => handleInputChange('password', text)}
                   keyboardType="default"
                   secureTextEntry
+                  autoCapitalize='none'
                 />
               </View>
               <View style={styles.container}>

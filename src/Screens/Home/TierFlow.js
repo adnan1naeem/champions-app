@@ -53,8 +53,6 @@ const TierFlow = ({ data, title }) => {
                     name={'chevron-down'}
                     style={styles.dropIcon}
                 />
-
-
                 <Text style={styles.selectedValue}>{selectedValue}</Text>
             </TouchableOpacity>
 
@@ -65,7 +63,7 @@ const TierFlow = ({ data, title }) => {
                             <Entypo name="cross" style={styles.crossIcon} />
                         </TouchableOpacity>
                         <TextInput
-                            placeholder="Type Hare"
+                            placeholder="Search..."
                             style={styles.input}
                             value={searchText}
                             onChangeText={text => setSearchText(text)}

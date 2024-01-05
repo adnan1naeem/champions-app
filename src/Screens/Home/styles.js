@@ -138,8 +138,9 @@ export const styles = StyleSheet.create({
   UpdateHeading1: {
     fontWeight: 'bold',
     color: Colors.text_Color,
-    fontSize: 20,
-    paddingVertical: 3
+    fontSize: 16,
+    paddingVertical: 3,
+    paddingHorizontal: 7
   },
   dropdownItem1: {
     flexDirection: 'row',
@@ -151,7 +152,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 10,
     width: '100%',
-    paddingVertical: 10
+    paddingVertical: 10,
+    maxHeight: 45
   },
   container1: {
     borderWidth: 1,

@@ -31,8 +31,8 @@ import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);
-  const [mobile, setMobile] = useState('923029403174');
-  const [password, setPassword] = useState('aassddff');
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();

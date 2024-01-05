@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Image,
   ImageBackground,
   ScrollView,
   Text,
@@ -20,7 +19,7 @@ import { TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native';
 import CustomButton from '../../Components/CustomButton';
 import axios from './../../Utils/axiosConfig';
-
+import Image from 'react-native-image-progress';
 const Index = ({ route, navigation }) => {
   const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
   const [avatarName, setAvatarName] = useState('');
@@ -49,13 +48,13 @@ const Index = ({ route, navigation }) => {
       // uri: Platform.OS === 'ios' ? image.sourceURL : image.path,
 
       let image;
-      if(camera){
+      if (camera) {
         image = await ImagePicker.openCamera({
           width: 300,
           height: 400,
           cropping: false,
         });
-      }else{
+      } else {
         image = await ImagePicker.openPicker({
           width: 300,
           height: 300,
@@ -81,7 +80,7 @@ const Index = ({ route, navigation }) => {
         data: data
       };
       axios.request(config)
-        .then(async(response) => {
+        .then(async (response) => {
           if (response?.data) {
             setProfile_image(response?.data?.image);
             await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
@@ -169,7 +168,8 @@ const Index = ({ route, navigation }) => {
                 {profile_image?.length > 9 ? (
                   <Image
                     source={{ uri: profile_image }}
-                    style={{ height: 100, width: 100, borderRadius: 50 }}
+                    indicator={<ActivityIndicator color={Colors.text_Color} />}
+                    style={{ height: 80, width: 80, borderRadius: 50, overflow: 'hidden' }}
                   />
                 ) : (
                   <Text style={{ color: Colors.text_Color, fontSize: 22 }}>

@@ -54,6 +54,10 @@ const DrawerScreen = () => {
   const SignOut = async () => {
     try {
       await AsyncStorage.removeItem('USER');
+      await AsyncStorage.removeItem("MOBILE");
+      await AsyncStorage.removeItem("PASSWORD");
+      await AsyncStorage.removeItem('AUTH_TOKEN');
+
       navigation.reset({
         index: 0,
         routes: [{ name: 'SignIn' }],
