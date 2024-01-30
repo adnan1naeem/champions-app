@@ -5,6 +5,7 @@ import {
   ScrollView,
   FlatList,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { styles } from './styles';
@@ -13,34 +14,154 @@ import LinearGradient from 'react-native-linear-gradient';
 import BackButton from '../../../Components/BackButton';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '../../../Utils/Colors';
+import { API_BASE_URL } from '../../../../Constants';
+import axios from './../../../Utils/axiosConfig'
+import CustomButton from '../../../Components/CustomButton';
 
-const PaidCategory = ({ route, navigation, item, Notifications }) => {
+const PaidCategory = ({ route, navigation }) => {
 
   const [batches, setbatches] = useState();
-  let batchlisting = route?.params?.list
-    ? route?.params?.list
-    : route?.params?.item;
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
+  let batchlisting = route?.params?.data?.list
+    ? route?.params?.data?.list
+    : route?.params?.data?.item;
   const [title, setTitle] = useState();
-  let heading = route?.params?.Notifications;
+  let heading = route?.params?.data?.Notifications;
+  let tierExist = route?.params?.data?.tier;
 
   useFocusEffect(
     React.useCallback(() => {
       titleHandle()
-      if (typeof batchlisting === 'object' && !Array.isArray(batchlisting)) {
-        const myArray = [];
-        myArray.push(batchlisting);
-        console.log(myArray);
-        setbatches(myArray);
-      } else {
-        setbatches(batchlisting);
+      if (!tierExist) {
+        if (typeof batchlisting === 'object' && !Array.isArray(batchlisting)) {
+          const myArray = [];
+          myArray.push(batchlisting);
+          setbatches(batchlisting);
+        } else {
+          setbatches(batchlisting);
+        }
       }
     }, [batchlisting]),
   );
 
+  useEffect(() => {
+    if(route?.params?.tier){
+      getBatchList();
+    }else{
+      getDefaultBatchList();
+    }
+  }, [route])
+
+  const getDefaultBatchList = async () => {
+    if (!hasMoreData) return;
+
+    setLoading(true);
+    const data = {
+      status: route?.params?.data?.name?.toLowerCase(),
+      start_date: route?.params?.data?.start_date,
+      end_date: route?.params?.data?.end_date
+    };
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/BatchListing?limit=25&page=${page}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data?.batchList) {
+            if (batches?.length > 0) {
+              setbatches((prevBatches) => [...prevBatches, ...response?.data?.batchList]);
+            } else {
+              setbatches([...response?.data?.batchList]);
+            }
+            if (response?.data?.batchList?.length < 25) {
+              setHasMoreData(false);
+            }
+            setPage(page + 1);
+          } else {
+            setHasMoreData(false);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          setHasMoreData(false);
+          console.log(JSON.stringify(error, null, 2));
+        });
+    } catch (error) {
+      setLoading(false);
+      setHasMoreData(false);
+      console.error('Error:', error);
+    }
+  };
+
+  const getBatchList = async () => {
+    if (!hasMoreData) return;
+
+    setLoading(true);
+    const data = {
+      status: route?.params?.data?.name?.toLowerCase(),
+      zoneId: route?.params?.data?.zone?._id,
+      branchId: route?.params?.data?.barnch?._id,
+      dealerId: route?.params?.data?.dealer?._id,
+      fsmId: route?.params?.data?.fsm?._id,
+      start_date: route?.params?.data?.start_date,
+      end_date: route?.params?.data?.end_date
+    };
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/filteredBatchesList?limit=25&page=${page}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data) {
+            if (batches?.length > 0) {
+              setbatches((prevBatches) => [...prevBatches, ...response?.data?.data]);
+            } else {
+              setbatches([...response?.data?.data]);
+            }
+            if (response?.data?.data?.length < 25) {
+              setHasMoreData(false);
+            }
+            setPage(page + 1);
+          } else {
+            alert('test')
+            setHasMoreData(false);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          setHasMoreData(false);
+          console.log(JSON.stringify(error, null, 2));
+        });
+    } catch (error) {
+      setLoading(false);
+      setHasMoreData(false);
+      console.error('Error:', error);
+    }
+  };
+
   const titleHandle = () => {
     let Heading_title = '';
-    if (route?.params?.status) {
-      setTitle(route?.params?.status);
+    if (route?.params?.data?.status) {
+      setTitle(route?.params?.data?.status);
     } else {
       const uppercaseHeading = heading?.toUpperCase();
       switch (uppercaseHeading) {
@@ -66,13 +187,16 @@ const PaidCategory = ({ route, navigation, item, Notifications }) => {
     }
   };
 
+  const handleLoadMore = () => {
+    getBatchList();
+  };
 
   const renderItem = ({ item, index }) => (
     <View style={{ alignItems: 'center' }}>
       <TouchableOpacity
         onPress={() => navigation.navigate('RejectedDetail', { item: item })}
         style={styles.flatList_container}
-        disabled={!(route?.params?.status === 'Rejected Cards')}>
+        disabled={!(route?.params?.data?.status === 'Rejected Cards')}>
         <LinearGradient
           colors={Colors.gradient_color_Pair}
           style={styles.gradient_container}
@@ -118,14 +242,31 @@ const PaidCategory = ({ route, navigation, item, Notifications }) => {
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={styles.part}>{title?.toUpperCase()}</Text>
         </View>
-        <View>
+        {loading ?
+          <ActivityIndicator size={30} color={Colors.text_Color} style={{}} />
+          :
           <FlatList
             data={batches}
             contentContainerStyle={{ paddingVertical: 15 }}
             renderItem={renderItem}
             keyExtractor={item => item?.id}
-          />
-        </View>
+          />}
+        {batches?.length > 0 && hasMoreData && (
+          <CustomButton 
+          onPress={handleLoadMore}
+              ContainerStyle={{
+                paddingVertical: 15,
+                marginVertical: 10,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                height: 50,
+                width: '80%',
+                borderRadius: 15,
+              }}
+              textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
+              title="Load More!"
+              disabled={loading} />
+        )}
       </ScrollView>
     </ImageBackground>
   );

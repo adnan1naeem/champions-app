@@ -11,6 +11,7 @@ import {
   Platform,
   BackHandler,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import React, { useEffect, useState, useRef } from 'react';
@@ -36,31 +37,50 @@ import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
 import TierFlow from './TierFlow';
 import { Branch, Zone } from './Tier';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [startDate, setstartDate] = useState('');
   const [endDate, setendDate] = useState('');
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
   const [pending_ammount, setpending_ammount] = useState(0);
-  const [paid_list, setPaid_list] = useState([]);
-  const [approved_list, setApproved_list] = useState([]);
-  const [pending_list, setPending_list] = useState([]);
-  const [verified_list, setVerified_list] = useState([]);
-  const [rejected_list, setRejected_list] = useState([]);
+  const [listData, setListData] = useState(0);
   const [category, setCategory] = useState();
   const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [tier, setTier] = useState(0);
+  const [zoneList, setZoneList] = useState([]);
+  const [branchList, setBranchList] = useState([]);
+  const [dealerList, setDealerList] = useState([]);
+  const [fsmList, setFSMList] = useState([]);
+  const [selectedZone, setSelectZone] = useState("");
+  const [selectedBranch, setSelectBranch] = useState("");
+  const [selectedDealer, setSelectDealer] = useState("");
+  const [selectedFSM, setSelectFSM] = useState("");
 
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Received a background message:', remoteMessage);
     });
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+      if (tierIs) {
+        setTier(parseInt(tierIs));
+        getZoneList(tierIs);
+      }else{
+        getBatchListing();
+      }
+    })();
+  }, [])
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -103,16 +123,37 @@ const Home = () => {
     setTimeout(() => {
       getBatchListing();
       setRefreshing(false);
+      if (tier > 0 && tier < 4) {
+        setListData(null);
+        setapproved_ammount(0);
+        setPaid_ammount(0);
+        setpending_ammount(0);
+        setSelectZone('');
+        setSelectBranch('');
+        setSelectDealer('');
+        setSelectFSM('');
+      }
       setSelectedValue('');
       setstartDate('');
       setendDate('');
     }, 1000);
   }, []);
 
-  const handleSubmmit = (status, list) => {
-    navigation.navigate('PaidCategory', {
+  const handleSubmmit = (status, name) => {
+    let data = {
+      tier: tier > 0 && tier <= 3,
       status: status,
-      list: list,
+      list: listData,
+      name: name,
+      zone: selectedZone,
+      barnch: selectedBranch,
+      start_date: endDate,
+      end_date: startDate,
+      dealer: selectedDealer,
+      fsm: selectedFSM
+    }
+    navigation.navigate('PaidCategory', {
+      data: data
     });
   };
 
@@ -125,10 +166,6 @@ const Home = () => {
     getBatchListing();
   }, [startDate, endDate, selectedValue]);
 
-  useEffect(() => {
-    getBatchListing();
-  }, []);
-
   const getBatchListing = async () => {
     const data = {
       start_date: endDate,
@@ -138,68 +175,134 @@ const Home = () => {
     };
 
     let config = {
+      method: 'GET',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/allBatchesInfo`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data) {
+            setListData(response?.data);
+            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0);
+            setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
+            setpending_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) || 0);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(JSON.stringify(error, null, 2));
+        });
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const getBatchLisitingNew = () => {
+    setLoading(true);
+    const data = {
+      startDate: endDate,
+      endDate: startDate,
+      zoneId: selectedZone?._id || null,
+      branchId: selectedBranch?._id || null,
+      dealerId: selectedDealer?._id || null,
+      fsmId: selectedFSM?._id || null,
+    };
+
+    let config = {
       method: 'POST',
       maxBodyLength: Infinity,
-      url: `${API_BASE_URL}/BatchListing`,
+      url: `${API_BASE_URL}/filteredBatchesInfo`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data) {
+            setListData(response?.data);
+            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0);
+            setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
+            setpending_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) || 0);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error('Error is:', error);
+          setListData(null);
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+    }
+  }
+
+  const getFSMLisiting = () => {
+    const data = {};
+
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/fsmListWithDealer/${selectedDealer?._id}`,
       headers: {
         'Content-Type': 'application/json',
       },
       data: data
     };
     try {
-
       axios.request(config)
         .then(async (response) => {
           if (response?.data) {
-            const data = response?.data;
-
-            const paidBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus?.toLowerCase() === 'paid',
-            );
-            const total_PaidIncentiveAmount = paidBatches?.reduce(
-              (sum, batch) => sum + batch?.incentiveAmount,
-              0,
-            );
-            const approvedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus?.toLowerCase() === 'approved',
-            );
-            const total_approvedIncentiveAmount = approvedBatches?.reduce(
-              (sum, batch) => sum + batch?.incentiveAmount,
-              0,
-            );
-            const verifiedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus?.toLowerCase() === 'verified',
-            );
-
-            const total_verifiedIncentiveAmount = verifiedBatches?.reduce(
-              (sum, batch) => sum + batch?.incentiveAmount,
-              0,
-            );
-
-            const rejectedBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus?.toLowerCase() === 'rejected',
-            );
-            const pendingBatches = data?.batchList?.filter(
-              batch => batch?.batchPostStatus?.toLowerCase() === 'pending',
-            );
-
-            const totalOutstanding =
-              total_verifiedIncentiveAmount + total_approvedIncentiveAmount;
-            setPending_list([...pendingBatches.reverse()]);
-            setRejected_list([...rejectedBatches.reverse()]);
-            setVerified_list([...verifiedBatches.reverse()]);
-            setPaid_list([...paidBatches.reverse()]);
-            setApproved_list([...approvedBatches.reverse()]);
-            setapproved_ammount(total_approvedIncentiveAmount);
-            setPaid_ammount(total_PaidIncentiveAmount);
-            setpending_ammount(totalOutstanding);
+            setFSMList([...response?.data]);
           }
         })
         .catch((error) => {
           console.log(JSON.stringify(error, null, 2));
+          setListData(null);
         });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
-
+  const getZoneList = async (tierIs) => {
+    const data = {};
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/zones`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          if (response?.data) {
+            setZoneList([...response?.data]);
+            if (response?.data?.length === 1) {
+              if (tierIs == '3') {
+                setDealerList([...response?.data[0]?.branches[0]?.dealers])
+              } else {
+                setBranchList([...response?.data[0]?.branches])
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(JSON.stringify(error?.response?.data?.message, null, 2));
+        });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -271,6 +374,34 @@ const Home = () => {
     </TouchableOpacity>
   );
 
+  const handleSearch = () => {
+    getBatchLisitingNew();
+  }
+
+  useEffect(() => {
+    if (selectedZone && zoneList) {
+      const selectdAreas = zoneList?.find(city => city?.name === selectedZone?.name);
+      setBranchList([...selectdAreas?.branches]);
+      setSelectBranch('');
+      setSelectDealer('');
+      setSelectFSM('');
+    }
+  }, [selectedZone, zoneList])
+
+  useEffect(() => {
+    if (selectedBranch) {
+      const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
+      setDealerList([...selectdBranchData?.dealers]);
+      setSelectFSM('');
+    }
+  }, [selectedBranch])
+
+  useEffect(() => {
+    if (selectedDealer) {
+      getFSMLisiting();
+      setSelectFSM('');
+    }
+  }, [selectedDealer])
 
 
 
@@ -369,55 +500,76 @@ const Home = () => {
             resizeMode="contain"
             source={require('../../Assets/Image/Orient_icon.png')}
           />
-          <View style={styles.tierContainer}>
-            <TierFlow title={"Zone"} data={Zone} />
-            <TierFlow title={"Branch"} data={Branch} />
-            <TierFlow title={"Dealer"} data={Zone} />
-            <TierFlow title={"FSM"} data={Zone} />
-          </View>
+          {(tier > 0 && tier <= 3) &&
+            <View style={styles.tierContainer}>
+              {tier === 1 && <TierFlow title={"Zone"} data={zoneList} onPress={setSelectZone} selectedValue={selectedZone?.name} />}
+              {(tier === 1 || tier === 2) && <TierFlow title={"Branch"} data={branchList} onPress={setSelectBranch} selectedValue={selectedBranch?.name} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={dealerList} onPress={setSelectDealer} selectedValue={selectedDealer?.name} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={fsmList} onPress={setSelectFSM} selectedValue={selectedFSM?.name} />}
+            </View>}
           <CardsButton
-            disabled={paid_list?.length <= 0}
+            disabled={listData?.hasOwnProperty("paid") ? listData?.paid?.count <= 0 : true}
             status={'Paid Cards'}
-            value={paid_list?.length}
-            onPress={() => handleSubmmit('Paid Cards', paid_list)}
+            value={listData?.paid?.count || 0}
+            onPress={() => handleSubmmit('Paid Cards', 'paid')}
           />
           <CardsButton
-            disabled={approved_list?.length <= 0}
+            disabled={listData?.hasOwnProperty("approved") ? listData?.approved?.count <= 0 : true}
             status={'Approved Cards'}
-            value={approved_list?.length}
-            onPress={() => handleSubmmit('Approved Cards', approved_list)}
+            value={listData?.approved?.count || 0}
+            onPress={() => handleSubmmit('Approved Cards', 'approved')}
           />
           <CardsButton
-            disabled={verified_list?.length <= 0}
+            disabled={listData?.hasOwnProperty("verified") ? listData?.verified?.count <= 0 : true}
             status={'Verified Cards'}
-            value={verified_list?.length}
-            onPress={() => handleSubmmit('Verified Cards', verified_list)}
+            value={listData?.verified?.count || 0}
+            onPress={() => handleSubmmit('Verified Cards', 'verified')}
           />
           <CardsButton
-            disabled={pending_list?.length <= 0}
+            disabled={listData?.hasOwnProperty("pending") ? listData?.pending?.count <= 0 : true}
             status={'Pending Cards'}
-            value={pending_list?.length}
-            onPress={() => handleSubmmit('Pending Cards', pending_list)}
+            value={listData?.pending?.count || 0}
+            onPress={() => handleSubmmit('Pending Cards', 'pending')}
           />
           <CardsButton
-            disabled={rejected_list?.length <= 0}
+            disabled={listData?.hasOwnProperty("rejected") ? listData?.rejected?.count <= 0 : true}
             status={'Rejected Cards'}
-            value={rejected_list?.length}
-            onPress={() => handleSubmmit('Rejected Cards', rejected_list)}
+            value={listData?.rejected?.count || 0}
+            onPress={() => handleSubmmit('Rejected Cards', 'rejected')}
           />
-          <TouchableOpacity
-            style={styles.scan_button}
-            onPress={() => {
-              navigation.navigate('Scan');
-            }}>
-            <Ionicons
-              name="add"
-              color={Colors.text_Color}
-              size={16}
-              fontWeight={'400'}
-            />
-            <Text style={styles.scan_text}>SCAN</Text>
-          </TouchableOpacity>
+          {tier > 0 && tier <= 3 ?
+            <>
+              {
+                loading ? (
+                  <ActivityIndicator style={styles.scan_button} color={Colors.text_Color} />
+                ) : <TouchableOpacity
+                  style={styles.scan_button}
+                  onPress={handleSearch}>
+                  <Ionicons
+                    name="search"
+                    color={Colors.text_Color}
+                    size={16}
+                    fontWeight={'400'}
+                  />
+                  <Text style={styles.scan_text}>Search</Text>
+                </TouchableOpacity>
+              }
+
+            </>
+            : <TouchableOpacity
+              style={styles.scan_button}
+              onPress={() => {
+                navigation.navigate('Scan');
+              }}>
+              <Ionicons
+                name="add"
+                color={Colors.text_Color}
+                size={16}
+                fontWeight={'400'}
+              />
+              <Text style={styles.scan_text}>SCAN</Text>
+            </TouchableOpacity>}
+
           <Modal visible={isVisible} transparent animationType="slide">
             <View style={styles.modalContainer}>
               <Text style={styles.UpdateHeading}>

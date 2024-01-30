@@ -30,10 +30,10 @@ import ReactNativeBiometrics from 'react-native-biometrics';
 import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);// 923029403174 tier 1
+  const [mobile, setMobile] = useState('');// 923078723475 tier 2
+  const [password, setPassword] = useState('');// 923016634158 tier 3
+  const [loading, setLoading] = useState(false);// 923474705380 defautl user
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();
   const [deviceToken, setDeviceToken] = useState()
@@ -52,7 +52,6 @@ const Signin = () => {
     unsubscribe();
   }, []);
 
-
   useEffect(() => {
     (async () => {
       const authStatus = await messaging().requestPermission();
@@ -64,7 +63,6 @@ const Signin = () => {
       }
       const Token = await messaging().getToken();
       setDeviceToken(Token)
-      // console.log(Token);
     })();
   }, [])
 
@@ -94,6 +92,12 @@ const Signin = () => {
 
       const response = await axios.request(config).then(async (response) => {
         if (response?.data) {
+          if(response?.data?.roles){
+            const lastDigit = parseInt(response?.data?.roles?.name?.slice(-1));
+            await AsyncStorage.setItem('TIER_NUMBER', lastDigit?.toString());
+          }else{
+            await AsyncStorage.setItem('TIER_NUMBER', '0');
+          }
           await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
           await AsyncStorage.setItem('AUTH_TOKEN', response?.data?.token);
           await AsyncStorage.setItem("MOBILE", mobile);
@@ -186,7 +190,6 @@ const Signin = () => {
       console.log('Error fetching user data:', error);
     }
   };
-
 
   return (
     <ImageBackground

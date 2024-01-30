@@ -89,9 +89,12 @@ const Index = ({ navigation }) => {
                         if (item?.data?.batchPostStatus === 'rejected') {
                             navigation.navigate('RejectedDetail', { item: item?.data });
                         } else {
-                            navigation.navigate('PaidCategory', {
+                            let data = {
                                 item: item?.data,
                                 Notifications: item?.data?.batchPostStatus,
+                            }
+                            navigation.navigate('PaidCategory', {
+                                data: data
                             });
                         }
                     } else if (!response.ok) {

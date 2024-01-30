@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { styles } from './styles';
@@ -18,38 +19,10 @@ import BackButton from '../../Components/BackButton';
 import axios from './../../Utils/axiosConfig';
 const SearchCate = () => {
   const navigation = useNavigation();
-  const [batchlisting, setbatchlisting] = useState([]);
   const [searchBatchlisting, setSearchBatchlisting] = useState();
   const [title, setTitle] = useState('');
   const [Active, setActive] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const config = {
-          method: 'POST',
-          url: `${API_BASE_URL}/BatchListing`,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: JSON.stringify({
-            start_date: '',
-            end_date: '',
-            divCode: '',
-          }),
-        };
-        await axios.request(config)
-        .then(async (response) => {
-          if(response?.data){
-            setbatchlisting(response?.data?.batchList);
-          }
-        });
-      } catch (error) {
-        console.log('An error occurred:', error);
-      }
-    })();
-  }, []);
-
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (title === '') {
@@ -57,16 +30,43 @@ const SearchCate = () => {
     }
   }, [title])
 
+
   const handleSearch = () => {
     if (!title) {
       Alert.alert('Please enter batchCode!');
       return;
     }
+    setLoading(true);
     setActive(true);
-    const filteredRows = batchlisting?.find(
-      item => item?.batchCode?.toLowerCase() === title?.toLowerCase(),
-    );
-    setSearchBatchlisting(filteredRows);
+
+    const data = {};
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${API_BASE_URL}/getBatch/${title}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    };
+    try {
+      axios.request(config)
+        .then(async (response) => {
+          console.log(JSON.stringify(response?.data, null, 2));
+          if (response?.data) {
+            setSearchBatchlisting(response?.data);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setSearchBatchlisting('');
+          setLoading(false);
+          console.log(JSON.stringify(error?.response?.data?.message, null, 2));
+        });
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+    }
   };
 
   const capitalizeFirstLetter = text => {
@@ -75,7 +75,6 @@ const SearchCate = () => {
 
   const SearchRenderItem = item => (
     <View style={{ alignItems: 'center' }}>
-      {console.log('item??? ', item)}
       <LinearGradient
         colors={Colors.gradient_color_Pair}
         style={[styles.gradient_container, styles.flatList_container]}
@@ -166,34 +165,38 @@ const SearchCate = () => {
               </LinearGradient>
             </TouchableOpacity>
           </View>
-          {searchBatchlisting && SearchRenderItem(searchBatchlisting)}
-          {!searchBatchlisting && Active ? (
-            <View style={{ alignSelf: 'center' }}>
-              <LinearGradient
-                colors={Colors.gradient_color_Pair}
-                style={[
-                  {
-                    borderRadius: 20,
-                    borderColor: '#98B1DD',
-                    width: '98%',
-                    paddingVertical: 30,
-                  },
-                ]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}>
-                <Text
-                  style={{
-                    color: Colors.flatlist_color,
-                    fontSize: 20,
-                    fontWeight: '600',
-                    textAlign: 'center',
-                    paddingHorizontal: 25,
-                  }}>
-                  No data found against this batchCode.
-                </Text>
-              </LinearGradient>
-            </View>
-          ) : null}
+          {loading ?
+            <ActivityIndicator size={30} color={Colors.text_Color}/>
+            : <>
+              {searchBatchlisting && SearchRenderItem(searchBatchlisting)}
+              {!searchBatchlisting && Active ? (
+                <View style={{ alignSelf: 'center' }}>
+                  <LinearGradient
+                    colors={Colors.gradient_color_Pair}
+                    style={[
+                      {
+                        borderRadius: 20,
+                        borderColor: '#98B1DD',
+                        width: '98%',
+                        paddingVertical: 30,
+                      },
+                    ]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}>
+                    <Text
+                      style={{
+                        color: Colors.flatlist_color,
+                        fontSize: 20,
+                        fontWeight: '600',
+                        textAlign: 'center',
+                        paddingHorizontal: 25,
+                      }}>
+                      No data found against this batchCode.
+                    </Text>
+                  </LinearGradient>
+                </View>
+              ) : null}
+            </>}
         </ScrollView>
       </ImageBackground>
     </View>

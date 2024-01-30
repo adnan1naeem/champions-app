@@ -19,7 +19,8 @@ import { TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native';
 import CustomButton from '../../Components/CustomButton';
 import axios from './../../Utils/axiosConfig';
-import Image from 'react-native-image-progress';
+import { default as ProgressImage } from 'react-native-image-progress';
+
 const Index = ({ route, navigation }) => {
   const [User_Info, setUser_Info] = useState(route?.params?.userInfo);
   const [avatarName, setAvatarName] = useState('');
@@ -61,9 +62,11 @@ const Index = ({ route, navigation }) => {
           cropping: false,
         });
       }
+      console.log('1');
 
       const fileName = image?.path.substring(image.path.lastIndexOf('/') + 1);
       const data = new FormData();
+      console.log('2');
       data.append('image', {
         uri: image.path || image.sourceURL,
         type: image.mime,
@@ -79,6 +82,7 @@ const Index = ({ route, navigation }) => {
         },
         data: data
       };
+      console.log('3');
       axios.request(config)
         .then(async (response) => {
           if (response?.data) {
@@ -87,21 +91,22 @@ const Index = ({ route, navigation }) => {
           } else {
             Alert.alert('Image upload failed');
           }
+          console.log('4');
           setIsLoading(false);
         })
         .catch((error) => {
+          console.log('5');
           console.log(JSON.stringify(error, null, 2));
         });
 
     } catch (error) {
+      console.log('6');
       if (error.message === 'Network request failed') {
         Alert.alert('Please try again later');
         setIsLoading(false);
 
       }
       console.log('error', error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -154,7 +159,6 @@ const Index = ({ route, navigation }) => {
       source={require('../../Assets/Image/background_image.png')}
       style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <ScrollView>
-
         <View style={{ paddingHorizontal: 10 }}>
           <Header />
           <BackButton navigation={navigation} onPress={() => navigation.navigate('DrawerScreen')} />
@@ -166,9 +170,9 @@ const Index = ({ route, navigation }) => {
               style={{ justifyContent: 'center', alignSelf: 'center', padding: 18 }}>
               <View style={styles.avtarContainer}>
                 {profile_image?.length > 9 ? (
-                  <Image
+                  <ProgressImage
+                  renderIndicator={()=> <ActivityIndicator color={Colors.text_Color} />}
                     source={{ uri: profile_image }}
-                    indicator={<ActivityIndicator color={Colors.text_Color} />}
                     style={{ height: 80, width: 80, borderRadius: 50, overflow: 'hidden' }}
                   />
                 ) : (

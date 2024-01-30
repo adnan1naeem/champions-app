@@ -5,26 +5,24 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Modal from 'react-native-modal'
 import { styles } from './styles'
 
-const TierFlow = ({ data, title }) => {
+const TierFlow = ({ data, title, onPress, selectedValue }) => {
     const [isVisible, setisVisible] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(null);
     const [searchText, setSearchText] = useState('');
 
     const [filteredData, setFilteredData] = useState(data);
 
     useEffect(() => {
-        const filtered = data.filter(item =>
-            item.name.toLowerCase().includes(searchText.toLowerCase())
+        const filtered = data?.filter(item =>
+            item?.name?.toLowerCase().includes(searchText?.toLowerCase())
         );
         setFilteredData(filtered);
     }, [data, searchText]);
 
     const renderItem = ({ item }) => {
         const handlePress = () => {
-            setSelectedValue(item?.name);
+            onPress(item);
             setisVisible(false);
         };
-
         return (
             <TouchableOpacity
                 onPress={handlePress}
@@ -41,6 +39,7 @@ const TierFlow = ({ data, title }) => {
             </TouchableOpacity>
         );
     };
+
     return (
         <View style={styles.container1}>
             <TouchableOpacity onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', }}>
@@ -72,7 +71,7 @@ const TierFlow = ({ data, title }) => {
                     <FlatList
                         data={filteredData}
                         renderItem={renderItem}
-                        keyExtractor={item => item?.id}
+                        keyExtractor={item => item?._id}
                     />
                 </View>
             </Modal>

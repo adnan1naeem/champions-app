@@ -1,11 +1,8 @@
 
 
 // import typography from "native-base/lib/typescript/theme/base/typography";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Colors } from "../../../Utils/Colors";
-let deviceWidth = Dimensions.get("window").width;
-
-
 
 export const styles = StyleSheet.create({
   container: {
