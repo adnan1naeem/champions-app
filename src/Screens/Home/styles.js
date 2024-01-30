@@ -7,6 +7,23 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.blueBackground,
     paddingVertical: 10,
   },
+  emptyMessage: {
+    color: Colors.flatlist_color,
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: 'center',
+    paddingHorizontal: 65,
+  },
+  EmptyContainer: {
+    alignSelf: 'center',
+    marginTop: '8%'
+  },
+  LinerGradiant: {
+    borderRadius: 20,
+    borderColor: '#98B1DD',
+    width: '98%',
+    paddingVertical: 30,
+  },
   Chamiopm_Logo: {
     width: '48%',
     marginTop: 10,
@@ -174,7 +191,8 @@ export const styles = StyleSheet.create({
   },
   dropIcon: {
     color: Colors.text_Color,
-    fontSize: 13,
+    fontSize: 18,
+    paddingHorizontal: 5
   },
   checkIcon: {
     color: Colors.text_Color,

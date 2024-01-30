@@ -4,6 +4,7 @@ import { Colors } from '../../Utils/Colors'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Modal from 'react-native-modal'
 import { styles } from './styles'
+import LinearGradient from 'react-native-linear-gradient'
 
 const TierFlow = ({ data, title, onPress, selectedValue }) => {
     const [isVisible, setisVisible] = useState(false);
@@ -17,6 +18,8 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
         );
         setFilteredData(filtered);
     }, [data, searchText]);
+
+
 
     const renderItem = ({ item }) => {
         const handlePress = () => {
@@ -42,7 +45,7 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
 
     return (
         <View style={styles.container1}>
-            <TouchableOpacity onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', }}>
+            <TouchableOpacity onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{
                     color: Colors.flatlist_color,
                     fontSize: 15,
@@ -68,11 +71,27 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
                             onChangeText={text => setSearchText(text)}
                         />
                     </View>
-                    <FlatList
-                        data={filteredData}
-                        renderItem={renderItem}
-                        keyExtractor={item => item?._id}
-                    />
+                    {filteredData?.length <= 0 ?
+                        <View style={styles.EmptyContainer}>
+                            <LinearGradient
+                                colors={Colors.gradient_color_Pair}
+                                style={styles.LinerGradiant}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}>
+                                <Text
+                                    style={styles.emptyMessage}>
+                                    Sorry, no records found
+                                </Text>
+                            </LinearGradient>
+                        </View>
+                        :
+                        <FlatList
+                            data={filteredData}
+                            renderItem={renderItem}
+                            keyExtractor={item => item?._id}
+                        />
+                    }
+
                 </View>
             </Modal>
         </View>
