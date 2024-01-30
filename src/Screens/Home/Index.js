@@ -307,7 +307,7 @@ const Home = () => {
             if (response?.data?.length === 1) {
               if (tierIs == '3') {
                 setDealerList([...response?.data[0]?.branches[0]?.dealers])
-              } else {
+              } else if(tierIs == '2') {
                 setBranchList([...response?.data[0]?.branches])
               }
             }
