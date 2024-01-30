@@ -31,8 +31,8 @@ import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);// 923029403174 tier 1
-  const [mobile, setMobile] = useState('923474705380');// 923078723475 tier 2
-  const [password, setPassword] = useState('aassddff');// 923016634158 tier 3
+  const [mobile, setMobile] = useState('');// 923078723475 tier 2
+  const [password, setPassword] = useState('');// 923016634158 tier 3
   const [loading, setLoading] = useState(false);// 923474705380 defautl user
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [Internet, setInternet] = useState();
