@@ -70,16 +70,13 @@ const Signin = () => {
     const mobileData = await AsyncStorage.getItem("MOBILE");
     const passwordData = await AsyncStorage.getItem("PASSWORD");
     let errorMessage = null;
-
     setLoading(true);
-
     try {
       const data = {
         mobile: mobile.replace(/ /g, '') || mobileData.replace(/ /g, ''),
         password: password || passwordData,
         deviceToken: deviceToken
       };
-
       const config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -89,18 +86,17 @@ const Signin = () => {
         },
         data: JSON.stringify(data),
       };
-
       const response = await axios.request(config).then(async (response) => {
         if (response?.data) {
-          console.log(JSON.stringify(response?.data, null,2))
-          if(response?.data?.roles){
-            if(response?.data?.roles?.name === "fsm"){
+          console.log(JSON.stringify(response?.data, null, 2))
+          if (response?.data?.roles) {
+            if (response?.data?.roles?.name === "fsm") {
               await AsyncStorage.setItem('TIER_NUMBER', '0');
-            }else{
+            } else {
               const lastDigit = parseInt(response?.data?.roles?.name?.slice(-1));
               await AsyncStorage.setItem('TIER_NUMBER', lastDigit?.toString());
             }
-          }else{
+          } else {
             await AsyncStorage.setItem('TIER_NUMBER', '0');
           }
           await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
@@ -147,14 +143,12 @@ const Signin = () => {
   }, []);
 
 
-  const Bio_unLock = async (id, extra) => {
+  const Bio_unLock = async (navigation, id) => {
+
     try {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
       if (!user || !user.token) {
-        if (extra === "default") {
-          console.log("You need to login first");
-          return;
-        }
+
         Alert.alert("You need to login first");
         return;
       }
@@ -172,6 +166,7 @@ const Signin = () => {
 
           console.log('Biometric result:', biometricResult);
           const { success } = biometricResult;
+          console.log(success);
           if (success) {
             try {
               handleSignIn();
@@ -185,10 +180,12 @@ const Signin = () => {
           console.log('Error in biometric authentication:', error);
         }
       } else {
-        if (extra === "default") {
+        if (id === "default") {
           console.log(`${id} NOT supported`);
+        } else {
+          Alert.alert(`${id} NOT supported`);
         }
-        Alert.alert(`${id} NOT supported`);
+
         return;
       }
     } catch (error) {
