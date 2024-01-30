@@ -48,7 +48,7 @@ const PaidCategory = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    if(route?.params?.tier){
+    if(route?.params?.data?.tier){
       getBatchList();
     }else{
       getDefaultBatchList();

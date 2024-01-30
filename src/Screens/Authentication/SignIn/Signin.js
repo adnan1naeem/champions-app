@@ -92,9 +92,14 @@ const Signin = () => {
 
       const response = await axios.request(config).then(async (response) => {
         if (response?.data) {
+          console.log(JSON.stringify(response?.data, null,2))
           if(response?.data?.roles){
-            const lastDigit = parseInt(response?.data?.roles?.name?.slice(-1));
-            await AsyncStorage.setItem('TIER_NUMBER', lastDigit?.toString());
+            if(response?.data?.roles?.name === "fsm"){
+              await AsyncStorage.setItem('TIER_NUMBER', '0');
+            }else{
+              const lastDigit = parseInt(response?.data?.roles?.name?.slice(-1));
+              await AsyncStorage.setItem('TIER_NUMBER', lastDigit?.toString());
+            }
           }else{
             await AsyncStorage.setItem('TIER_NUMBER', '0');
           }

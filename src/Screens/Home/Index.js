@@ -70,17 +70,17 @@ const Home = () => {
     });
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
-      if (tierIs) {
-        setTier(parseInt(tierIs));
-        getZoneList(tierIs);
-      }else{
-        getBatchListing();
-      }
-    })();
-  }, [])
+  // useEffect(() => {
+  //   (async () => {
+  //     let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+  //     if (tierIs) {
+  //       setTier(parseInt(tierIs));
+  //       getZoneList(tierIs);
+  //     }else{
+  //       getBatchListing();
+  //     }
+  //   })();
+  // }, [])
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -121,7 +121,11 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      getBatchListing();
+      if (tier > 0 && tier < 4) {
+        // getZoneList(tier);
+      }else{
+        getBatchListing();
+      }
       setRefreshing(false);
       if (tier > 0 && tier < 4) {
         setListData(null);
@@ -163,8 +167,17 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getBatchListing();
+    (async () => {
+      let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+      if (tierIs != 0) {
+        setTier(parseInt(tierIs));
+        getZoneList(tierIs);
+      }else{
+        getBatchListing();
+      }
+    })();
   }, [startDate, endDate, selectedValue]);
+  
 
   const getBatchListing = async () => {
     const data = {
