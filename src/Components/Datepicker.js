@@ -6,7 +6,6 @@ import {
   Platform,
   FlatList,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Colors } from '../Utils/Colors';

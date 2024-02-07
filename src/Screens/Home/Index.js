@@ -11,7 +11,6 @@ import {
   Platform,
   BackHandler,
   Linking,
-  ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import React, { useEffect, useState, useRef } from 'react';
@@ -36,7 +35,6 @@ import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
 import TierFlow from './TierFlow';
-import { Branch, Zone } from './Tier';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
@@ -50,6 +48,7 @@ const Home = () => {
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
   const [pending_ammount, setpending_ammount] = useState(0);
+  const [outstanding_ammount, setoutstanding_ammount] = useState(0);
   const [listData, setListData] = useState(0);
   const [category, setCategory] = useState();
   const scrollViewRef = useRef(null);
@@ -59,7 +58,12 @@ const Home = () => {
   const [branchList, setBranchList] = useState([]);
   const [dealerList, setDealerList] = useState([]);
   const [fsmList, setFSMList] = useState([]);
-  const [selectedZone, setSelectZone] = useState("");
+  const [selectedZone, setSelectZone] = useState({
+    "_id": null,
+    "code": null,
+    "name": "All",
+    "dealers": []
+  });
   const [selectedBranch, setSelectBranch] = useState("");
   const [selectedDealer, setSelectDealer] = useState("");
   const [selectedFSM, setSelectFSM] = useState("");
@@ -70,21 +74,18 @@ const Home = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
-  //     if (tierIs) {
-  //       setTier(parseInt(tierIs));
-  //       getZoneList(tierIs);
-  //     }else{
-  //       getBatchListing();
-  //     }
-  //   })();
-  // }, [])
+
+  useEffect(() => {
+    if (selectedZone || selectedBranch || selectedDealer || selectedFSM) {
+      if (parseInt(tier) > 0 && parseInt(tier) < 4) {
+        getBatchLisitingNew();
+      }
+    }
+  }, [selectedZone, selectedBranch, selectedDealer, startDate, endDate]);
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
-      if (!state.isConnected) {
+      if (!state?.isConnected) {
         Alert.alert('Please Check Your Internet Connection!');
         return;
       }
@@ -121,21 +122,19 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      if (tier > 0 && tier < 4) {
-        // getZoneList(tier);
-      }else{
+      if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
+        getBatchLisitingNew();
+      } else {
         getBatchListing();
       }
       setRefreshing(false);
-      if (tier > 0 && tier < 4) {
-        setListData(null);
-        setapproved_ammount(0);
-        setPaid_ammount(0);
-        setpending_ammount(0);
-        setSelectZone('');
+      if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
+        setSelectZone('')
         setSelectBranch('');
         setSelectDealer('');
         setSelectFSM('');
+        setstartDate('');
+        setendDate('');
       }
       setSelectedValue('');
       setstartDate('');
@@ -151,8 +150,8 @@ const Home = () => {
       name: name,
       zone: selectedZone,
       barnch: selectedBranch,
-      start_date: endDate,
-      end_date: startDate,
+      startDate: endDate,
+      endDate: startDate,
       dealer: selectedDealer,
       fsm: selectedFSM
     }
@@ -172,46 +171,46 @@ const Home = () => {
       if (tierIs != 0) {
         setTier(parseInt(tierIs));
         getZoneList(tierIs);
-      }else{
+      } else {
         getBatchListing();
       }
     })();
   }, [startDate, endDate, selectedValue]);
-  
+
 
   const getBatchListing = async () => {
     const data = {
-      start_date: endDate,
-      end_date: startDate,
+      startDate: endDate,
+      endDate: startDate,
       divCode:
         selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
 
     let config = {
-      method: 'GET',
+      method: 'POST',
       maxBodyLength: Infinity,
       url: `${API_BASE_URL}/allBatchesInfo`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data: data
+      data: JSON.stringify(data),
     };
 
     try {
       axios.request(config)
         .then(async (response) => {
+
           if (response?.data) {
             setListData(response?.data);
-            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0);
+            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) || 0);
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
-            setpending_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) || 0);
+            setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
           setLoading(false);
         })
         .catch((error) => {
           console.log(JSON.stringify(error, null, 2));
         });
-
     } catch (error) {
       console.error('Error:', error);
     }
@@ -235,7 +234,7 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: data
+      data: JSON.stringify(data)
     };
 
     try {
@@ -243,9 +242,9 @@ const Home = () => {
         .then(async (response) => {
           if (response?.data) {
             setListData(response?.data);
-            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0);
+            setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) || 0);
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
-            setpending_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) || 0);
+            setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
           setLoading(false);
         })
@@ -262,7 +261,6 @@ const Home = () => {
 
   const getFSMLisiting = () => {
     const data = {};
-
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
@@ -291,7 +289,7 @@ const Home = () => {
   const getZoneList = async (tierIs) => {
     const data = {};
     let config = {
-      method: 'get',
+      method: 'GET',
       maxBodyLength: Infinity,
       url: `${API_BASE_URL}/zones`,
       headers: {
@@ -302,13 +300,42 @@ const Home = () => {
     try {
       axios.request(config)
         .then(async (response) => {
+
           if (response?.data) {
+            response?.data.forEach(zone => {
+              zone.branches.unshift({
+                "_id": null,
+                "code": null,
+                "name": "All",
+                "dealers": []
+              })
+            })
+            response?.data.unshift({
+              branches: [],
+              _id: null,
+              name: 'All',
+              deleted: false
+            })
             setZoneList([...response?.data]);
-            if (response?.data?.length === 1) {
+
+            if (response?.data) {
               if (tierIs == '3') {
-                setDealerList([...response?.data[0]?.branches[0]?.dealers])
-              } else if(tierIs == '2') {
-                setBranchList([...response?.data[0]?.branches])
+                let data = {
+                  _id: null,
+                  name: 'All',
+                  deleted: false
+                }
+                setDealerList([data, ...response?.data[1]?.branches[1]?.dealers])
+              } else if (tierIs == 2) {
+                let branchesData = []
+                response?.data?.forEach(element => {
+                  if (element?.branches) {
+                    element?.branches.forEach((dealers) => {
+                      branchesData.push(dealers);
+                    });
+                  }
+                });
+                setBranchList(branchesData)
               }
             }
           }
@@ -387,35 +414,88 @@ const Home = () => {
     </TouchableOpacity>
   );
 
-  const handleSearch = () => {
-    getBatchLisitingNew();
-  }
+  useEffect(() => {
+    if (parseInt(tier) > 0 && parseInt(tier) < 4
+    ) {
+      getBatchLisitingNew();
+    }
+  }, [tier, startDate, endDate])
 
   useEffect(() => {
     if (selectedZone && zoneList) {
-      const selectdAreas = zoneList?.find(city => city?.name === selectedZone?.name);
-      setBranchList([...selectdAreas?.branches]);
-      setSelectBranch('');
-      setSelectDealer('');
-      setSelectFSM('');
+      if (selectedZone?.name == 'All') {
+        let branchNames = [];
+        zoneList.forEach((item) => {
+          if (item.branches) {
+            item.branches.forEach((branch) => {
+              branchNames.push(branch);
+            });
+          }
+        });
+        const filteredBranches = branchNames.filter((item, index) => {
+          return item.name !== "All" || index === 0;
+        });
+        setBranchList(filteredBranches);
+      }
+      else {
+        const selectdAreas = zoneList?.find(city => city?.name === selectedZone?.name);
+        setBranchList([...selectdAreas?.branches]);
+        setSelectBranch('');
+        setSelectDealer('');
+        setSelectFSM('');
+      }
     }
   }, [selectedZone, zoneList])
 
+
   useEffect(() => {
-    if (selectedBranch) {
-      const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
-      setDealerList([...selectdBranchData?.dealers]);
+    if (selectedBranch && branchList) {
+      if (selectedBranch?.name == 'All') {
+        let dealersdata = []
+        branchList?.forEach(element => {
+          if (element?.dealers) {
+            element?.dealers?.forEach((dealers) => {
+              dealersdata?.push(dealers);
+            });
+          }
+        });
+
+        setDealerList([...dealersdata]);
+      } else {
+        const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
+        let data = {
+          _id: null,
+          name: 'All',
+          deleted: false
+        }
+        setDealerList([data, ...selectdBranchData?.dealers]);
+      }
+      setSelectDealer('');
       setSelectFSM('');
     }
   }, [selectedBranch])
 
   useEffect(() => {
-    if (selectedDealer) {
-      getFSMLisiting();
+    if (selectedDealer && dealerList) {
+      if (selectedDealer?.name == 'All') {
+        let data = {
+          _id: null,
+          name: 'All',
+          deleted: false
+        }
+        setDealerList([data, ...zoneList[1]?.branches[1]?.dealers])
+      } else {
+        getFSMLisiting();
+      }
       setSelectFSM('');
     }
-  }, [selectedDealer])
+  }, [selectedDealer, dealerList])
 
+  useEffect(() => {
+    if (selectedFSM) {
+      getBatchLisitingNew();
+    }
+  }, [selectedFSM])
 
 
   return (
@@ -487,25 +567,24 @@ const Home = () => {
               </View>
             </View>
           </Modal>
-
           <View style={{ alignItems: 'center', marginVertical: 5 }}>
-            <Text style={styles.performance}>RS. {pending_ammount}</Text>
-            <Text style={styles.part}>Total Outstanding</Text>
+            <Text style={styles.performance}>RS. {Paid_ammount.toLocaleString()}</Text>
+            <Text style={styles.part}>Total Paid</Text>
           </View>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              paddingHorizontal: 50,
+              paddingHorizontal: 35,
               marginTop: 5,
             }}>
             <View style={{ alignSelf: 'center' }}>
-              <Text style={styles.performance}>RS. {Paid_ammount}</Text>
-              <Text style={styles.part}>Total Paid</Text>
+              <Text style={styles.performance}>RS. {approved_ammount.toLocaleString()}</Text>
+              <Text style={styles.part}>Total Approved</Text>
             </View>
             <View>
-              <Text style={styles.performance}>RS. {approved_ammount}</Text>
-              <Text style={styles.part}>Total Approved</Text>
+              <Text style={styles.performance}>RS. {outstanding_ammount.toLocaleString()}</Text>
+              <Text style={styles.part}>Total Outstanding</Text>
             </View>
           </View>
           <Image
@@ -551,24 +630,7 @@ const Home = () => {
             onPress={() => handleSubmmit('Rejected Cards', 'rejected')}
           />
           {tier > 0 && tier <= 3 ?
-            <>
-              {
-                loading ? (
-                  <ActivityIndicator style={styles.scan_button} color={Colors.text_Color} />
-                ) : <TouchableOpacity
-                  style={styles.scan_button}
-                  onPress={handleSearch}>
-                  <Ionicons
-                    name="search"
-                    color={Colors.text_Color}
-                    size={16}
-                    fontWeight={'400'}
-                  />
-                  <Text style={styles.scan_text}>Search</Text>
-                </TouchableOpacity>
-              }
-
-            </>
+            null
             : <TouchableOpacity
               style={styles.scan_button}
               onPress={() => {

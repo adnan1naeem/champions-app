@@ -44,10 +44,10 @@ const Index = ({ route, navigation }) => {
   };
 
   const uploadImage = async (camera) => {
-    setIsLoading(true);
+
     try {
       // uri: Platform.OS === 'ios' ? image.sourceURL : image.path,
-
+      setIsLoading(true);
       let image;
       if (camera) {
         image = await ImagePicker.openCamera({
@@ -55,12 +55,14 @@ const Index = ({ route, navigation }) => {
           height: 400,
           cropping: false,
         });
+
       } else {
         image = await ImagePicker.openPicker({
           width: 300,
           height: 300,
           cropping: false,
         });
+
       }
       console.log('1');
 
@@ -90,13 +92,14 @@ const Index = ({ route, navigation }) => {
             await AsyncStorage.setItem('USER', JSON.stringify(response?.data));
           } else {
             Alert.alert('Image upload failed');
+            setIsLoading(false);
           }
           console.log('4');
           setIsLoading(false);
         })
         .catch((error) => {
-          console.log('5');
-          console.log(JSON.stringify(error, null, 2));
+          Alert.alert(JSON.stringify(error?.message)?.replace(/"/g, ''));
+          setIsLoading(false);
         });
 
     } catch (error) {
@@ -107,6 +110,7 @@ const Index = ({ route, navigation }) => {
 
       }
       console.log('error', error.message);
+      setIsLoading(false);
     }
   };
 
@@ -171,7 +175,7 @@ const Index = ({ route, navigation }) => {
               <View style={styles.avtarContainer}>
                 {profile_image?.length > 9 ? (
                   <ProgressImage
-                  renderIndicator={()=> <ActivityIndicator color={Colors.text_Color} />}
+                    renderIndicator={() => <ActivityIndicator color={Colors.text_Color} />}
                     source={{ uri: profile_image }}
                     style={{ height: 80, width: 80, borderRadius: 50, overflow: 'hidden' }}
                   />

@@ -48,9 +48,9 @@ const PaidCategory = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    if(route?.params?.data?.tier){
+    if (route?.params?.data?.tier) {
       getBatchList();
-    }else{
+    } else {
       getDefaultBatchList();
     }
   }, [route])
@@ -61,8 +61,8 @@ const PaidCategory = ({ route, navigation }) => {
     setLoading(true);
     const data = {
       status: route?.params?.data?.name?.toLowerCase(),
-      start_date: route?.params?.data?.start_date,
-      end_date: route?.params?.data?.end_date
+      startDate: route?.params?.data?.startDate,
+      endDate: route?.params?.data?.endDate
     };
     let config = {
       method: 'post',
@@ -106,7 +106,6 @@ const PaidCategory = ({ route, navigation }) => {
 
   const getBatchList = async () => {
     if (!hasMoreData) return;
-
     setLoading(true);
     const data = {
       status: route?.params?.data?.name?.toLowerCase(),
@@ -114,8 +113,8 @@ const PaidCategory = ({ route, navigation }) => {
       branchId: route?.params?.data?.barnch?._id,
       dealerId: route?.params?.data?.dealer?._id,
       fsmId: route?.params?.data?.fsm?._id,
-      start_date: route?.params?.data?.start_date,
-      end_date: route?.params?.data?.end_date
+      startDate: route?.params?.data?.startDate,
+      endDate: route?.params?.data?.endDate
     };
     let config = {
       method: 'post',
@@ -252,20 +251,20 @@ const PaidCategory = ({ route, navigation }) => {
             keyExtractor={item => item?.id}
           />}
         {batches?.length > 0 && hasMoreData && (
-          <CustomButton 
-          onPress={handleLoadMore}
-              ContainerStyle={{
-                paddingVertical: 15,
-                marginVertical: 10,
-                justifyContent: 'center',
-                alignSelf: 'center',
-                height: 50,
-                width: '80%',
-                borderRadius: 15,
-              }}
-              textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
-              title="Load More!"
-              disabled={loading} />
+          <CustomButton
+            onPress={handleLoadMore}
+            ContainerStyle={{
+              paddingVertical: 15,
+              marginVertical: 10,
+              justifyContent: 'center',
+              alignSelf: 'center',
+              height: 50,
+              width: '80%',
+              borderRadius: 15,
+            }}
+            textStyle={{ color: Colors.text_Color, textAlign: 'center' }}
+            title="Load More!"
+            disabled={loading} />
         )}
       </ScrollView>
     </ImageBackground>

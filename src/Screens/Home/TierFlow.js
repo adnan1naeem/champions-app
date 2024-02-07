@@ -1,4 +1,4 @@
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors } from '../../Utils/Colors'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -10,22 +10,25 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
     const [isVisible, setisVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
 
-    const [filteredData, setFilteredData] = useState(data);
+    const [filteredData, setFilteredData] = useState([...data]);
 
     useEffect(() => {
         const filtered = data?.filter(item =>
-            item?.name?.toLowerCase().includes(searchText?.toLowerCase())
+            item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
         );
-        setFilteredData(filtered);
+        setFilteredData([...filtered]);
     }, [data, searchText]);
 
 
 
     const renderItem = ({ item }) => {
+
         const handlePress = () => {
+
             onPress(item);
             setisVisible(false);
         };
+
         return (
             <TouchableOpacity
                 onPress={handlePress}

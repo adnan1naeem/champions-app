@@ -30,9 +30,11 @@ const Scan = ({ navigation }) => {
 
 
   const onSuccess = (e) => {
+    console.log(e);
+    setbarCode(e?.data);
     setScanning(false);
     setScanned(false);
-    setbarCode(e?.data);
+
   };
 
   const handleSubmitForScan = async () => {
@@ -45,8 +47,8 @@ const Scan = ({ navigation }) => {
     let config = {
       method: 'post',
       url: `${API_BASE_URL}/batchScan`,
-      headers: { 
-        'Content-Type': 'application/json', 
+      headers: {
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         code: barCode,
@@ -55,24 +57,28 @@ const Scan = ({ navigation }) => {
 
     try {
       axios.request(config)
-      .then((response) => {
-        if (response.status === 201) {
-          navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
-          setLoading(false);
-        } else if (response.status !== 201) {
-          if (data?.error === 'Server Timeout') {
-            Alert.alert("SAP Server Timeout");
+        .then((response) => {
+          if (response.status === 201) {
+            navigation.replace('Congratulation', { keyName: "scan", message: "Your batch code is sent successfully, We will notify in 24 hours" });
             setLoading(false);
-          } else {
-            Alert.alert(JSON.stringify(data?.message));
-            setLoading(false);
+          } else if (response.status !== 201) {
+            if (data?.error === 'Server Timeout') {
+              Alert.alert("SAP Server Timeout");
+              setLoading(false);
+            } else {
+              Alert.alert(JSON.stringify(data?.message));
+              setLoading(false);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .catch((error) => {
+          console.log("catch1:: ", JSON.stringify(error?.response?.data?.message));
+          Alert.alert(JSON.stringify(error?.response?.data?.message)?.replace(/"/g, ''))
+          console.log(error);
+          setLoading(false);
+        });
     } catch (error) {
+      console.log("catch:: ", JSON.stringify(error?.response?.data));
       if (error.message === 'Network request failed') {
         Alert.alert("Please Try again later")
         setLoading(false);
@@ -231,7 +237,10 @@ const Scan = ({ navigation }) => {
                   height: 400
                 }}
               />
-              : <QRCodeScanner onRead={onSuccess} />}
+              :
+
+              <QRCodeScanner onRead={onSuccess} />
+            }
           </View>
         )}
       </ImageBackground>

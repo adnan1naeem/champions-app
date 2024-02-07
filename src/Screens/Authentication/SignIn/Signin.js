@@ -31,13 +31,14 @@ import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);// 923029403174 tier 1
-  const [mobile, setMobile] = useState('');// 923078723475 tier 2
-  const [password, setPassword] = useState('');// 923016634158 tier 3
+  const [mobile, setMobile] = useState('923029403174');// 923078723475 tier 2
+  const [password, setPassword] = useState('aassddff');// 923016634158 tier 3
   const [loading, setLoading] = useState(false);// 923474705380 defautl user
-  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true); //923029403175
   const [Internet, setInternet] = useState();
   const [deviceToken, setDeviceToken] = useState()
   const [inApp_Bio_Active, setinApp_Bio_Active] = useState(true)
+
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -62,6 +63,7 @@ const Signin = () => {
         // console.log("authStatus:: ", authStatus);
       }
       const Token = await messaging().getToken();
+      console.log("Token:: ", Token);
       setDeviceToken(Token)
     })();
   }, [])
@@ -134,21 +136,19 @@ const Signin = () => {
   useEffect(() => {
     (async () => {
       const status_Bio = await AsyncStorage.getItem("BIOMETRIC");
-      // console.log("active:: ", status_Bio);
+      console.log("active:: ", status_Bio);
       if (status_Bio == 'true' || status_Bio == null) {
         setinApp_Bio_Active(false);
-        Bio_unLock(Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
+        // Bio_unLock(Platform.OS === 'ios' ? "FaceID" : "Biometrics", "default");
       }
     })();
   }, []);
 
 
   const Bio_unLock = async (navigation, id) => {
-
     try {
       const user = JSON.parse(await AsyncStorage.getItem("USER"));
       if (!user || !user.token) {
-
         Alert.alert("You need to login first");
         return;
       }

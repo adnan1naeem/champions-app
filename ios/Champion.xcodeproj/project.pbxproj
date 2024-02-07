@@ -15,7 +15,7 @@
 		7A6C8C280C38CA7E0D459462 /* libPods-Champion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDAD413A780D04F1E0404FB /* libPods-Champion.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FA1E16EF2AF1838D000D462C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1E16EE2AF1838D000D462C /* GoogleService-Info.plist */; };
-		FA3FBC602AEF957A0085D604 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAAC42C02AAAF05800C33BF4 /* main.jsbundle */; };
+		FA91AA7E2B6CEFEC00E6ABA7 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAAC42C02AAAF05800C33BF4 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -251,7 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA3FBC602AEF957A0085D604 /* main.jsbundle in Resources */,
+				FA91AA7E2B6CEFEC00E6ABA7 /* main.jsbundle in Resources */,
 				FA1E16EF2AF1838D000D462C /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
