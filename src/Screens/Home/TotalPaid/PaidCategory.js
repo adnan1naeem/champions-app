@@ -19,7 +19,6 @@ import axios from './../../../Utils/axiosConfig'
 import CustomButton from '../../../Components/CustomButton';
 
 const PaidCategory = ({ route, navigation }) => {
-
   const [batches, setbatches] = useState();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -62,7 +61,8 @@ const PaidCategory = ({ route, navigation }) => {
     const data = {
       status: route?.params?.data?.name?.toLowerCase(),
       startDate: route?.params?.data?.startDate,
-      endDate: route?.params?.data?.endDate
+      endDate: route?.params?.data?.endDate,
+      divCode: route?.params?.data?.divCode
     };
     let config = {
       method: 'post',
@@ -114,7 +114,8 @@ const PaidCategory = ({ route, navigation }) => {
       dealerId: route?.params?.data?.dealer?._id,
       fsmId: route?.params?.data?.fsm?._id,
       startDate: route?.params?.data?.startDate,
-      endDate: route?.params?.data?.endDate
+      endDate: route?.params?.data?.endDate,
+      divCode: route?.params?.data?.divCode
     };
     let config = {
       method: 'post',
@@ -241,6 +242,9 @@ const PaidCategory = ({ route, navigation }) => {
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
           <Text style={styles.part}>{title?.toUpperCase()}</Text>
         </View>
+        {route?.params?.data?.dataCount &&
+          <Text style={styles.pagesText}>{`Pages (${page - 1}/${Math.ceil(route?.params?.data?.dataCount / 25)})`}</Text>
+        }
         {loading ?
           <ActivityIndicator size={30} color={Colors.text_Color} style={{}} />
           :

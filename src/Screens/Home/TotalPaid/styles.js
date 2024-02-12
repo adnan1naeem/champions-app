@@ -52,6 +52,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
   },
+  pagesText: {
+    textAlign:'right',
+    paddingRight: 25,
+    color: Colors.text_Color,
+    fontSize: 12,
+  },
   item: {
     borderWidth: 2,
     borderColor: Colors.text_Color,

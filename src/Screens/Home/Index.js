@@ -47,7 +47,6 @@ const Home = () => {
   const [endDate, setendDate] = useState('');
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
-  const [pending_ammount, setpending_ammount] = useState(0);
   const [outstanding_ammount, setoutstanding_ammount] = useState(0);
   const [listData, setListData] = useState(0);
   const [category, setCategory] = useState();
@@ -58,15 +57,17 @@ const Home = () => {
   const [branchList, setBranchList] = useState([]);
   const [dealerList, setDealerList] = useState([]);
   const [fsmList, setFSMList] = useState([]);
+  const [tierTwoZoneId, setTierTwoZoneId] = useState(null);
+
   const [selectedZone, setSelectZone] = useState({
     "_id": null,
     "code": null,
     "name": "All",
     "dealers": []
   });
-  const [selectedBranch, setSelectBranch] = useState("");
-  const [selectedDealer, setSelectDealer] = useState("");
-  const [selectedFSM, setSelectFSM] = useState("");
+  const [selectedBranch, setSelectBranch] = useState('');
+  const [selectedDealer, setSelectDealer] = useState('');
+  const [selectedFSM, setSelectFSM] = useState('');
 
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -74,14 +75,13 @@ const Home = () => {
     });
   }, []);
 
-
   useEffect(() => {
-    if (selectedZone || selectedBranch || selectedDealer || selectedFSM) {
+    if (startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
       if (parseInt(tier) > 0 && parseInt(tier) < 4) {
         getBatchLisitingNew();
       }
     }
-  }, [selectedZone, selectedBranch, selectedDealer, startDate, endDate]);
+  }, [startDate, endDate, selectedZone, selectedBranch, selectedDealer]);
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -119,19 +119,41 @@ const Home = () => {
     setisVisible(status);
   };
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async() => {
+    let tier = await AsyncStorage.getItem('TIER_NUMBER');
     setRefreshing(true);
     setTimeout(() => {
       if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
-        getBatchLisitingNew();
+        getZoneList(tier);
       } else {
         getBatchListing();
       }
       setRefreshing(false);
       if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
-        setSelectZone('')
-        setSelectBranch('');
-        setSelectDealer('');
+        setSelectZone({
+          "_id": null,
+          "code": null,
+          "name": "All",
+          "dealers": []
+        })
+        if (tier == '2') {
+          setSelectBranch({
+            _id: null,
+            name: 'All',
+            deleted: false
+          });
+        } else {
+          setSelectBranch('');
+        }
+        if (tier == '3') {
+          setSelectDealer({
+            _id: null,
+            name: 'All',
+            deleted: false
+          });
+        } else {
+          setSelectDealer('');
+        }
         setSelectFSM('');
         setstartDate('');
         setendDate('');
@@ -143,17 +165,31 @@ const Home = () => {
   }, []);
 
   const handleSubmmit = (status, name) => {
+    let dataCount = []
+    if (name == "paid") {
+      dataCount = listData?.paid?.count
+    } else if (name == "approved") {
+      dataCount = listData?.approved?.count
+    } else if (name == "verified") {
+      dataCount = listData?.verified?.count
+    } else if (name == "pending") {
+      dataCount = listData?.pending?.count
+    } else if (name == "rejected") {
+      dataCount = listData?.rejected?.count
+    }
     let data = {
       tier: tier > 0 && tier <= 3,
       status: status,
       list: listData,
+      dataCount: dataCount,
       name: name,
       zone: selectedZone,
       barnch: selectedBranch,
       startDate: endDate,
       endDate: startDate,
       dealer: selectedDealer,
-      fsm: selectedFSM
+      fsm: selectedFSM,
+      divCode: selectedValue?.categoryCode
     }
     navigation.navigate('PaidCategory', {
       data: data
@@ -171,12 +207,18 @@ const Home = () => {
       if (tierIs != 0) {
         setTier(parseInt(tierIs));
         getZoneList(tierIs);
+        if (tierIs == '2') {
+          setSelectBranch({
+            _id: null,
+            name: 'All',
+            deleted: false
+          });
+        }
       } else {
         getBatchListing();
       }
     })();
-  }, [startDate, endDate, selectedValue]);
-
+  }, [selectedValue]);
 
   const getBatchListing = async () => {
     const data = {
@@ -199,7 +241,6 @@ const Home = () => {
     try {
       axios.request(config)
         .then(async (response) => {
-
           if (response?.data) {
             setListData(response?.data);
             setapproved_ammount(parseInt(response?.data?.approved?.totalIncentiveAmount) || 0);
@@ -216,15 +257,17 @@ const Home = () => {
     }
   };
 
-  const getBatchLisitingNew = () => {
+  const getBatchLisitingNew = (zoneId = null) => {
     setLoading(true);
     const data = {
       startDate: endDate,
       endDate: startDate,
-      zoneId: selectedZone?._id || null,
+      zoneId: selectedZone?._id || tierTwoZoneId || zoneId || null,
       branchId: selectedBranch?._id || null,
       dealerId: selectedDealer?._id || null,
       fsmId: selectedFSM?._id || null,
+      divCode:
+        selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
 
     let config = {
@@ -236,7 +279,6 @@ const Home = () => {
       },
       data: JSON.stringify(data)
     };
-
     try {
       axios.request(config)
         .then(async (response) => {
@@ -274,7 +316,12 @@ const Home = () => {
       axios.request(config)
         .then(async (response) => {
           if (response?.data) {
-            setFSMList([...response?.data]);
+            let newIndex = {
+              _id: null,
+              name: 'All',
+              deleted: false
+            }
+            setFSMList([newIndex, ...response?.data]);
           }
         })
         .catch((error) => {
@@ -300,43 +347,53 @@ const Home = () => {
     try {
       axios.request(config)
         .then(async (response) => {
-
           if (response?.data) {
-            response?.data.forEach(zone => {
-              zone.branches.unshift({
-                "_id": null,
-                "code": null,
-                "name": "All",
-                "dealers": []
+            if (tierIs == '1') {
+              getBatchLisitingNew();
+              response?.data.forEach(zone => {
+                zone.branches.unshift({
+                  "_id": null,
+                  "code": null,
+                  "name": "All",
+                  "dealers": []
+                })
               })
-            })
-            response?.data.unshift({
-              branches: [],
-              _id: null,
-              name: 'All',
-              deleted: false
-            })
-            setZoneList([...response?.data]);
+              response?.data.unshift({
+                branches: [],
+                _id: null,
+                name: 'All',
+                deleted: false
+              })
+              setZoneList([...response?.data]);
+            }
+            if (tierIs == '3') {
+              getBatchLisitingNew();
 
-            if (response?.data) {
-              if (tierIs == '3') {
-                let data = {
-                  _id: null,
-                  name: 'All',
-                  deleted: false
+              response?.data[0]?.branches[0]?.dealers?.unshift({
+                branches: [],
+                _id: null,
+                name: 'All',
+                deleted: false
+              })
+              setDealerList([data, ...response?.data[0]?.branches[0]?.dealers])
+            } else if (tierIs == 2) {
+              let branchesData = []
+              response?.data?.forEach(element => {
+                if (element?.branches) {
+                  element?.branches.forEach((dealers) => {
+                    branchesData.push(dealers);
+                  });
                 }
-                setDealerList([data, ...response?.data[1]?.branches[1]?.dealers])
-              } else if (tierIs == 2) {
-                let branchesData = []
-                response?.data?.forEach(element => {
-                  if (element?.branches) {
-                    element?.branches.forEach((dealers) => {
-                      branchesData.push(dealers);
-                    });
-                  }
-                });
-                setBranchList(branchesData)
+              });
+              let newIndex = {
+                _id: null,
+                name: 'All',
+                deleted: false
               }
+              getBatchLisitingNew(response?.data[0]?._id);
+              setTierTwoZoneId(response?.data[0]?._id);
+              console.log(JSON.stringify(response?.data[0]?._id, null, 2))
+              setBranchList([newIndex, ...branchesData])
             }
           }
         })
@@ -415,13 +472,6 @@ const Home = () => {
   );
 
   useEffect(() => {
-    if (parseInt(tier) > 0 && parseInt(tier) < 4
-    ) {
-      getBatchLisitingNew();
-    }
-  }, [tier, startDate, endDate])
-
-  useEffect(() => {
     if (selectedZone && zoneList) {
       if (selectedZone?.name == 'All') {
         let branchNames = [];
@@ -447,20 +497,10 @@ const Home = () => {
     }
   }, [selectedZone, zoneList])
 
-
   useEffect(() => {
     if (selectedBranch && branchList) {
       if (selectedBranch?.name == 'All') {
-        let dealersdata = []
-        branchList?.forEach(element => {
-          if (element?.dealers) {
-            element?.dealers?.forEach((dealers) => {
-              dealersdata?.push(dealers);
-            });
-          }
-        });
-
-        setDealerList([...dealersdata]);
+        setDealerList([]);
       } else {
         const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
         let data = {
@@ -468,6 +508,7 @@ const Home = () => {
           name: 'All',
           deleted: false
         }
+        getBatchLisitingNew();
         setDealerList([data, ...selectdBranchData?.dealers]);
       }
       setSelectDealer('');
@@ -478,12 +519,7 @@ const Home = () => {
   useEffect(() => {
     if (selectedDealer && dealerList) {
       if (selectedDealer?.name == 'All') {
-        let data = {
-          _id: null,
-          name: 'All',
-          deleted: false
-        }
-        setDealerList([data, ...zoneList[1]?.branches[1]?.dealers])
+        setFSMList([]);
       } else {
         getFSMLisiting();
       }

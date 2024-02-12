@@ -31,10 +31,10 @@ import axios from './../../../Utils/axiosConfig'
 
 const Signin = () => {
   const [isChecked, setIsChecked] = useState(false);// 923029403174 tier 1
-  const [mobile, setMobile] = useState('923029403174');// 923078723475 tier 2
-  const [password, setPassword] = useState('aassddff');// 923016634158 tier 3
+  const [mobile, setMobile] = useState('');// 923078723475 tier 2
+  const [password, setPassword] = useState('');// 923016634158 tier 3
   const [loading, setLoading] = useState(false);// 923474705380 defautl user
-  const [isPasswordSecure, setIsPasswordSecure] = useState(true); //923029403175
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true); //923029403175 by default
   const [Internet, setInternet] = useState();
   const [deviceToken, setDeviceToken] = useState()
   const [inApp_Bio_Active, setinApp_Bio_Active] = useState(true)
@@ -185,7 +185,6 @@ const Signin = () => {
         } else {
           Alert.alert(`${id} NOT supported`);
         }
-
         return;
       }
     } catch (error) {

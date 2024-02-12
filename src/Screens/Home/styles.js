@@ -186,6 +186,7 @@ export const styles = StyleSheet.create({
     fontSize: 25,
   },
   selectedValue: {
+    flex:1,
     paddingHorizontal: 10,
     color: Colors.text_Color
   },
