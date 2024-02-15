@@ -76,6 +76,12 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    if (Platform.OS === 'ios') {
+      getBatchLisitingNew();
+    }
+  }, [])
+
+  useEffect(() => {
     if (startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
       if (parseInt(tier) > 0 && parseInt(tier) < 4) {
         getBatchLisitingNew();
@@ -119,7 +125,7 @@ const Home = () => {
     setisVisible(status);
   };
 
-  const onRefresh = React.useCallback(async() => {
+  const onRefresh = React.useCallback(async () => {
     let tier = await AsyncStorage.getItem('TIER_NUMBER');
     setRefreshing(true);
     setTimeout(() => {
@@ -302,7 +308,6 @@ const Home = () => {
   }
 
   const getFSMLisiting = () => {
-    const data = {};
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
@@ -310,7 +315,6 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: data
     };
     try {
       axios.request(config)
@@ -342,13 +346,12 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: data
     };
     try {
       axios.request(config)
         .then(async (response) => {
           if (response?.data) {
-            if (tierIs == '1') {
+            if (tierIs == 1) {
               getBatchLisitingNew();
               response?.data.forEach(zone => {
                 zone.branches.unshift({
