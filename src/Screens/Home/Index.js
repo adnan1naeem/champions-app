@@ -29,7 +29,7 @@ import {
   androidVersion,
   iosVersion,
 } from '../../../Constants';
-import axios from './../../Utils/axiosConfig'
+import axios from '../../Utils/axiosConfig'
 import NetInfo from '@react-native-community/netinfo';
 import checkVersion from 'react-native-store-version';
 import CustomButton from '../../Components/CustomButton';
@@ -50,7 +50,6 @@ const Home = () => {
   const [outstanding_ammount, setoutstanding_ammount] = useState(0);
   const [listData, setListData] = useState(0);
   const [category, setCategory] = useState();
-  const scrollViewRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
   const [tier, setTier] = useState(0);
   const [zoneList, setZoneList] = useState([]);
@@ -58,16 +57,39 @@ const Home = () => {
   const [dealerList, setDealerList] = useState([]);
   const [fsmList, setFSMList] = useState([]);
   const [tierTwoZoneId, setTierTwoZoneId] = useState(null);
+  const [defaultZone, setDefaultZone] = useState("");
+  const [defaultBranch, setDefaultBranch] = useState("");
 
-  const [selectedZone, setSelectZone] = useState({
-    "_id": null,
-    "code": null,
-    "name": "All",
-    "dealers": []
-  });
+  const scrollViewRef = useRef(null);
+  const prevSelectedZoneRef = useRef();
+  const prevSelectedBranchRef = useRef();
+  const prevSelectedDealerRef = useRef();
+
+  const [selectedZone, setSelectZone] = useState();
   const [selectedBranch, setSelectBranch] = useState('');
   const [selectedDealer, setSelectDealer] = useState('');
   const [selectedFSM, setSelectFSM] = useState('');
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Exit App', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -126,47 +148,14 @@ const Home = () => {
   };
 
   const onRefresh = React.useCallback(async () => {
-    let tier = await AsyncStorage.getItem('TIER_NUMBER');
     setRefreshing(true);
     setTimeout(() => {
-      if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
-        getZoneList(tier);
-      } else {
-        getBatchListing();
-      }
+      // if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
+      //   getZoneList(tier);
+      // } else {
+      //   getBatchListing();
+      // }
       setRefreshing(false);
-      if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
-        setSelectZone({
-          "_id": null,
-          "code": null,
-          "name": "All",
-          "dealers": []
-        })
-        if (tier == '2') {
-          setSelectBranch({
-            _id: null,
-            name: 'All',
-            deleted: false
-          });
-        } else {
-          setSelectBranch('');
-        }
-        if (tier == '3') {
-          setSelectDealer({
-            _id: null,
-            name: 'All',
-            deleted: false
-          });
-        } else {
-          setSelectDealer('');
-        }
-        setSelectFSM('');
-        setstartDate('');
-        setendDate('');
-      }
-      setSelectedValue('');
-      setstartDate('');
-      setendDate('');
     }, 1000);
   }, []);
 
@@ -213,18 +202,23 @@ const Home = () => {
       if (tierIs != 0) {
         setTier(parseInt(tierIs));
         getZoneList(tierIs);
-        if (tierIs == '2') {
-          setSelectBranch({
-            _id: null,
-            name: 'All',
-            deleted: false
-          });
-        }
       } else {
         getBatchListing();
       }
     })();
-  }, [selectedValue]);
+  }, []);
+
+  const setProductCategory = async (item) => {
+    setSelectedValue(item);
+    setModalVisible(false);
+    let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+    if (tierIs != 0) {
+      setTier(parseInt(tierIs));
+      getZoneList(tierIs, "category");
+    } else {
+      getBatchListing();
+    }
+  }
 
   const getBatchListing = async () => {
     const data = {
@@ -371,7 +365,8 @@ const Home = () => {
             }
             if (tierIs == '3') {
               getBatchLisitingNew();
-
+              setDefaultZone(response?.data[0]?.name);
+              setDefaultBranch(response?.data[0]?.branches[0]?.name);
               response?.data[0]?.branches[0]?.dealers?.unshift({
                 branches: [],
                 _id: null,
@@ -380,6 +375,7 @@ const Home = () => {
               })
               setDealerList([data, ...response?.data[0]?.branches[0]?.dealers])
             } else if (tierIs == 2) {
+              setDefaultZone(response?.data[0]?.name);
               let branchesData = []
               response?.data?.forEach(element => {
                 if (element?.branches) {
@@ -395,7 +391,6 @@ const Home = () => {
               }
               getBatchLisitingNew(response?.data[0]?._id);
               setTierTwoZoneId(response?.data[0]?._id);
-              console.log(JSON.stringify(response?.data[0]?._id, null, 2))
               setBranchList([newIndex, ...branchesData])
             }
           }
@@ -458,8 +453,7 @@ const Home = () => {
   const renderDropdownItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        setSelectedValue(item);
-        setModalVisible(false);
+        setProductCategory(item);
       }}
       style={styles.dropdownItem}>
       <Text style={[styles.dropdownItemText, { color: Colors.text_Color }]}>
@@ -489,13 +483,22 @@ const Home = () => {
           return item.name !== "All" || index === 0;
         });
         setBranchList(filteredBranches);
+        if (selectedZone !== prevSelectedZoneRef.current) {
+          setSelectBranch('');
+          setSelectDealer('');
+          setSelectFSM('');
+          prevSelectedZoneRef.current = selectedZone;
+        }
       }
       else {
         const selectdAreas = zoneList?.find(city => city?.name === selectedZone?.name);
         setBranchList([...selectdAreas?.branches]);
-        setSelectBranch('');
-        setSelectDealer('');
-        setSelectFSM('');
+        if (selectedZone !== prevSelectedZoneRef.current) {
+          setSelectBranch('');
+          setSelectDealer('');
+          setSelectFSM('');
+          prevSelectedZoneRef.current = selectedZone;
+        }
       }
     }
   }, [selectedZone, zoneList])
@@ -504,6 +507,11 @@ const Home = () => {
     if (selectedBranch && branchList) {
       if (selectedBranch?.name == 'All') {
         setDealerList([]);
+        if (selectedBranch !== prevSelectedBranchRef.current) {
+          setSelectDealer('');
+          setSelectFSM('');
+          prevSelectedBranchRef.current = selectedBranch;
+        }
       } else {
         const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
         let data = {
@@ -514,19 +522,29 @@ const Home = () => {
         getBatchLisitingNew();
         setDealerList([data, ...selectdBranchData?.dealers]);
       }
-      setSelectDealer('');
-      setSelectFSM('');
+      if (selectedBranch !== prevSelectedBranchRef.current) {
+        setSelectDealer('');
+        setSelectFSM('');
+        prevSelectedBranchRef.current = selectedBranch;
+      }
     }
   }, [selectedBranch])
 
   useEffect(() => {
     if (selectedDealer && dealerList) {
       if (selectedDealer?.name == 'All') {
+        if (selectedDealer !== prevSelectedDealerRef.current) {
+          setSelectFSM('');
+          prevSelectedDealerRef.current = selectedDealer;
+        }
         setFSMList([]);
       } else {
         getFSMLisiting();
       }
-      setSelectFSM('');
+      if (selectedDealer !== prevSelectedDealerRef.current) {
+        setSelectFSM('');
+        prevSelectedDealerRef.current = selectedDealer;
+      }
     }
   }, [selectedDealer, dealerList])
 
@@ -633,39 +651,39 @@ const Home = () => {
           />
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
-              {tier === 1 && <TierFlow title={"Zone"} data={zoneList} onPress={setSelectZone} selectedValue={selectedZone?.name} />}
-              {(tier === 1 || tier === 2) && <TierFlow title={"Branch"} data={branchList} onPress={setSelectBranch} selectedValue={selectedBranch?.name} />}
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={dealerList} onPress={setSelectDealer} selectedValue={selectedDealer?.name} />}
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={fsmList} onPress={setSelectFSM} selectedValue={selectedFSM?.name} />}
+              <TierFlow title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone?.name} disabled={tier == 2 || tier == 3 ? true : false} />
+              <TierFlow title={"Branch"} data={branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch?.name} disabled={tier == 3 ? true : false} />
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={dealerList} onPress={setSelectDealer} selectedVal={selectedDealer?.name} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={fsmList} onPress={setSelectFSM} selectedVal={selectedFSM?.name} />}
             </View>}
           <CardsButton
             disabled={listData?.hasOwnProperty("paid") ? listData?.paid?.count <= 0 : true}
             status={'Paid Cards'}
-            value={listData?.paid?.count || 0}
+            value={listData?.paid?.count?.toLocaleString() || 0}
             onPress={() => handleSubmmit('Paid Cards', 'paid')}
           />
           <CardsButton
             disabled={listData?.hasOwnProperty("approved") ? listData?.approved?.count <= 0 : true}
             status={'Approved Cards'}
-            value={listData?.approved?.count || 0}
+            value={listData?.approved?.count?.toLocaleString() || 0}
             onPress={() => handleSubmmit('Approved Cards', 'approved')}
           />
           <CardsButton
             disabled={listData?.hasOwnProperty("verified") ? listData?.verified?.count <= 0 : true}
             status={'Verified Cards'}
-            value={listData?.verified?.count || 0}
+            value={listData?.verified?.count?.toLocaleString() || 0}
             onPress={() => handleSubmmit('Verified Cards', 'verified')}
           />
           <CardsButton
             disabled={listData?.hasOwnProperty("pending") ? listData?.pending?.count <= 0 : true}
             status={'Pending Cards'}
-            value={listData?.pending?.count || 0}
+            value={listData?.pending?.count?.toLocaleString() || 0}
             onPress={() => handleSubmmit('Pending Cards', 'pending')}
           />
           <CardsButton
             disabled={listData?.hasOwnProperty("rejected") ? listData?.rejected?.count <= 0 : true}
             status={'Rejected Cards'}
-            value={listData?.rejected?.count || 0}
+            value={listData?.rejected?.count?.toLocaleString() || 0}
             onPress={() => handleSubmmit('Rejected Cards', 'rejected')}
           />
           {tier > 0 && tier <= 3 ?

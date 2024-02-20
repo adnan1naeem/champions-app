@@ -6,7 +6,7 @@ import Modal from 'react-native-modal'
 import { styles } from './styles'
 import LinearGradient from 'react-native-linear-gradient'
 
-const TierFlow = ({ data, title, onPress, selectedValue }) => {
+const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
     const [isVisible, setisVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
 
@@ -36,7 +36,7 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
                 <Text style={styles.UpdateHeading1}>
                     {item?.name}
                 </Text>
-                {selectedValue === item?.name && (
+                {selectedVal === item?.name && (
                     <Entypo
                         name="check"
                         style={styles.checkIcon}
@@ -48,7 +48,8 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
 
     return (
         <View style={styles.container1}>
-            <TouchableOpacity onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity disabled={disabled}
+                onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{
                     color: Colors.flatlist_color,
                     fontSize: 15,
@@ -58,7 +59,7 @@ const TierFlow = ({ data, title, onPress, selectedValue }) => {
                     name={'chevron-down'}
                     style={styles.dropIcon}
                 />
-                <Text style={styles.selectedValue}>{selectedValue}</Text>
+                <Text style={styles.selectedValue}>{selectedVal || "All"}</Text>
             </TouchableOpacity>
 
             <Modal visible={isVisible} transparent animationType="slide">
