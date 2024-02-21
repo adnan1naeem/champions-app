@@ -112,6 +112,17 @@ const DrawerScreen = () => {
     navigation.navigate('Fsm_Policy');
   };
 
+  const confirmationAlert = text => {
+    Alert.alert('SignOut Alert', 'Are you sure you want to Sign Out?', [
+      {
+        text: 'No',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      { text: 'Yes', onPress: () => SignOut() },
+    ]);
+  };
+
   return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
@@ -327,7 +338,7 @@ const DrawerScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => SignOut()}
+          onPress={confirmationAlert}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

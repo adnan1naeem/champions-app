@@ -41,7 +41,6 @@ const Home = () => {
   const navigation = useNavigation();
   const [isVisible, setisVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [startDate, setstartDate] = useState('');
   const [endDate, setendDate] = useState('');
@@ -247,7 +246,7 @@ const Home = () => {
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
             setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
-          setLoading(false);
+           
         })
         .catch((error) => {
           console.log(JSON.stringify(error, null, 2));
@@ -258,7 +257,6 @@ const Home = () => {
   };
 
   const getBatchLisitingNew = (zoneId = null) => {
-    setLoading(true);
     const data = {
       startDate: endDate,
       endDate: startDate,
@@ -288,15 +286,15 @@ const Home = () => {
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
             setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
-          setLoading(false);
+           
         })
         .catch((error) => {
-          setLoading(false);
+           
           console.error('Error is:', error);
           setListData(null);
         });
     } catch (error) {
-      setLoading(false);
+       
       console.error('Error:', error);
     }
   }
@@ -601,7 +599,7 @@ const Home = () => {
             </View>
             <View>
               <Datepicker
-                refreshState={refreshing}
+                refreshState={false}
                 onDateSelect={handleDateSelect}
               />
             </View>
