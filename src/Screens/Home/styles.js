@@ -149,8 +149,6 @@ export const styles = StyleSheet.create({
     width: '98%',
     paddingVertical: 15,
     borderRadius: 15,
-    height: 300
-
   },
   UpdateHeading1: {
     fontWeight: 'bold',

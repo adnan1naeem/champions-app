@@ -9,32 +9,35 @@ import LinearGradient from 'react-native-linear-gradient'
 const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
     const [isVisible, setisVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
-
     const [filteredData, setFilteredData] = useState([...data]);
 
     useEffect(() => {
-        const filtered = data?.filter(item =>
-            item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
-        );
+        let filtered = [];
+        if (title === "Branch") {
+            filtered = data?.filter(item =>
+                item?.code?.toLowerCase()?.includes(searchText?.toLowerCase())
+            );
+        } else {
+            filtered = data?.filter(item =>
+                item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+            );
+        }
         setFilteredData([...filtered]);
     }, [data, searchText]);
 
-
-
     const renderItem = ({ item }) => {
-
         const handlePress = () => {
-
             onPress(item);
             setisVisible(false);
         };
+        let name = title === "Branch" ? item?.code : item?.name;
 
         return (
             <TouchableOpacity
                 onPress={handlePress}
                 style={styles.dropdownItem1}>
                 <Text style={styles.UpdateHeading1}>
-                    {item?.name}
+                    {name}
                 </Text>
                 {selectedVal === item?.name && (
                     <Entypo
@@ -46,10 +49,15 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
         );
     };
 
+    const backHandler = () => {
+        setisVisible(!isVisible)
+        setSearchText("")
+    }
+
     return (
         <View style={styles.container1}>
             <TouchableOpacity disabled={disabled}
-                onPress={() => setisVisible(!isVisible)} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                onPress={backHandler} style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{
                     color: Colors.flatlist_color,
                     fontSize: 15,
@@ -63,18 +71,18 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
             </TouchableOpacity>
 
             <Modal visible={isVisible} transparent animationType="slide">
-                <View style={styles.modalContainer1}>
-                    <View style={{ alignItems: 'flex-end', }}>
-                        <TouchableOpacity onPress={() => setisVisible(!isVisible)}>
-                            <Entypo name="cross" style={styles.crossIcon} />
-                        </TouchableOpacity>
+                <View style={[styles.modalContainer1, { height: data?.length > 0 ? 300 : 180 }]}>
+                    <TouchableOpacity style={{ alignItems: 'flex-end', }} onPress={backHandler}>
+                        <Entypo name="cross" style={styles.crossIcon} />
+                    </TouchableOpacity>
+                    {data?.length > 0 && <View style={{ alignItems: 'flex-end', }}>
                         <TextInput
                             placeholder="Search..."
                             style={styles.input}
                             value={searchText}
                             onChangeText={text => setSearchText(text)}
                         />
-                    </View>
+                    </View>}
                     {filteredData?.length <= 0 ?
                         <View style={styles.EmptyContainer}>
                             <LinearGradient
@@ -88,12 +96,13 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
                                 </Text>
                             </LinearGradient>
                         </View>
-                        :
-                        <FlatList
-                            data={filteredData}
-                            renderItem={renderItem}
-                            keyExtractor={item => item?._id}
-                        />
+                        : <>
+                            <FlatList
+                                data={filteredData}
+                                renderItem={renderItem}
+                                keyExtractor={item => item?._id}
+                            />
+                        </>
                     }
 
                 </View>

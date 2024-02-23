@@ -14,7 +14,7 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 
 
-const Datepicker = ({ onDateSelect, refreshState }) => {
+const Datepicker = ({ onDateSelect, refreshState, setDefaultDateFun }) => {
 
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
@@ -45,11 +45,13 @@ const Datepicker = ({ onDateSelect, refreshState }) => {
     if (value === 'Default') {
       setModalVisible(false);
       setSelectedOption("Date");
+      setDefaultDateFun(true);
       return;
     } else if (value === '1 Week') {
       const today = new Date();
       const oneWeekLater = new Date(today);
       oneWeekLater.setDate(today?.getDate() - 7);
+      setDefaultDateFun(false);
       setStartDate(today);
       setEndDate(oneWeekLater);
       setModalVisible(false);
@@ -59,6 +61,8 @@ const Datepicker = ({ onDateSelect, refreshState }) => {
       const today = new Date();
       const twoWeeksLater = new Date(today);
       twoWeeksLater.setDate(today?.getDate() - 14);
+      setDefaultDateFun(false);
+
       setStartDate(today);
       setEndDate(twoWeeksLater);
       setModalVisible(false);
@@ -67,6 +71,8 @@ const Datepicker = ({ onDateSelect, refreshState }) => {
     } else if (value === '1 Month') {
       const today = new Date();
       const oneMonthAgo = moment(today)?.subtract(1, 'months')?.toDate();
+      setDefaultDateFun(false);
+
       setStartDate(today);
       setEndDate(oneMonthAgo);
       setModalVisible(false);
@@ -75,6 +81,8 @@ const Datepicker = ({ onDateSelect, refreshState }) => {
     } else if (value === '1 Year') {
       const today = new Date();
       const oneYearAgo = moment(today)?.subtract(1, 'years')?.toDate();
+      setDefaultDateFun(false);
+
       setStartDate(today);
       setEndDate(oneYearAgo);
       setModalVisible(false);

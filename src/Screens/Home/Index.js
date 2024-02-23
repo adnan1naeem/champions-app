@@ -50,6 +50,7 @@ const Home = () => {
   const [listData, setListData] = useState(0);
   const [category, setCategory] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [defaultDate, setDefaultDate] = useState(false);
   const [tier, setTier] = useState(0);
   const [zoneList, setZoneList] = useState([]);
   const [branchList, setBranchList] = useState([]);
@@ -103,12 +104,12 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    if (startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
+    if (defaultDate || startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
       if (parseInt(tier) > 0 && parseInt(tier) < 4) {
         getBatchLisitingNew();
       }
     }
-  }, [startDate, endDate, selectedZone, selectedBranch, selectedDealer]);
+  }, [defaultDate, startDate, endDate, selectedZone, selectedBranch, selectedDealer]);
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -191,6 +192,7 @@ const Home = () => {
   };
 
   const handleDateSelect = (start, end) => {
+    console.log(start);
     setstartDate(start);
     setendDate(end);
   };
@@ -213,7 +215,7 @@ const Home = () => {
     let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
     if (tierIs != 0) {
       setTier(parseInt(tierIs));
-      getZoneList(tierIs, "category");
+      getBatchLisitingNew("", item?.categoryCode);
     } else {
       getBatchListing();
     }
@@ -246,7 +248,7 @@ const Home = () => {
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
             setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
-           
+
         })
         .catch((error) => {
           console.log(JSON.stringify(error, null, 2));
@@ -256,7 +258,7 @@ const Home = () => {
     }
   };
 
-  const getBatchLisitingNew = (zoneId = null) => {
+  const getBatchLisitingNew = (zoneId = null, categoryItem = null) => {
     const data = {
       startDate: endDate,
       endDate: startDate,
@@ -265,7 +267,7 @@ const Home = () => {
       dealerId: selectedDealer?._id || null,
       fsmId: selectedFSM?._id || null,
       divCode:
-        selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
+      categoryItem ? categoryItem : selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
 
     let config = {
@@ -286,15 +288,15 @@ const Home = () => {
             setPaid_ammount(parseInt(response?.data?.paid?.totalIncentiveAmount) || 0);
             setoutstanding_ammount(parseInt(response?.data?.pending?.totalIncentiveAmount) + parseInt(response?.data?.verified?.totalIncentiveAmount) || 0)
           }
-           
+
         })
         .catch((error) => {
-           
+
           console.error('Error is:', error);
           setListData(null);
         });
     } catch (error) {
-       
+
       console.error('Error:', error);
     }
   }
@@ -348,7 +350,7 @@ const Home = () => {
               response?.data.forEach(zone => {
                 zone.branches.unshift({
                   "_id": null,
-                  "code": null,
+                  "code": "All",
                   "name": "All",
                   "dealers": []
                 })
@@ -356,6 +358,7 @@ const Home = () => {
               response?.data.unshift({
                 branches: [],
                 _id: null,
+                code: "All",
                 name: 'All',
                 deleted: false
               })
@@ -364,7 +367,7 @@ const Home = () => {
             if (tierIs == '3') {
               getBatchLisitingNew();
               setDefaultZone(response?.data[0]?.name);
-              setDefaultBranch(response?.data[0]?.branches[0]?.name);
+              setDefaultBranch(response?.data[0]?.branches[0]?.code);
               response?.data[0]?.branches[0]?.dealers?.unshift({
                 branches: [],
                 _id: null,
@@ -385,6 +388,7 @@ const Home = () => {
               let newIndex = {
                 _id: null,
                 name: 'All',
+                code: 'All',
                 deleted: false
               }
               getBatchLisitingNew(response?.data[0]?._id);
@@ -552,7 +556,6 @@ const Home = () => {
     }
   }, [selectedFSM])
 
-
   return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
@@ -600,6 +603,10 @@ const Home = () => {
             <View>
               <Datepicker
                 refreshState={false}
+                setDefaultDateFun={(value) => {
+                  setDefaultDate(value);
+                  handleDateSelect("", "")
+                }}
                 onDateSelect={handleDateSelect}
               />
             </View>
@@ -650,9 +657,9 @@ const Home = () => {
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
               <TierFlow title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone?.name} disabled={tier == 2 || tier == 3 ? true : false} />
-              <TierFlow title={"Branch"} data={branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch?.name} disabled={tier == 3 ? true : false} />
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={dealerList} onPress={setSelectDealer} selectedVal={selectedDealer?.name} />}
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={fsmList} onPress={setSelectFSM} selectedVal={selectedFSM?.name} />}
+              <TierFlow title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch?.code} disabled={tier == 3 ? true : false} />
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={selectedZone?.name === "All" ? [] : dealerList} onPress={setSelectDealer} selectedVal={selectedDealer?.name} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={selectedZone?.name === "All" ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM?.name} />}
             </View>}
           <CardsButton
             disabled={listData?.hasOwnProperty("paid") ? listData?.paid?.count <= 0 : true}
