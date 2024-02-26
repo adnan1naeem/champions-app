@@ -153,13 +153,8 @@ const Home = () => {
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     setTimeout(() => {
-      // if (parseInt(tier) >= 0 && parseInt(tier) <= 4) {
-      //   getZoneList(tier);
-      // } else {
-      //   getBatchListing();
-      // }
       setRefreshing(false);
-    }, 1000);
+    }, 1500);
   }, []);
 
   const handleSubmmit = (status, name) => {
@@ -335,7 +330,6 @@ const Home = () => {
   }
 
   const getZoneList = async (tierIs) => {
-    const data = {};
     let config = {
       method: 'GET',
       maxBodyLength: Infinity,
@@ -349,8 +343,6 @@ const Home = () => {
         .then(async (response) => {
           if (response?.data) {
             setCompleteDataList([...response?.data]);
-            setCompleteBranchList([...response?.data]);
-            setCompleteDealerList([...response?.data]);
             if (tierIs == 1) {
               getBatchLisitingNew();
               response?.data.forEach(zone => {
@@ -369,6 +361,9 @@ const Home = () => {
                 deleted: false
               })
               setZoneList([...response?.data]);
+              setCompleteBranchList([...response?.data]);
+              const allDealers = response?.data?.flatMap(item => item?.branches)?.flatMap(branch => branch?.dealers);
+              setCompleteDealerList([...allDealers]);
             } else if (tierIs == 3) {
               getBatchLisitingNew();
               setDefaultZone(response?.data[0]);
@@ -379,7 +374,7 @@ const Home = () => {
                 name: 'All',
                 deleted: false
               })
-              setDealerList([data, ...response?.data[0]?.branches[0]?.dealers])
+              setDealerList([...response?.data[0]?.branches[0]?.dealers])
             } else if (tierIs == 2) {
               setDefaultZone(response?.data[0]);
               let branchesData = []
@@ -399,6 +394,8 @@ const Home = () => {
               getBatchLisitingNew(response?.data[0]?._id);
               setTierTwoZoneId(response?.data[0]?._id);
               setBranchList([newIndex, ...branchesData])
+              const allDealers = response?.data[0]?.branches?.flatMap(item => item?.dealers);
+              setCompleteDealerList([...allDealers]);
             }
           }
         })
@@ -409,6 +406,21 @@ const Home = () => {
       console.error('Error:', error);
     }
   };
+
+  const getBracnhListDefault = (list) => {
+    let branchNames = [];
+    list?.forEach((item) => {
+      if (item?.branches) {
+        item.branches.forEach((branch) => {
+          branchNames.push(branch);
+        });
+      }
+    });
+    const filteredBranches = branchNames?.filter((item, index) => {
+      return item.name !== "All" || index === 0;
+    });
+    return filteredBranches;
+  }
 
   const fetchCategoryData = async () => {
 
@@ -478,18 +490,7 @@ const Home = () => {
   useEffect(() => {
     if (selectedZone && zoneList) {
       if (selectedZone?.name == 'All') {
-        let branchNames = [];
-        zoneList.forEach((item) => {
-          if (item.branches) {
-            item.branches.forEach((branch) => {
-              branchNames.push(branch);
-            });
-          }
-        });
-        const filteredBranches = branchNames.filter((item, index) => {
-          return item.name !== "All" || index === 0;
-        });
-        setBranchList(filteredBranches);
+        setBranchList(getBracnhListDefault(zoneList));
         setCompleteBranchList([...completeDataList]);
         const allDealers = completeDataList?.flatMap(item => item?.branches)?.flatMap(branch => branch?.dealers);
         setCompleteDealerList([...allDealers]);
@@ -517,7 +518,26 @@ const Home = () => {
   }, [selectedZone, zoneList])
 
   useEffect(() => {
-    if (selectedBranch && branchList) {
+    if (selectedBranch && branchList?.length <= 0) {
+      const targetBranch = completeDataList.reduce((result, item) => {
+        const branch = item?.branches.find(b => b?._id === selectedBranch?._id);
+        if (branch) {
+          result = branch;
+        }
+        return result;
+      }, null);
+      const dealersList = targetBranch ? targetBranch?.dealers : null;
+      let data = {
+        _id: null,
+        name: 'All',
+        deleted: false
+      }
+      setDealerList([data, ...dealersList]);
+    }
+  }, [selectedBranch, branchList])
+
+  useEffect(() => {
+    if (selectedBranch && branchList?.length > 0) {
       if (selectedBranch?.name == 'All') {
         setDealerList([]);
         if (selectedBranch !== prevSelectedBranchRef.current) {
@@ -536,7 +556,7 @@ const Home = () => {
         }
         getBatchLisitingNew();
         setDealerList([data, ...selectdBranchData?.dealers]);
-        const allDealers = branchList?.filter(item => item?._id === selectedBranch?._id).flatMap(item => item?.dealers);
+        const allDealers = branchList?.filter(item => item?._id === selectedBranch?._id)?.flatMap(item => item?.dealers);
         setCompleteDealerList([...allDealers]);
       }
       if (selectedBranch !== prevSelectedBranchRef.current) {
@@ -545,7 +565,7 @@ const Home = () => {
         prevSelectedBranchRef.current = selectedBranch;
       }
     }
-  }, [selectedBranch])
+  }, [selectedBranch, branchList])
 
   useEffect(() => {
     if (selectedDealer && dealerList) {
