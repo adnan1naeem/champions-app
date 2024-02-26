@@ -1,15 +1,4 @@
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  ImageBackground,
-  ScrollView,
-  Alert,
-  ActivityIndicator,
-  Platform,
-} from 'react-native';
+import { Image, Text, TouchableOpacity, View, TextInput, ImageBackground, ScrollView, Alert, ActivityIndicator, Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
 import { Colors } from '../../../Utils/Colors';

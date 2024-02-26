@@ -6,24 +6,49 @@ import Modal from 'react-native-modal'
 import { styles } from './styles'
 import LinearGradient from 'react-native-linear-gradient'
 
-const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
+const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disabled }) => {
     const [isVisible, setisVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [filteredData, setFilteredData] = useState([...data]);
 
     useEffect(() => {
+        setFilteredData([...data]);
+    }, [data]);
+
+    useEffect(() => {
         let filtered = [];
-        if (title === "Branch") {
-            filtered = data?.filter(item =>
-                item?.code?.toLowerCase()?.includes(searchText?.toLowerCase())
+        console.log(searchText);
+        if (title === "Branch" && searchText !== "") {
+            const branches = data?.length > 0 ? data : completeDataList?.map(item => item?.branches)?.flat()
+            filtered = branches
+                ?.filter(item =>
+                    item?.code?.toLowerCase()?.includes(searchText?.toLowerCase())
+                )
+                ?.reduce((unique, item) => {
+                    const existingItem = unique?.find(u => u && u?.code === item?.code);
+                    if (!existingItem) {
+                        unique?.push(item);
+                    }
+                    return unique;
+                }, []);
+        } else if (title === "Dealer" && searchText !== "") {
+            const dealers = data?.length > 0 ? data : completeDataList;
+            filtered = dealers?.filter(item =>
+                item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
             );
         } else {
             filtered = data?.filter(item =>
                 item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
             );
         }
-        setFilteredData([...filtered]);
-    }, [data, searchText]);
+        if (searchText === "" && (title !== "Zone" && title !== "Branch" && title !== "Dealer")) {
+            setFilteredData([]);
+        } else {
+            setFilteredData([...filtered]);
+        }
+    }, [searchText]);
+
+
 
     const renderItem = ({ item }) => {
         const handlePress = () => {
@@ -31,7 +56,6 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
             setisVisible(false);
         };
         let name = title === "Branch" ? item?.code : item?.name;
-
         return (
             <TouchableOpacity
                 onPress={handlePress}
@@ -39,7 +63,7 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
                 <Text style={styles.UpdateHeading1}>
                     {name}
                 </Text>
-                {selectedVal === item?.name && (
+                {selectedVal?.name === item?.name && (
                     <Entypo
                         name="check"
                         style={styles.checkIcon}
@@ -67,22 +91,22 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
                     name={'chevron-down'}
                     style={styles.dropIcon}
                 />
-                <Text style={styles.selectedValue}>{selectedVal || "All"}</Text>
+                <Text style={styles.selectedValue}>{title === "Branch" ? selectedVal?.code ? selectedVal?.code : "All" : selectedVal?.name || "All"}</Text>
             </TouchableOpacity>
 
             <Modal visible={isVisible} transparent animationType="slide">
-                <View style={[styles.modalContainer1, { height: data?.length > 0 ? 300 : 180 }]}>
+                <View style={[styles.modalContainer1, { height: 300 }]}>
                     <TouchableOpacity style={{ alignItems: 'flex-end', }} onPress={backHandler}>
                         <Entypo name="cross" style={styles.crossIcon} />
                     </TouchableOpacity>
-                    {data?.length > 0 && <View style={{ alignItems: 'flex-end', }}>
+                    <View style={{ alignItems: 'flex-end', }}>
                         <TextInput
                             placeholder="Search..."
                             style={styles.input}
                             value={searchText}
                             onChangeText={text => setSearchText(text)}
                         />
-                    </View>}
+                    </View>
                     {filteredData?.length <= 0 ?
                         <View style={styles.EmptyContainer}>
                             <LinearGradient
@@ -92,7 +116,7 @@ const TierFlow = ({ data, title, onPress, selectedVal, disabled }) => {
                                 end={{ x: 1, y: 0 }}>
                                 <Text
                                     style={styles.emptyMessage}>
-                                    Sorry, no records found
+                                    {`No records found \n\n Search to get the ${title} based on selected hierarchy`}
                                 </Text>
                             </LinearGradient>
                         </View>

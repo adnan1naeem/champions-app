@@ -53,6 +53,9 @@ const Home = () => {
   const [defaultDate, setDefaultDate] = useState(false);
   const [tier, setTier] = useState(0);
   const [zoneList, setZoneList] = useState([]);
+  const [completeDataList, setCompleteDataList] = useState([]);
+  const [completeBranchList, setCompleteBranchList] = useState([]);
+  const [completeDealerList, setCompleteDealerList] = useState([]);
   const [branchList, setBranchList] = useState([]);
   const [dealerList, setDealerList] = useState([]);
   const [fsmList, setFSMList] = useState([]);
@@ -267,7 +270,7 @@ const Home = () => {
       dealerId: selectedDealer?._id || null,
       fsmId: selectedFSM?._id || null,
       divCode:
-      categoryItem ? categoryItem : selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
+        categoryItem ? categoryItem : selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
 
     let config = {
@@ -345,6 +348,9 @@ const Home = () => {
       axios.request(config)
         .then(async (response) => {
           if (response?.data) {
+            setCompleteDataList([...response?.data]);
+            setCompleteBranchList([...response?.data]);
+            setCompleteDealerList([...response?.data]);
             if (tierIs == 1) {
               getBatchLisitingNew();
               response?.data.forEach(zone => {
@@ -363,11 +369,10 @@ const Home = () => {
                 deleted: false
               })
               setZoneList([...response?.data]);
-            }
-            if (tierIs == '3') {
+            } else if (tierIs == 3) {
               getBatchLisitingNew();
-              setDefaultZone(response?.data[0]?.name);
-              setDefaultBranch(response?.data[0]?.branches[0]?.code);
+              setDefaultZone(response?.data[0]);
+              setDefaultBranch(response?.data[0]?.branches[0]);
               response?.data[0]?.branches[0]?.dealers?.unshift({
                 branches: [],
                 _id: null,
@@ -376,7 +381,7 @@ const Home = () => {
               })
               setDealerList([data, ...response?.data[0]?.branches[0]?.dealers])
             } else if (tierIs == 2) {
-              setDefaultZone(response?.data[0]?.name);
+              setDefaultZone(response?.data[0]);
               let branchesData = []
               response?.data?.forEach(element => {
                 if (element?.branches) {
@@ -485,14 +490,16 @@ const Home = () => {
           return item.name !== "All" || index === 0;
         });
         setBranchList(filteredBranches);
+        setCompleteBranchList([...completeDataList]);
+        const allDealers = completeDataList?.flatMap(item => item?.branches)?.flatMap(branch => branch?.dealers);
+        setCompleteDealerList([...allDealers]);
         if (selectedZone !== prevSelectedZoneRef.current) {
           setSelectBranch('');
           setSelectDealer('');
           setSelectFSM('');
           prevSelectedZoneRef.current = selectedZone;
         }
-      }
-      else {
+      } else {
         const selectdAreas = zoneList?.find(city => city?.name === selectedZone?.name);
         setBranchList([...selectdAreas?.branches]);
         if (selectedZone !== prevSelectedZoneRef.current) {
@@ -501,6 +508,10 @@ const Home = () => {
           setSelectFSM('');
           prevSelectedZoneRef.current = selectedZone;
         }
+        const selectedZoneBranches = completeDataList.filter(item => item?._id === selectedZone?._id).flatMap(item => item?.branches);
+        const allDealers = selectedZoneBranches?.flatMap(branch => branch?.dealers);
+        setCompleteBranchList([...selectedZoneBranches]);
+        setCompleteDealerList([...allDealers]);
       }
     }
   }, [selectedZone, zoneList])
@@ -514,6 +525,8 @@ const Home = () => {
           setSelectFSM('');
           prevSelectedBranchRef.current = selectedBranch;
         }
+        const allDealers = branchList?.flatMap(item => item?.dealers);
+        setCompleteDealerList([...allDealers]);
       } else {
         const selectdBranchData = branchList?.find(city => city?.name === selectedBranch?.name);
         let data = {
@@ -523,6 +536,8 @@ const Home = () => {
         }
         getBatchLisitingNew();
         setDealerList([data, ...selectdBranchData?.dealers]);
+        const allDealers = branchList?.filter(item => item?._id === selectedBranch?._id).flatMap(item => item?.dealers);
+        setCompleteDealerList([...allDealers]);
       }
       if (selectedBranch !== prevSelectedBranchRef.current) {
         setSelectDealer('');
@@ -555,6 +570,26 @@ const Home = () => {
       getBatchLisitingNew();
     }
   }, [selectedFSM])
+
+  const checkBranchList = () => {
+    if (selectedBranch || defaultBranch) {
+      if (selectedBranch?.code === "All" || defaultBranch?.code === "All") {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
+  const checkFSMList = () => {
+    if (selectedDealer) {
+      if (selectedDealer?.name === "All") {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
 
   return (
     <ImageBackground
@@ -656,10 +691,10 @@ const Home = () => {
           />
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
-              <TierFlow title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone?.name} disabled={tier == 2 || tier == 3 ? true : false} />
-              <TierFlow title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch?.code} disabled={tier == 3 ? true : false} />
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"Dealer"} data={selectedZone?.name === "All" ? [] : dealerList} onPress={setSelectDealer} selectedVal={selectedDealer?.name} />}
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow title={"FSM"} data={selectedZone?.name === "All" ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM?.name} />}
+              <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
+              <TierFlow completeDataList={completeBranchList} title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch} disabled={tier == 3 ? true : false} />
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDealerList} title={"Dealer"} data={checkBranchList() ? [] : dealerList} onPress={setSelectDealer} selectedVal={selectedDealer} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDataList} title={"FSM"} data={checkFSMList() ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM} />}
             </View>}
           <CardsButton
             disabled={listData?.hasOwnProperty("paid") ? listData?.paid?.count <= 0 : true}
