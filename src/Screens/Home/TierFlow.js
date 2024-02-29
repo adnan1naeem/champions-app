@@ -15,14 +15,13 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
         setFilteredData([...data]);
     }, [data]);
 
-    useEffect(() => {
+    const setSearchFun = (text) => {
         let filtered = [];
-        console.log(searchText);
-        if (title === "Branch" && searchText !== "") {
+        if (title === "Branch" && text !== "") {
             const branches = data?.length > 0 ? data : completeDataList?.map(item => item?.branches)?.flat()
             filtered = branches
                 ?.filter(item =>
-                    item?.code?.toLowerCase()?.includes(searchText?.toLowerCase())
+                    item?.code?.toLowerCase()?.includes(text?.toLowerCase())
                 )
                 ?.reduce((unique, item) => {
                     const existingItem = unique?.find(u => u && u?.code === item?.code);
@@ -31,22 +30,23 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
                     }
                     return unique;
                 }, []);
-        } else if (title === "Dealer" && searchText !== "") {
+        } else if (title === "Dealer" && text !== "") {
             const dealers = data?.length > 0 ? data : completeDataList;
             filtered = dealers?.filter(item =>
-                item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+                item?.name?.toLowerCase()?.includes(text?.toLowerCase())
             );
         } else {
             filtered = data?.filter(item =>
-                item?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+                item?.name?.toLowerCase()?.includes(text?.toLowerCase())
             );
         }
-        if (searchText === "" && (title !== "Zone" && title !== "Branch" && title !== "Dealer")) {
+        if (text === "" && (title !== "Zone" && title !== "Branch" && title !== "Dealer")) {
             setFilteredData([]);
         } else {
             setFilteredData([...filtered]);
         }
-    }, [searchText]);
+        setSearchText(text)
+    }
 
 
 
@@ -104,7 +104,7 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
                             placeholder="Search..."
                             style={styles.input}
                             value={searchText}
-                            onChangeText={text => setSearchText(text)}
+                            onChangeText={text => setSearchFun(text)}
                         />
                     </View>
                     {filteredData?.length <= 0 ?
@@ -116,7 +116,7 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
                                 end={{ x: 1, y: 0 }}>
                                 <Text
                                     style={styles.emptyMessage}>
-                                    {`No records found \n\n Search to get the ${title} based on selected hierarchy`}
+                                    {`${searchText === '' ? `Search to get the ${title} based on selected hierarchy` : `No record found against your search`}`}
                                 </Text>
                             </LinearGradient>
                         </View>

@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
   LinerGradiant: {
     borderRadius: 20,
     borderColor: '#98B1DD',
-    width: '98%',
+    width: 300,
+    height: 120,
     paddingVertical: 30,
   },
   Chamiopm_Logo: {
@@ -129,6 +130,21 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
   },
+  resetContainer: {
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+  },
+  resetAllText: {
+    borderWidth:1,
+    marginRight:20,
+    paddingHorizontal:10,
+    color: Colors.text_Color,
+    borderColor:Colors.text_Color,
+    fontWeight: '300',
+    fontSize: 12,
+    lineHeight: 35,
+    textAlign: 'center',
+  },
   updateMessage: {
     color: Colors.text_Color,
     fontWeight: '500',
@@ -184,7 +200,7 @@ export const styles = StyleSheet.create({
     fontSize: 25,
   },
   selectedValue: {
-    flex:1,
+    flex: 1,
     paddingHorizontal: 10,
     color: Colors.text_Color
   },

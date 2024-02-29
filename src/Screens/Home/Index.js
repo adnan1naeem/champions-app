@@ -44,6 +44,7 @@ const Home = () => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [startDate, setstartDate] = useState('');
   const [endDate, setendDate] = useState('');
+  const [resetAll, setResetAll] = useState(false);
   const [Paid_ammount, setPaid_ammount] = useState(0);
   const [approved_ammount, setapproved_ammount] = useState(0);
   const [outstanding_ammount, setoutstanding_ammount] = useState(0);
@@ -154,7 +155,7 @@ const Home = () => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 1500);
+    }, 2000);
   }, []);
 
   const handleSubmmit = (status, name) => {
@@ -190,22 +191,23 @@ const Home = () => {
   };
 
   const handleDateSelect = (start, end) => {
-    console.log(start);
     setstartDate(start);
     setendDate(end);
   };
 
   useEffect(() => {
-    (async () => {
-      let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
-      if (tierIs != 0) {
-        setTier(parseInt(tierIs));
-        getZoneList(tierIs);
-      } else {
-        getBatchListing();
-      }
-    })();
+    defaultZoneList();
   }, []);
+
+  const defaultZoneList = async () => {
+    let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+    if (tierIs != 0) {
+      setTier(parseInt(tierIs));
+      getZoneList(tierIs);
+    } else {
+      getBatchListing();
+    }
+  }
 
   const setProductCategory = async (item) => {
     setSelectedValue(item);
@@ -611,6 +613,26 @@ const Home = () => {
     return true;
   }
 
+  const resetAllFun = () => {
+    setSelectZone('');
+    setSelectBranch('');
+    setSelectDealer('');
+    setSelectFSM('');
+    setSelectedValue(null);
+    setstartDate('');
+    setendDate('');
+    setDefaultDate('');
+    setResetAll(true);
+  }
+  
+  useEffect(() => {
+    if (resetAll) {
+      onRefresh();
+      setResetAll(false);
+      defaultZoneList();
+    }
+  }, [resetAll])
+
   return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
@@ -657,7 +679,7 @@ const Home = () => {
             </View>
             <View>
               <Datepicker
-                refreshState={false}
+                refreshState={resetAll}
                 setDefaultDateFun={(value) => {
                   setDefaultDate(value);
                   handleDateSelect("", "")
@@ -709,6 +731,9 @@ const Home = () => {
             resizeMode="contain"
             source={require('../../Assets/Image/Orient_icon.png')}
           />
+          <TouchableOpacity style={styles.resetContainer} onPress={resetAllFun}>
+            <Text style={styles.resetAllText}>Reset Filters</Text>
+          </TouchableOpacity>
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
               <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
