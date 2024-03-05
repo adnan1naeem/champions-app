@@ -45,7 +45,7 @@ const TierFlowFSM = ({ completeDataList, title, data, onPress, selectedVal, disa
                 <Text style={styles.UpdateHeading1}>
                     {name}
                 </Text>
-                {selectedVal?.name === item?.name && (
+                {selectedVal?._id === item?._id && (
                     <Entypo
                         name="check"
                         style={styles.checkIcon}

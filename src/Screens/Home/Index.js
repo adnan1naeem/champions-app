@@ -108,16 +108,20 @@ const Home = () => {
     }
   }, [])
 
-  useEffect(()=> {
-    if(selectedBranch || selectedZone){
+  useEffect(() => {
+    if (selectedBranch || selectedZone) {
       getFSMLisiting();
     }
-  },[selectedZone, selectedBranch])
+  }, [selectedZone, selectedBranch])
 
   useEffect(() => {
     if (defaultDate || startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
       if (parseInt(tier) > 0 && parseInt(tier) < 4) {
+        onRefresh();
         getBatchLisitingNew();
+      } else {
+        onRefresh();
+        getBatchListing();
       }
     }
   }, [defaultDate, startDate, endDate, selectedZone, selectedBranch, selectedDealer]);
@@ -221,20 +225,21 @@ const Home = () => {
     setSelectedValue(item);
     setModalVisible(false);
     let tierIs = await AsyncStorage.getItem('TIER_NUMBER');
+    onRefresh();
     if (tierIs != 0) {
       setTier(parseInt(tierIs));
       getBatchLisitingNew("", item?.categoryCode);
     } else {
-      getBatchListing();
+      getBatchListing(item?.categoryCode);
     }
   }
 
-  const getBatchListing = async () => {
+  const getBatchListing = async (categoryItem = null) => {
     const data = {
       startDate: endDate,
       endDate: startDate,
       divCode:
-        selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
+        categoryItem ? categoryItem : selectedValue?.categoryCode === '0' ? '' : selectedValue?.categoryCode,
     };
 
     let config = {
@@ -639,7 +644,7 @@ const Home = () => {
     setDefaultDate('');
     setResetAll(true);
   }
-  
+
   useEffect(() => {
     if (resetAll) {
       onRefresh();
@@ -769,9 +774,9 @@ const Home = () => {
           </TouchableOpacity>
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
-              <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={(text)=> updateZoneValue(text)} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
-              <TierFlow completeDataList={completeBranchList} title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={(text)=> updateBranchValue(text)} selectedVal={tier == 3 ? defaultBranch : selectedBranch} disabled={tier == 3 ? true : false} />
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDealerList} title={"Dealer"} data={checkBranchList() ? [] : dealerList} onPress={(text)=> updateDealerhValue(text)} selectedVal={selectedDealer} />}
+              <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={(text) => updateZoneValue(text)} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
+              <TierFlow completeDataList={completeBranchList} title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={(text) => updateBranchValue(text)} selectedVal={tier == 3 ? defaultBranch : selectedBranch} disabled={tier == 3 ? true : false} />
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDealerList} title={"Dealer"} data={checkBranchList() ? [] : dealerList} onPress={(text) => updateDealerhValue(text)} selectedVal={selectedDealer} />}
               {(tier === 1 || tier === 2 || tier === 3) && <TierFlowFSM completeDataList={fsmList} title={"FSM"} data={checkFSMList() ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM} />}
             </View>}
           <CardsButton

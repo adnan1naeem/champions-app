@@ -32,9 +32,17 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
                 }, []);
         } else if (title === "Dealer" && text !== "") {
             const dealers = data?.length > 0 ? data : completeDataList;
-            filtered = dealers?.filter(item =>
-                item?.name?.toLowerCase()?.includes(text?.toLowerCase())
-            );
+            filtered = dealers
+                ?.filter(item =>
+                    item?.name?.toLowerCase()?.includes(text?.toLowerCase())
+                )
+                ?.reduce((unique, item) => {
+                    const existingItem = unique?.find(u => u && u?.code === item?.code);
+                    if (!existingItem) {
+                        unique?.push(item);
+                    }
+                    return unique;
+                }, []);
         } else {
             filtered = data?.filter(item =>
                 item?.name?.toLowerCase()?.includes(text?.toLowerCase())
@@ -63,7 +71,7 @@ const TierFlow = ({ completeDataList, title, data, onPress, selectedVal, disable
                 <Text style={styles.UpdateHeading1}>
                     {name}
                 </Text>
-                {selectedVal?.name === item?.name && (
+                {selectedVal?._id === item?._id && (
                     <Entypo
                         name="check"
                         style={styles.checkIcon}
