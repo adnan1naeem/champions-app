@@ -79,7 +79,6 @@ const Signin = () => {
       };
       const response = await axios.request(config).then(async (response) => {
         if (response?.data) {
-          console.log(JSON.stringify(response?.data, null, 2))
           if (response?.data?.roles) {
             if (response?.data?.roles?.name === "fsm") {
               await AsyncStorage.setItem('TIER_NUMBER', '0');
@@ -102,7 +101,7 @@ const Signin = () => {
         setLoading(false);
         if (error?.response?.status === 401) {
           const responseData = await response?.json();
-          errorMessage = error?.response?.data?.message || responseData?.message || responseData?.error;
+          errorMessage = error?.response?.data?.message || responseData?.message || responseData?.error || error?.response?.data?.error;
         }
       });
     } catch (error) {

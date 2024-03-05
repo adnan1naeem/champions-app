@@ -311,11 +311,12 @@ const Home = () => {
 
   const getFSMLisiting = () => {
     let data = {
-      zoneId: selectedZone?._id,
-      branchId: selectedBranch?._id,
+      zoneId: selectedZone?._id || tierTwoZoneId,
+      branchId: selectedBranch?._id || defaultBranch?._id,
       dealerId: selectedDealer?._id,
       name: ''
     }
+
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -592,7 +593,6 @@ const Home = () => {
           prevSelectedDealerRef.current = selectedDealer;
         }
         setFSMList([]);
-      } else {
         getFSMLisiting();
       }
       if (selectedDealer !== prevSelectedDealerRef.current) {

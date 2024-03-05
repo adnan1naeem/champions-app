@@ -32,8 +32,6 @@ const TierFlowFSM = ({ completeDataList, title, data, onPress, selectedVal, disa
         setSearchText(text)
     }
 
-
-
     const renderItem = ({ item }) => {
         const handlePress = () => {
             onPress(item);
