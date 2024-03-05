@@ -36,6 +36,7 @@ import CustomButton from '../../Components/CustomButton';
 import messaging from '@react-native-firebase/messaging';
 import TierFlow from './TierFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TierFlowFSM from './TierFlowFSM';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -106,6 +107,12 @@ const Home = () => {
       getBatchLisitingNew();
     }
   }, [])
+
+  useEffect(()=> {
+    if(selectedBranch || selectedZone){
+      getFSMLisiting();
+    }
+  },[selectedZone, selectedBranch])
 
   useEffect(() => {
     if (defaultDate || startDate || endDate || selectedZone || selectedBranch || selectedDealer || selectedFSM) {
@@ -204,6 +211,7 @@ const Home = () => {
     if (tierIs != 0) {
       setTier(parseInt(tierIs));
       getZoneList(tierIs);
+      getFSMLisiting();
     } else {
       getBatchListing();
     }
@@ -302,13 +310,20 @@ const Home = () => {
   }
 
   const getFSMLisiting = () => {
+    let data = {
+      zoneId: selectedZone?._id,
+      branchId: selectedBranch?._id,
+      dealerId: selectedDealer?._id,
+      name: ''
+    }
     let config = {
-      method: 'get',
+      method: 'post',
       maxBodyLength: Infinity,
-      url: `${API_BASE_URL}/fsmListWithDealer/${selectedDealer?._id}`,
+      url: `${API_BASE_URL}/fsmList`,
       headers: {
         'Content-Type': 'application/json',
       },
+      data: JSON.stringify(data)
     };
     try {
       axios.request(config)
@@ -633,6 +648,24 @@ const Home = () => {
     }
   }, [resetAll])
 
+  const updateZoneValue = (text) => {
+    setSelectFSM('');
+    setSelectBranch('');
+    setSelectDealer('');
+    setSelectZone(text);
+  }
+
+  const updateBranchValue = (text) => {
+    setSelectFSM('');
+    setSelectDealer('');
+    setSelectBranch(text);
+  }
+
+  const updateDealerhValue = (text) => {
+    setSelectFSM('');
+    setSelectDealer(text);
+  }
+
   return (
     <ImageBackground
       source={require('../../Assets/Image/background_image.png')}
@@ -736,10 +769,10 @@ const Home = () => {
           </TouchableOpacity>
           {(tier > 0 && tier <= 3) &&
             <View style={styles.tierContainer}>
-              <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={setSelectZone} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
-              <TierFlow completeDataList={completeBranchList} title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={setSelectBranch} selectedVal={tier == 3 ? defaultBranch : selectedBranch} disabled={tier == 3 ? true : false} />
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDealerList} title={"Dealer"} data={checkBranchList() ? [] : dealerList} onPress={setSelectDealer} selectedVal={selectedDealer} />}
-              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDataList} title={"FSM"} data={checkFSMList() ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM} />}
+              <TierFlow completeDataList={completeDataList} title={"Zone"} data={zoneList} onPress={(text)=> updateZoneValue(text)} selectedVal={tier == 2 || tier == 3 ? defaultZone : selectedZone} disabled={tier == 2 || tier == 3 ? true : false} />
+              <TierFlow completeDataList={completeBranchList} title={"Branch"} data={selectedZone?.name === "All" ? [] : branchList} onPress={(text)=> updateBranchValue(text)} selectedVal={tier == 3 ? defaultBranch : selectedBranch} disabled={tier == 3 ? true : false} />
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlow completeDataList={completeDealerList} title={"Dealer"} data={checkBranchList() ? [] : dealerList} onPress={(text)=> updateDealerhValue(text)} selectedVal={selectedDealer} />}
+              {(tier === 1 || tier === 2 || tier === 3) && <TierFlowFSM completeDataList={fsmList} title={"FSM"} data={checkFSMList() ? [] : fsmList} onPress={setSelectFSM} selectedVal={selectedFSM} />}
             </View>}
           <CardsButton
             disabled={listData?.hasOwnProperty("paid") ? listData?.paid?.count <= 0 : true}
