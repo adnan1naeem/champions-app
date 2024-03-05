@@ -56,13 +56,13 @@ const PaidCategory = ({ route, navigation }) => {
 
   const getDefaultBatchList = async () => {
     if (!hasMoreData) return;
-
     setLoading(true);
+    let divCode = route?.params?.data?.divCode == 0 ? null : route?.params?.data?.divCode
     const data = {
       status: route?.params?.data?.name?.toLowerCase(),
       startDate: route?.params?.data?.startDate,
       endDate: route?.params?.data?.endDate,
-      divCode: route?.params?.data?.divCode
+      divCode: divCode
     };
     let config = {
       method: 'post',
