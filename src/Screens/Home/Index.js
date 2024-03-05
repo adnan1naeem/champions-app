@@ -189,6 +189,8 @@ const Home = () => {
       dataCount: dataCount,
       name: name,
       zone: selectedZone,
+      defaultZoneId: tierTwoZoneId,
+      defaultBranchId: defaultBranch,
       barnch: selectedBranch,
       startDate: endDate,
       endDate: startDate,

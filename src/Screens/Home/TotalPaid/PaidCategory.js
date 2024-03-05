@@ -109,8 +109,8 @@ const PaidCategory = ({ route, navigation }) => {
     setLoading(true);
     const data = {
       status: route?.params?.data?.name?.toLowerCase(),
-      zoneId: route?.params?.data?.zone?._id,
-      branchId: route?.params?.data?.barnch?._id,
+      zoneId: route?.params?.data?.zone?._id || route?.params?.data?.defaultZoneId,
+      branchId: route?.params?.data?.barnch?._id || route?.params?.data?.defaultBranchId?._id,
       dealerId: route?.params?.data?.dealer?._id,
       fsmId: route?.params?.data?.fsm?._id,
       startDate: route?.params?.data?.startDate,
@@ -141,7 +141,6 @@ const PaidCategory = ({ route, navigation }) => {
             }
             setPage(page + 1);
           } else {
-            alert('test')
             setHasMoreData(false);
           }
           setLoading(false);
