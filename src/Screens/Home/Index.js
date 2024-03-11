@@ -606,6 +606,7 @@ const Home = () => {
         setSelectFSM('');
         prevSelectedDealerRef.current = selectedDealer;
       }
+      getFSMLisiting();
     }
   }, [selectedDealer, dealerList])
 
