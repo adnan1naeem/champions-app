@@ -183,7 +183,7 @@ const Home = () => {
       dataCount = listData?.rejected?.count
     }
     let data = {
-      tier: tier > 0 && tier <= 3,
+      tier: parseInt(tier) > 0 && parseInt(tier) <= 3,
       status: status,
       list: listData,
       dataCount: dataCount,

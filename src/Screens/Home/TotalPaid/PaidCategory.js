@@ -35,13 +35,16 @@ const PaidCategory = ({ route, navigation }) => {
     React.useCallback(() => {
       titleHandle()
       if (!tierExist) {
-        if (typeof batchlisting === 'object' && !Array.isArray(batchlisting)) {
-          const myArray = [];
-          myArray.push(batchlisting);
-          setbatches(batchlisting);
-        } else {
-          setbatches(batchlisting);
-        }
+        // if (typeof batchlisting === 'object' && !Array.isArray(batchlisting)) {
+        //   const myArray = [];
+        //   myArray.push(batchlisting);
+        //   setbatches(batchlisting);
+        // } else {
+        //   setbatches(batchlisting);
+        // }
+        getDefaultBatchList(true);
+      }else{
+        getBatchList();
       }
     }, [batchlisting]),
   );
@@ -54,8 +57,8 @@ const PaidCategory = ({ route, navigation }) => {
     }
   }, [route])
 
-  const getDefaultBatchList = async () => {
-    if (!hasMoreData) return;
+  const getDefaultBatchList = async (defaultData = false) => {
+    if (!hasMoreData && !defaultData) return;
     setLoading(true);
     let divCode = route?.params?.data?.divCode == 0 ? null : route?.params?.data?.divCode
     const data = {
@@ -187,7 +190,11 @@ const PaidCategory = ({ route, navigation }) => {
   };
 
   const handleLoadMore = () => {
-    getBatchList();
+    if (route?.params?.data?.tier) {
+      getBatchList();
+    } else {
+      getDefaultBatchList();
+    }
   };
 
   const renderItem = ({ item, index }) => (
