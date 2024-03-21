@@ -64,6 +64,7 @@ const Home = () => {
   const [tierTwoZoneId, setTierTwoZoneId] = useState(null);
   const [defaultZone, setDefaultZone] = useState("");
   const [defaultBranch, setDefaultBranch] = useState("");
+  const [defaultDealer, setDefaultDealer] = useState(null);
 
   const scrollViewRef = useRef(null);
   const prevSelectedZoneRef = useRef();
@@ -230,7 +231,7 @@ const Home = () => {
     onRefresh();
     if (tierIs != 0) {
       setTier(parseInt(tierIs));
-      getBatchLisitingNew("", item?.categoryCode);
+      getBatchLisitingNew("", item?.categoryCode, "");
     } else {
       getBatchListing(item?.categoryCode);
     }
@@ -273,12 +274,12 @@ const Home = () => {
     }
   };
 
-  const getBatchLisitingNew = (zoneId = null, categoryItem = null) => {
+  const getBatchLisitingNew = (zoneId = null, categoryItem = null, branchId = null) => {
     const data = {
       startDate: endDate,
       endDate: startDate,
       zoneId: selectedZone?._id || tierTwoZoneId || zoneId || null,
-      branchId: selectedBranch?._id || null,
+      branchId: selectedBranch?._id || branchId || null,
       dealerId: selectedDealer?._id || null,
       fsmId: selectedFSM?._id || null,
       divCode:
@@ -316,14 +317,13 @@ const Home = () => {
     }
   }
 
-  const getFSMLisiting = () => {
+  const getFSMLisiting = (dealerId = null, zoneId = null) => {
     let data = {
-      zoneId: selectedZone?._id || tierTwoZoneId,
+      zoneId: selectedZone?._id || tierTwoZoneId || zoneId?._id,
       branchId: selectedBranch?._id || defaultBranch?._id,
-      dealerId: selectedDealer?._id,
+      dealerId: selectedDealer?._id || dealerId?._id,
       name: ''
     }
-
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -363,6 +363,7 @@ const Home = () => {
         'Content-Type': 'application/json',
       },
     };
+
     try {
       axios.request(config)
         .then(async (response) => {
@@ -390,17 +391,20 @@ const Home = () => {
               const allDealers = response?.data?.flatMap(item => item?.branches)?.flatMap(branch => branch?.dealers);
               setCompleteDealerList([...allDealers]);
             } else if (tierIs == 3) {
-              getBatchLisitingNew();
               setDefaultZone(response?.data[0]);
               setDefaultBranch(response?.data[0]?.branches[0]);
+              getFSMLisiting(response?.data[0]?.branches[0]?.dealers[0], "")
+              getBatchLisitingNew("","",response?.data[0]?.branches[0]?._id);
+
               response?.data[0]?.branches[0]?.dealers?.unshift({
                 branches: [],
                 _id: null,
                 name: 'All',
                 deleted: false
               })
-              setDealerList([...response?.data[0]?.branches[0]?.dealers])
+              setDealerList([...response?.data[0]?.branches[0]?.dealers]);
             } else if (tierIs == 2) {
+              getFSMLisiting("",response?.data[0]);
               setDefaultZone(response?.data[0]);
               let branchesData = []
               response?.data?.forEach(element => {
@@ -416,7 +420,7 @@ const Home = () => {
                 code: 'All',
                 deleted: false
               }
-              getBatchLisitingNew(response?.data[0]?._id);
+              getBatchLisitingNew(response?.data[0]?._id, "", "");
               setTierTwoZoneId(response?.data[0]?._id);
               setBranchList([newIndex, ...branchesData])
               const allDealers = response?.data[0]?.branches?.flatMap(item => item?.dealers);
